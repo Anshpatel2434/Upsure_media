@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import type { Form } from "@/payload-types";
 
 import { Container } from "@/components/ui/container";
@@ -34,7 +36,9 @@ export async function BriefBuilder() {
   return (
     <Section tone="white" padding="tight">
       <Container size="narrow">
-        <BriefBuilderForm form={form} needs={needs} />
+        <Suspense fallback={null}>
+          <BriefBuilderForm form={form} needs={needs} />
+        </Suspense>
       </Container>
     </Section>
   );
