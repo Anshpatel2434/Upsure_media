@@ -6,6 +6,7 @@ import { Heading } from "@/components/ui/heading";
 import { ArrowRightIcon } from "@/components/ui/icons";
 import { Tag } from "@/components/ui/tag";
 import { formatDate } from "@/lib/text";
+import { isDoc } from "@/lib/relations";
 
 export function PostCard({
   post,
@@ -19,8 +20,8 @@ export function PostCard({
   priority?: boolean;
 }) {
   const dark = tone === "teal-ink";
-  const category = typeof post.category === "object" ? post.category : null;
-  const author = typeof post.author === "object" ? post.author : null;
+  const category = isDoc(post.category) ? post.category : null;
+  const author = isDoc(post.author) ? post.author : null;
   return (
     <Card
       href={`/blog/${post.slug}`}

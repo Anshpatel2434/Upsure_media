@@ -17,6 +17,7 @@ import { LeadForm } from "@/features/forms/lead-form";
 import { getCms } from "@/lib/cms/client";
 import { getCaseStudies, getFaqs, getTestimonials } from "@/lib/cms/queries";
 import { renderHighlights } from "@/lib/text";
+import { isDoc } from "@/lib/relations";
 
 /**
  * Service detail: hero with inline consultation form, checklist, related work,
@@ -25,7 +26,7 @@ import { renderHighlights } from "@/lib/text";
 export async function ServiceView({ service }: { service: Service }) {
   const cms = await getCms();
   const [form, work, testimonials, faqs] = await Promise.all([
-    typeof service.form === "object"
+    isDoc(service.form)
       ? Promise.resolve(service.form as Form)
       : service.form
         ? (cms

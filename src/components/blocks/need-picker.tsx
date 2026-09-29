@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/container";
 import { ArrowRightIcon } from "@/components/ui/icons";
 import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/cn";
+import { isDoc } from "@/lib/relations";
 
 /**
  * "How can we help you?" pills. Each need links to its service page and
@@ -31,7 +32,7 @@ export function NeedPickerBlock({ block, index }: BlockProps<"needPicker">) {
         />
         <ul className="flex flex-wrap gap-3">
           {items.map((item) => {
-            const service = typeof item.service === "object" ? (item.service as Service) : null;
+            const service = isDoc(item.service) ? (item.service as Service) : null;
             const href = service
               ? `/services/${service.slug}?need=${encodeURIComponent(item.label)}`
               : `/start-a-project?need=${encodeURIComponent(item.label)}`;

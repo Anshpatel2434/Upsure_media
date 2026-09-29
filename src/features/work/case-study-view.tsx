@@ -20,10 +20,11 @@ import { getCms } from "@/lib/cms/client";
 import { getCaseStudies } from "@/lib/cms/queries";
 import { imageProps, isVideo, mediaUrl } from "@/lib/media";
 import { renderHighlights } from "@/lib/text";
+import { isDoc } from "@/lib/relations";
 
 export async function CaseStudyView({ study }: { study: CaseStudy }) {
   const cms = await getCms();
-  const services = (study.services ?? []).filter((s): s is Service => typeof s === "object");
+  const services = (study.services ?? []).filter((s): s is Service => isDoc(s));
   const [similar, callbackForm] = await Promise.all([
     getCaseStudies({ service: services[0]?.id, exclude: study.id, limit: 4 }),
     cms
@@ -35,8 +36,7 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
       })
       .then((r) => (r.docs[0] as Form | undefined) ?? null),
   ]);
-  const testimonial =
-    typeof study.testimonial === "object" ? (study.testimonial as Testimonial) : null;
+  const testimonial = isDoc(study.testimonial) ? (study.testimonial as Testimonial) : null;
   const before = imageProps(study.beforeAfter?.before, "large");
   const after = imageProps(study.beforeAfter?.after, "large");
   const videoFile = isVideo(study.video?.file) ? mediaUrl(study.video?.file) : null;

@@ -9,15 +9,14 @@ import { Heading } from "@/components/ui/heading";
 import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/cn";
 import { renderHighlights, sectionIndex } from "@/lib/text";
+import { isDoc } from "@/lib/relations";
 
 /** 1–3 text columns with optional images beside/below. The workhorse "copy" block. */
 export function TextColumnsBlock({ block, index }: BlockProps<"textColumns">) {
   const tone = block.tone ?? "paper";
   const dark = tone === "teal-ink" || tone === "teal";
   const columns = block.columns ?? [];
-  const images = (block.images ?? [])
-    .map((i) => i.image)
-    .filter((m): m is Media => typeof m === "object");
+  const images = (block.images ?? []).map((i) => i.image).filter((m): m is Media => isDoc(m));
   const rotations = [-3, 4, -2];
 
   return (

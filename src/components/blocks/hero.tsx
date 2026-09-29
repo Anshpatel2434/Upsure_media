@@ -11,6 +11,7 @@ import { Sticker } from "@/components/ui/sticker";
 import { getGlobals } from "@/lib/cms/queries";
 import { cn } from "@/lib/cn";
 import { renderHighlights } from "@/lib/text";
+import { isDoc } from "@/lib/relations";
 
 const rotations = [-6, 4, -3, 5, -5, 3, -4, 6];
 const collageLayout = [
@@ -25,7 +26,7 @@ const collageLayout = [
 ];
 
 const images = (block: BlockProps<"hero">["block"]) =>
-  (block.images ?? []).map((i) => i.image).filter((m): m is Media => typeof m === "object");
+  (block.images ?? []).map((i) => i.image).filter((m): m is Media => isDoc(m));
 
 function Stickers({
   block,

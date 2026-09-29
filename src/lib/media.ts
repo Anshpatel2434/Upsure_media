@@ -1,4 +1,12 @@
 import type { Media } from "@/payload-types";
+import { isDoc } from "@/lib/relations";
+import { getSiteUrl } from "@/lib/site";
+
+/** Payload returns absolute URLs when serverURL is set; next/image wants same-origin paths. */
+export function localiseUrl(url: string): string {
+  const origin = getSiteUrl();
+  return url.startsWith(origin) ? url.slice(origin.length) || "/" : url;
+}
 
 export type ImageProps = {
   src: string;
@@ -20,7 +28,7 @@ export function imageProps(
 ): ImageProps | null {
   if (!media || typeof media !== "object" || !media.url) return null;
   const variant = media.sizes?.[size];
-  const src = variant?.url ?? media.url;
+  const src = localiseUrl(variant?.url ?? media.url);
   const width = variant?.width ?? media.width ?? 1600;
   const height = variant?.height ?? media.height ?? 1000;
   return {
@@ -33,9 +41,9 @@ export function imageProps(
 }
 
 export function isVideo(media: Media | number | string | null | undefined): media is Media {
-  return Boolean(media && typeof media === "object" && media.mimeType?.startsWith("video/"));
+  return Boolean(media && isDoc(media) && media.mimeType?.startsWith("video/"));
 }
 
 export function mediaUrl(media: Media | number | string | null | undefined): string | null {
-  return media && typeof media === "object" ? (media.url ?? null) : null;
+  return media && isDoc(media) && media.url ? localiseUrl(media.url) : null;
 }

@@ -18,6 +18,7 @@ import type {
 } from "@/payload-types";
 
 import { getCms } from "@/lib/cms/client";
+import { isDoc } from "@/lib/relations";
 
 /**
  * All reads go through here. `draft` is only true inside the /preview route
@@ -60,7 +61,7 @@ export const getGlobals = cache(async () => {
 
 export const getServices = cache(async (ids?: (number | Service)[] | null) => {
   const cms = await getCms();
-  const idList = ids?.map((s) => (typeof s === "object" ? s.id : s)).filter(Boolean);
+  const idList = ids?.map((s) => (isDoc(s) ? s.id : s)).filter(Boolean);
   const { docs } = await cms.find({
     collection: "services",
     where: idList?.length ? { id: { in: idList } } : {},
@@ -99,7 +100,7 @@ export const getCaseStudies = cache(
     } = {},
   ) => {
     const cms = await getCms();
-    const idList = opts.ids?.map((c) => (typeof c === "object" ? c.id : c)).filter(Boolean);
+    const idList = opts.ids?.map((c) => (isDoc(c) ? c.id : c)).filter(Boolean);
     const where: Where[] = [];
     if (idList?.length) where.push({ id: { in: idList } });
     if (opts.service) where.push({ services: { contains: opts.service } });
@@ -179,7 +180,7 @@ export const getTestimonials = cache(
     opts: { ids?: (number | Testimonial)[] | null; featuredOnly?: boolean; service?: number } = {},
   ) => {
     const cms = await getCms();
-    const idList = opts.ids?.map((t) => (typeof t === "object" ? t.id : t)).filter(Boolean);
+    const idList = opts.ids?.map((t) => (isDoc(t) ? t.id : t)).filter(Boolean);
     const where: Where[] = [];
     if (idList?.length) where.push({ id: { in: idList } });
     else if (opts.service) where.push({ service: { equals: opts.service } });
@@ -212,7 +213,7 @@ export const getClients = cache(async () => {
 export const getFaqs = cache(
   async (opts: { scope?: string; ids?: (number | Faq)[] | null; service?: number } = {}) => {
     const cms = await getCms();
-    const idList = opts.ids?.map((f) => (typeof f === "object" ? f.id : f)).filter(Boolean);
+    const idList = opts.ids?.map((f) => (isDoc(f) ? f.id : f)).filter(Boolean);
     const where: Where = idList?.length
       ? { id: { in: idList } }
       : opts.service
@@ -234,7 +235,7 @@ export const getFaqs = cache(
 
 export const getTeam = cache(async (ids?: (number | TeamMember)[] | null) => {
   const cms = await getCms();
-  const idList = ids?.map((m) => (typeof m === "object" ? m.id : m)).filter(Boolean);
+  const idList = ids?.map((m) => (isDoc(m) ? m.id : m)).filter(Boolean);
   const { docs } = await cms.find({
     collection: "team-members",
     where: idList?.length ? { id: { in: idList } } : {},

@@ -172,6 +172,7 @@ async function withPage(
         description: page.meta?.description,
         image: page.meta?.image,
         path: slug === "home" ? "/" : path,
+        absolute: slug === "home",
       },
       { description: settings.defaultDescription, image: settings.defaultImage },
     ),

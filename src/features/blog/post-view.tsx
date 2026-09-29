@@ -16,11 +16,12 @@ import { NewsletterForm } from "@/features/newsletter/newsletter-form";
 import { getPosts } from "@/lib/cms/queries";
 import { getSiteUrl } from "@/lib/site";
 import { formatDate, readingTime } from "@/lib/text";
+import { isDoc } from "@/lib/relations";
 
 export async function PostView({ post }: { post: Post }) {
-  const category = typeof post.category === "object" ? (post.category as Category) : null;
-  const author = typeof post.author === "object" ? post.author : null;
-  const explicitRelated = (post.related ?? []).filter((p): p is Post => typeof p === "object");
+  const category = isDoc(post.category) ? (post.category as Category) : null;
+  const author = isDoc(post.author) ? post.author : null;
+  const explicitRelated = (post.related ?? []).filter((p): p is Post => isDoc(p));
   const related = explicitRelated.length
     ? explicitRelated
     : (await getPosts({ limit: 3, category: category?.slug, exclude: post.id })).docs;
@@ -38,7 +39,7 @@ export async function PostView({ post }: { post: Post }) {
       : { "@type": "Organization", name: "Upsure" },
     publisher: { "@type": "Organization", name: "Upsure" },
     mainEntityOfPage: `${getSiteUrl()}/blog/${post.slug}`,
-    image: typeof post.cover === "object" ? post.cover?.url : undefined,
+    image: isDoc(post.cover) ? post.cover?.url : undefined,
   };
 
   return (

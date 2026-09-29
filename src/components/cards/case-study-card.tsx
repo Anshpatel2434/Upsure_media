@@ -5,9 +5,10 @@ import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { ArrowRightIcon } from "@/components/ui/icons";
 import { Tag } from "@/components/ui/tag";
+import { isDoc } from "@/lib/relations";
 
 const serviceTitles = (services: CaseStudy["services"]) =>
-  (services ?? []).filter((s): s is Service => typeof s === "object").map((s) => s.title);
+  (services ?? []).filter((s): s is Service => isDoc(s)).map((s) => s.title);
 
 export function CaseStudyCard({
   study,

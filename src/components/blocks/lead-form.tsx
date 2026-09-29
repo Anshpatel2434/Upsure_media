@@ -7,9 +7,10 @@ import { Section } from "@/components/ui/section";
 import { LeadForm } from "@/features/forms/lead-form";
 import { getCms } from "@/lib/cms/client";
 import { cn } from "@/lib/cn";
+import { isDoc } from "@/lib/relations";
 
 async function resolveForm(form: Form | number | string): Promise<Form | null> {
-  if (typeof form === "object") return form;
+  if (isDoc(form)) return form;
   const cms = await getCms();
   return (await cms
     .findByID({ collection: "forms", id: form, depth: 0 })

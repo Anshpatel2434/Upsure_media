@@ -8,10 +8,10 @@ import { Carousel } from "@/components/ui/carousel";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { getPosts } from "@/lib/cms/queries";
+import { isDoc } from "@/lib/relations";
 
 export async function BlogCarouselBlock({ block, index }: BlockProps<"blogCarousel">) {
-  const category =
-    typeof block.category === "object" ? (block.category as Category).slug : undefined;
+  const category = isDoc(block.category) ? (block.category as Category).slug : undefined;
   const { docs: posts } = await getPosts({ limit: block.limit ?? 4, category });
   if (!posts.length) return null;
   const tone = block.tone ?? "teal-ink";
