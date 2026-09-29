@@ -107,6 +107,9 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET ?? "",
   admin: {
     user: Users.slug,
+    components: {
+      beforeDashboard: ["@/payload/components/before-dashboard#BeforeDashboard"],
+    },
     importMap: { baseDir: path.resolve(dirname, "../app/(payload)") },
     meta: {
       titleSuffix: " – Upsure admin",

@@ -1,6 +1,6 @@
 # Admin guide — editing the Upsure website
 
-The admin panel lives at **`/admin`** (locally: http://localhost:3000/admin). Log in with your email and password. Everything you publish appears on the public site within a second or two, no rebuild needed.
+The admin panel lives at **`/admin`** (locally: http://localhost:3000/admin). Log in with your email and password (for the local demo, the seed creates the admin listed under `SEED_ADMIN_EMAIL` in `.env.local`). Everything you publish appears on the public site within a second or two, no rebuild needed.
 
 ## The layout of the admin
 

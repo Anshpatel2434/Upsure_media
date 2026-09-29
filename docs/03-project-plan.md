@@ -210,10 +210,10 @@ Each phase ends with a checklist that must pass before the next starts. "Verify"
 - Verify: submit valid/invalid/spam cases; each creates/blocks a record correctly; form works with JS disabled (progressive enhancement); Turnstile fails closed; screen reader announces errors.
 
 ### Phase 11 — Admin panel polish
-- [ ] Custom dashboard (quick links: edit Home, new post, new case study, submissions)
-- [ ] Field descriptions/help text for every field; `[PLACEHOLDER]` items flagged with a filter
-- [ ] Redirects collection wired into `proxy.ts`; SEO preview fields; image focal-point picker
-- [ ] `docs/admin-guide.md`: how to edit each page, add a case study/post/testimonial, upload images, publish vs draft, live preview
+- [x] Custom dashboard (quick links: edit Home, new post, new case study, submissions)
+- [x] Field descriptions/help text for every field; `[PLACEHOLDER]` items flagged with a filter
+- [~] Redirects collection (plugin installed; wired via Next redirects on next build — not yet), SEO preview fields ✅, focal point ✅ wired into `proxy.ts`; SEO preview fields; image focal-point picker
+- [x] `docs/05-admin-guide.md`: how to edit each page, add a case study/post/testimonial, upload images, publish vs draft, live preview
 - Verify: a non-developer follows the guide to change hero text, add a blog post and a case study with images, and both appear live; no console errors in admin.
 
 ### Phase 12 — Performance, accessibility & low-end hardening

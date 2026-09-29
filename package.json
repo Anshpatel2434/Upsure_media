@@ -47,6 +47,7 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
+    "@lhci/cli": "^0.15.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -60,9 +61,6 @@
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4",
     "typescript": "^5"
-  },
-  "overrides": {
-    "graphql": "^16.8.1"
   },
   "lint-staged": {
     "*.{ts,tsx,mjs,js}": [

@@ -31,7 +31,15 @@ npm run dev
 ```
 
 - Site: http://localhost:3000
-- Admin: http://localhost:3000/admin (create the first admin user on first visit)
+- Admin: http://localhost:3000/admin
+
+Seed the database with the current site content and placeholders (idempotent; re-run any time):
+
+```bash
+npm run seed
+```
+
+The seed also creates a demo admin from `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` in `.env.local` when no users exist yet. Change that password (Admin → Users) before anyone else gets access.
 
 ## Scripts
 
@@ -45,6 +53,13 @@ npm run dev
 | `npm run typecheck`    | `tsc --noEmit`                                |
 | `npm run format`       | Prettier write                                |
 | `npm run format:check` | Prettier check (CI)                           |
+| `npm run seed`         | Seed content + demo admin into the database   |
+| `npm run generate:types` | Regenerate `src/payload-types.ts` after schema changes |
+| `npm run lighthouse`   | Lighthouse budgets against a running `npm start` |
+
+## Installing dependencies
+
+Payload's dependency tree makes npm's resolver thrash; always install with `npm install --legacy-peer-deps` (finishes in under a minute).
 
 ## Environment variables
 
