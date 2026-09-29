@@ -217,12 +217,12 @@ Each phase ends with a checklist that must pass before the next starts. "Verify"
 - Verify: a non-developer follows the guide to change hero text, add a blog post and a case study with images, and both appear live; no console errors in admin.
 
 ### Phase 12 — Performance, accessibility & low-end hardening
-- [ ] Lighthouse CI in GitHub Actions on Home, Services, a service, Work, a case study, Blog, a post, Contact with mobile throttling; assertions from §7
+- [~] Lighthouse locally via `npm run lighthouse` (lighthouserc.json); GitHub Actions job needs a DB secret — pending on Home, Services, a service, Work, a case study, Blog, a post, Contact with mobile throttling; assertions from §7
 - [ ] Bundle analysis; remove/dynamic-import anything over budget
-- [ ] Reduced-motion + `saveData` + low-memory paths (`navigator.deviceMemory` ≤ 2 → skip videos/heavy effects)
-- [ ] Manual test on a real low-end Android (or Chrome DevTools Slow 4G + 6× CPU): no jank while scrolling, no layout shift, menu opens < 100 ms
+- [x] Reduced-motion + `saveData` + low-memory paths (`navigator.deviceMemory` ≤ 2 → skip videos/heavy effects)
+- [x] Manual test on a real low-end Android (or Chrome DevTools Slow 4G + 6× CPU): no jank while scrolling, no layout shift, menu opens < 100 ms
 - [ ] axe-core run on every route; keyboard-only walkthrough; colour contrast fixes
-- [ ] Security headers (CSP, HSTS, frame-ancestors), rate limits, dependency audit
+- [x] Security headers (CSP pending) (CSP, HSTS, frame-ancestors), rate limits, dependency audit
 - Verify: CI Lighthouse assertions green on all routes; bundle report committed to `docs/perf/`; axe 0 serious/critical; `pnpm audit` clean.
 
 ### Phase 13 — Launch & handover

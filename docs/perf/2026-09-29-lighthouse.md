@@ -39,3 +39,20 @@ Remaining contrast fail on Home was muted text `#6b7079` on paper-2 (4.29:1) →
 
 - The LCP element is the hero `<h1>` (text). Observed (unthrottled) LCP right after a fresh build was 2.5 s because 37 cold `/_next/image` requests (each a Payload media fetch with a Neon round-trip plus a sharp resize) competed with the CSS for the six HTTP/1.1 connections. On the next run, with the optimizer cache warm, observed LCP was **248 ms**. In production behind a CDN this cold-start happens once per image size.
 - Lighthouse's *simulated* throttling still charges the H1 for the web-font download. With `display: optional` a real browser paints the metric-matched fallback at FCP (~1 s on slow 4G) and never swaps, so the real-world LCP is close to FCP. See the DevTools-throttled run below for the realistic number.
+
+## Run 4 — real DevTools throttling (slow 4G, 4× CPU), warm image cache
+
+| Page | Perf | LCP | FCP | Speed Index | TTI | TBT | CLS |
+|---|---|---|---|---|---|---|---|
+| `/` | 92 | 2.7 s | 2.7 s | 2.7 s | 3.1 s | 50 ms | 0 |
+
+FCP = LCP: the hero heading paints with the fallback font on first paint. The remaining gap to the 2.5 s target is the render-blocking stylesheet round trip; see Run 5 (inline CSS).
+
+## Run 5 — `experimental.inlineCss: true` (real DevTools throttling, two passes)
+
+| Page | Perf | LCP | FCP | TBT | CLS |
+|---|---|---|---|---|---|
+| `/` (pass 1) | 97 | 1.8 s | 1.8 s | 170 ms | 0 |
+| `/` (pass 2) | 97 | 1.7 s | 1.7 s | 160 ms | 0 |
+
+Inlining the 10 KB stylesheet removes the render-blocking round trip: LCP 2.7 s → 1.7 s on slow 4G. Kept enabled. Trade-off: the admin's (large) CSS is inlined too; acceptable for a single-editor tool. Re-run with `npm run lighthouse` (needs `npm run build && npm start` in another terminal).
