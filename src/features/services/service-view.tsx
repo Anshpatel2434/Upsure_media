@@ -144,7 +144,7 @@ export async function ServiceView({ service }: { service: Service }) {
             <ul className="grid gap-5 md:grid-cols-2">
               {work.map((w) => (
                 <li key={w.id}>
-                  <CaseStudyCard study={w} tone="teal-ink" />
+                  <CaseStudyCard study={w} />
                 </li>
               ))}
             </ul>
@@ -157,7 +157,7 @@ export async function ServiceView({ service }: { service: Service }) {
         <Section>
           <Container className="grid gap-5 md:grid-cols-2">
             {testimonials.slice(0, 2).map((t) => (
-              <TestimonialCard key={t.id} testimonial={t} tone="white" />
+              <TestimonialCard key={t.id} testimonial={t} tone="ink" />
             ))}
           </Container>
         </Section>

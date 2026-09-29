@@ -2,10 +2,16 @@ import type { ReactNode } from "react";
 
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Heading } from "@/components/ui/heading";
+import { RevealItem } from "@/components/ui/reveal";
 import { cn } from "@/lib/cn";
-import { renderHighlights, sectionIndex } from "@/lib/text";
+import { renderEmphasis } from "@/lib/markers";
+import { sectionIndex } from "@/lib/text";
 
-/** Numbered eyebrow + heading + optional intro, used by most blocks. */
+/**
+ * Numbered eyebrow + heading + optional intro. `align="right"` sets the group
+ * on the right edge so consecutive sections alternate composition. Wrap in a
+ * <Reveal self={false}> so the three lines stagger in.
+ */
 export function SectionHeader({
   index,
   eyebrow,
@@ -23,7 +29,7 @@ export function SectionHeader({
   intro?: string | null;
   tone?: "ink" | "paper";
   size?: "h1" | "h2" | "h3";
-  align?: "left" | "center";
+  align?: "left" | "center" | "right";
   children?: ReactNode;
   className?: string;
 }) {
@@ -33,23 +39,35 @@ export function SectionHeader({
       className={cn(
         "flex flex-col gap-4",
         align === "center" && "items-center text-center",
+        align === "right" && "items-end text-right lg:ml-auto",
         className,
       )}
     >
       {eyebrow && (
-        <Eyebrow index={index ? sectionIndex(index) : undefined} tone={tone}>
-          {eyebrow}
-        </Eyebrow>
+        <RevealItem index={0}>
+          <Eyebrow index={index ? sectionIndex(index) : undefined} tone={tone}>
+            {eyebrow}
+          </Eyebrow>
+        </RevealItem>
       )}
       {heading && (
-        <Heading as="h2" size={size} className="max-w-4xl">
-          {renderHighlights(heading, tone === "paper" ? "coral" : "teal")}
-        </Heading>
+        <RevealItem index={1}>
+          <Heading as="h2" size={size} className="max-w-4xl">
+            {renderEmphasis(heading, { tone: tone === "paper" ? "sun" : "teal" })}
+          </Heading>
+        </RevealItem>
       )}
       {intro && (
-        <p className={cn("max-w-2xl text-lead", tone === "ink" ? "text-ink-2" : "text-paper/75")}>
-          {intro}
-        </p>
+        <RevealItem index={2}>
+          <p
+            className={cn(
+              "max-w-[60ch] text-lead font-medium",
+              tone === "ink" ? "text-ink-2" : "text-paper/75",
+            )}
+          >
+            {intro}
+          </p>
+        </RevealItem>
       )}
       {children}
     </div>

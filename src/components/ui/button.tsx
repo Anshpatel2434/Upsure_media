@@ -25,30 +25,30 @@ type NativeProps = CommonProps &
 export type ButtonProps = LinkProps | NativeProps;
 
 const baseClass =
-  "group inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap " +
-  "transition-[background-color,color,border-color,transform,box-shadow] duration-(--duration-base) ease-(--ease-out) " +
-  "disabled:pointer-events-none disabled:opacity-50";
+  "group inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap select-none " +
+  "transition-[background-color,color,border-color,transform,box-shadow] duration-(--duration-base) ease-(--ease-smooth) " +
+  "active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50";
 
 const sizeClass: Record<Size, string> = {
-  md: "h-11 px-5 text-[0.95rem] rounded-md",
-  lg: "h-13 px-7 text-base rounded-md",
+  md: "h-11 px-5 text-[0.95rem] rounded-pill",
+  lg: "h-13 px-7 text-base rounded-pill",
 };
 
 const variantClass: Record<Variant, Record<Tone, string>> = {
   solid: {
-    ink: "bg-ink text-paper hover:bg-teal active:translate-y-px",
-    paper: "bg-paper text-ink hover:bg-sun active:translate-y-px",
-    teal: "bg-teal text-white hover:bg-ink active:translate-y-px",
+    ink: "bg-ink text-paper shadow-card hover:bg-teal hover:shadow-lift hover:-translate-y-0.5",
+    paper: "bg-paper text-ink shadow-card hover:bg-sun hover:shadow-lift hover:-translate-y-0.5",
+    teal: "bg-teal text-white shadow-card hover:bg-ink hover:shadow-lift hover:-translate-y-0.5",
   },
   ghost: {
-    ink: "border border-line-strong text-ink hover:border-ink hover:bg-white",
-    paper: "border border-paper/30 text-paper hover:border-paper hover:bg-paper/10",
-    teal: "border border-teal text-teal hover:bg-teal-soft",
+    ink: "border border-line-strong text-ink hover:border-ink hover:bg-ink hover:text-paper",
+    paper: "border border-paper/30 text-paper hover:border-paper hover:bg-paper hover:text-ink",
+    teal: "border border-teal text-teal hover:bg-teal hover:text-white",
   },
   link: {
-    ink: "h-auto rounded-none px-0 text-ink underline-offset-4 hover:text-teal hover:underline",
-    paper: "h-auto rounded-none px-0 text-paper underline-offset-4 hover:text-sun hover:underline",
-    teal: "h-auto rounded-none px-0 text-teal underline-offset-4 hover:underline",
+    ink: "h-auto rounded-none px-0 text-ink hover:text-teal",
+    paper: "h-auto rounded-none px-0 text-paper hover:text-sun",
+    teal: "h-auto rounded-none px-0 text-teal hover:text-ink",
   },
 };
 
@@ -75,7 +75,7 @@ export function Button(props: ButtonProps) {
       {withArrow && (
         <ArrowRightIcon
           size={18}
-          className="shrink-0 transition-transform duration-(--duration-base) ease-(--ease-out) group-hover:translate-x-0.5"
+          className="shrink-0 transition-transform duration-(--duration-base) ease-(--ease-smooth) group-hover:translate-x-1.5"
         />
       )}
     </>

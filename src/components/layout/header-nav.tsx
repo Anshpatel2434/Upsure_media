@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 
 import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
@@ -24,9 +24,9 @@ const isActive = (pathname: string, href: string) =>
   href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
 /**
- * Sticky header. Desktop: inline links with underline + hover/keyboard dropdowns.
- * Mobile: native <dialog> drawer (focus trap and Esc for free).
- * Becomes compact with a backdrop blur once the page is scrolled (sentinel + IO).
+ * Sticky header. Desktop: inline links with a sliding underline and
+ * fade/slide dropdowns. Mobile: native <dialog> drawer that slides in from the
+ * right with staggered links. Compacts with a blur once the page is scrolled.
  */
 export function HeaderNav({ items, cta, secondary, contact }: Props) {
   const pathname = usePathname();
@@ -78,9 +78,9 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
       <header
         data-scrolled={scrolled || undefined}
         className={cn(
-          "sticky top-0 z-40 transition-[background-color,box-shadow,padding] duration-(--duration-base) ease-(--ease-out)",
+          "sticky top-0 z-40 transition-[background-color,box-shadow] duration-(--duration-slow) ease-(--ease-smooth)",
           scrolled
-            ? "bg-paper/85 shadow-[0_1px_0_0_var(--color-line)] backdrop-blur-md"
+            ? "bg-paper/80 shadow-[0_1px_0_0_var(--color-line)] backdrop-blur-xl"
             : "bg-transparent",
         )}
       >
@@ -94,8 +94,8 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
           ref={navRef}
           aria-label="Primary"
           className={cn(
-            "mx-auto flex max-w-(--container-site) items-center justify-between gap-6 px-gutter transition-[height] duration-(--duration-base)",
-            scrolled ? "h-16" : "h-20",
+            "mx-auto flex max-w-(--container-site) items-center justify-between gap-6 px-gutter transition-[height] duration-(--duration-slow) ease-(--ease-smooth)",
+            scrolled ? "h-16" : "h-22",
           )}
         >
           <Link href="/" className="rounded-sm" aria-label="Upsure home">
@@ -108,6 +108,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
               const hasChildren = Boolean(item.children?.length);
               const active = isActive(pathname, item.href);
               const menuId = `${id}-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
+              const isOpen = open === item.label;
               return (
                 <li
                   key={item.label}
@@ -119,7 +120,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
                     <Link
                       href={item.href}
                       className={cn(
-                        "group relative rounded-md px-3 py-2 text-[0.95rem] font-medium text-ink-2 transition-colors hover:text-ink",
+                        "group relative rounded-md px-3 py-2 text-[0.95rem] font-medium text-ink-2 hover:text-ink",
                         active && "text-ink",
                       )}
                       aria-current={active ? "page" : undefined}
@@ -128,7 +129,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
                       <span
                         aria-hidden
                         className={cn(
-                          "absolute inset-x-3 -bottom-0.5 h-0.5 origin-left scale-x-0 rounded-full bg-teal transition-transform duration-(--duration-base) ease-(--ease-out) group-hover:scale-x-100",
+                          "absolute inset-x-3 -bottom-0.5 h-0.5 origin-left scale-x-0 rounded-full bg-teal transition-transform duration-(--duration-base) ease-(--ease-smooth) group-hover:scale-x-100",
                           active && "scale-x-100",
                         )}
                       />
@@ -137,7 +138,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
                       <button
                         type="button"
                         className="-ml-2 rounded-md p-1 text-muted hover:text-ink"
-                        aria-expanded={open === item.label}
+                        aria-expanded={isOpen}
                         aria-controls={menuId}
                         aria-label={`${item.label} menu`}
                         onClick={() => setOpen((o) => (o === item.label ? null : item.label))}
@@ -146,7 +147,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
                           size={16}
                           className={cn(
                             "transition-transform duration-(--duration-fast)",
-                            open === item.label ? "-rotate-90" : "rotate-90",
+                            isOpen ? "-rotate-90" : "rotate-90",
                           )}
                         />
                       </button>
@@ -157,20 +158,32 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
                     <div
                       id={menuId}
                       role="group"
-                      hidden={open !== item.label}
-                      className="absolute top-full left-0 z-50 w-[22rem] pt-3"
+                      aria-hidden={!isOpen}
+                      className={cn(
+                        "absolute top-full left-0 z-50 w-[22rem] pt-3 transition-[opacity,transform,visibility] duration-(--duration-base) ease-(--ease-smooth)",
+                        isOpen
+                          ? "visible translate-y-0 opacity-100"
+                          : "invisible -translate-y-1 opacity-0",
+                      )}
                     >
-                      <ul className="grid gap-1 rounded-lg border border-line bg-white p-2 shadow-lift">
+                      <ul className="grid gap-1 rounded-lg bg-white/95 p-2 shadow-lift ring-1 ring-line backdrop-blur-md">
                         {item.children!.map((child) => (
                           <li key={child.href}>
                             <Link
                               href={child.href}
-                              className="flex flex-col gap-0.5 rounded-md px-3 py-2.5 hover:bg-paper-2 focus-visible:bg-paper-2"
+                              tabIndex={isOpen ? 0 : -1}
+                              className="group/item flex items-center justify-between gap-3 rounded-md px-3 py-2.5 hover:bg-paper-2 focus-visible:bg-paper-2"
                             >
-                              <span className="font-medium text-ink">{child.label}</span>
-                              {child.description && (
-                                <span className="text-small text-muted">{child.description}</span>
-                              )}
+                              <span className="flex flex-col gap-0.5">
+                                <span className="font-medium text-ink">{child.label}</span>
+                                {child.description && (
+                                  <span className="text-small text-muted">{child.description}</span>
+                                )}
+                              </span>
+                              <ChevronRightIcon
+                                size={16}
+                                className="shrink-0 text-muted transition-transform group-hover/item:translate-x-1 group-hover/item:text-teal"
+                              />
                             </Link>
                           </li>
                         ))}
@@ -188,7 +201,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
             </Button>
             <button
               type="button"
-              className="inline-flex size-11 items-center justify-center rounded-md border border-line-strong text-ink lg:hidden"
+              className="inline-flex size-11 items-center justify-center rounded-pill border border-line-strong text-ink hover:bg-ink hover:text-paper lg:hidden"
               aria-label="Open menu"
               onClick={() => dialog.current?.showModal()}
             >
@@ -201,16 +214,16 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
       {/* Mobile drawer */}
       <dialog
         ref={dialog}
-        className="m-0 h-dvh max-h-none w-full max-w-none bg-teal-ink text-paper backdrop:bg-ink/60 open:flex open:flex-col"
+        className="drawer m-0 ml-auto h-dvh max-h-none w-full max-w-md bg-teal-ink text-paper backdrop:bg-ink/60 backdrop:backdrop-blur-sm open:flex open:flex-col"
         aria-label="Navigation menu"
       >
-        <div className="flex h-20 items-center justify-between px-gutter">
+        <div className="flex h-22 items-center justify-between px-gutter">
           <Link href="/" aria-label="Upsure home" onClick={() => dialog.current?.close()}>
             <Logo tone="paper" />
           </Link>
           <button
             type="button"
-            className="inline-flex size-11 items-center justify-center rounded-md border border-paper/30"
+            className="inline-flex size-11 items-center justify-center rounded-pill border border-paper/30 hover:bg-paper hover:text-ink"
             aria-label="Close menu"
             onClick={() => dialog.current?.close()}
           >
@@ -219,9 +232,9 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
         </div>
         <nav aria-label="Mobile" className="flex flex-1 flex-col overflow-y-auto px-gutter pb-10">
           <ul className="divide-y divide-paper/15 border-y border-paper/15">
-            {items.map((item) =>
+            {items.map((item, i) =>
               item.children?.length ? (
-                <li key={item.label}>
+                <li key={item.label} data-stagger style={{ "--i": i } as CSSProperties}>
                   <details className="group">
                     <summary className="flex cursor-pointer list-none items-center justify-between py-4 text-h3 font-medium">
                       {item.label}
@@ -244,15 +257,23 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
                   </details>
                 </li>
               ) : (
-                <li key={item.label}>
-                  <Link href={item.href} className="block py-4 text-h3 font-medium">
+                <li key={item.label} data-stagger style={{ "--i": i } as CSSProperties}>
+                  <Link
+                    href={item.href}
+                    className="group flex items-center justify-between py-4 text-h3 font-medium"
+                  >
                     {item.label}
+                    <ArrowUpRightIcon className="text-paper/40 transition-transform group-hover:translate-x-1 group-hover:text-sun" />
                   </Link>
                 </li>
               ),
             )}
           </ul>
-          <div className="mt-8 flex flex-col gap-4">
+          <div
+            className="mt-8 flex flex-col gap-4"
+            data-stagger
+            style={{ "--i": items.length } as CSSProperties}
+          >
             <Button href={cta.href} tone="paper" size="lg" withArrow>
               {cta.label}
             </Button>

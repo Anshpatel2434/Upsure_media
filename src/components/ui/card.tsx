@@ -12,23 +12,23 @@ type CardProps = {
 };
 
 const toneClass = {
-  white: "bg-white border-line",
-  paper: "bg-paper border-line",
-  "teal-ink": "bg-teal-ink text-paper border-paper/15",
+  white: "bg-white",
+  paper: "bg-paper-2",
+  "teal-ink": "bg-teal-ink text-paper ring-1 ring-paper/10",
 };
 
 const paddingClass = { none: "", md: "p-6", lg: "p-8 md:p-10" };
 
 /**
- * Bordered card with hover lift. When `href` is given the whole card is a link;
- * inner content should then avoid nested interactive elements.
+ * Soft-elevation surface (no hard border). When `href` is given the whole card
+ * is a link and lifts on hover.
  */
 export function Card({ href, tone = "white", padding = "md", className, children }: CardProps) {
   const classes = cn(
-    "relative block overflow-hidden rounded-lg border transition-[transform,box-shadow,border-color] duration-(--duration-base) ease-(--ease-out)",
+    "relative block overflow-hidden rounded-lg shadow-card transition-[transform,box-shadow] duration-(--duration-slow) ease-(--ease-smooth)",
     toneClass[tone],
     paddingClass[padding],
-    href && "hover:-translate-y-1 hover:border-teal hover:shadow-lift focus-visible:-translate-y-1",
+    href && "hover:-translate-y-1.5 hover:shadow-lift focus-visible:-translate-y-1.5",
     className,
   );
 

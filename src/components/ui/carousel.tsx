@@ -2,6 +2,7 @@
 
 import { Children, useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 
+import { CircleButton } from "@/components/ui/circle-button";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
 
@@ -16,6 +17,7 @@ export function Carousel({
   tone = "ink",
   slideClassName,
   className,
+  controls = "bottom",
 }: {
   children: ReactNode;
   label: string;
@@ -23,6 +25,8 @@ export function Carousel({
   /** Width classes for each slide, e.g. "w-[85%] md:w-[48%]". */
   slideClassName?: string;
   className?: string;
+  /** Where the arrows + counter sit. */
+  controls?: "bottom" | "top-right";
 }) {
   const slides = Children.toArray(children);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -55,25 +59,47 @@ export function Carousel({
   }, [slides.length]);
 
   const paper = tone === "paper";
-  const buttonClass = cn(
-    "inline-flex size-11 items-center justify-center rounded-pill border transition-colors duration-(--duration-fast)",
-    "disabled:opacity-30 disabled:pointer-events-none",
-    paper
-      ? "border-paper/30 text-paper hover:bg-paper hover:text-ink"
-      : "border-line-strong text-ink hover:bg-ink hover:text-paper",
+  const controlsNode = (
+    <div className={cn("flex items-center gap-4", controls === "top-right" && "justify-end")}>
+      <CircleButton
+        tone={tone}
+        onClick={() => scrollTo(Math.max(0, index - 1))}
+        disabled={index === 0}
+        aria-controls={id}
+        aria-label="Previous slide"
+      >
+        <ChevronLeftIcon />
+      </CircleButton>
+      <span
+        className={cn("text-small tabular-nums", paper ? "text-paper/70" : "text-muted")}
+        aria-live="polite"
+      >
+        {String(index + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
+      </span>
+      <CircleButton
+        tone={tone}
+        onClick={() => scrollTo(Math.min(slides.length - 1, index + 1))}
+        disabled={index >= slides.length - 1}
+        aria-controls={id}
+        aria-label="Next slide"
+      >
+        <ChevronRightIcon />
+      </CircleButton>
+    </div>
   );
 
   return (
     <div
-      className={cn("relative", className)}
+      className={cn("relative flex flex-col gap-6", className)}
       role="region"
       aria-roledescription="carousel"
       aria-label={label}
     >
+      {controls === "top-right" && controlsNode}
       <div
         ref={trackRef}
         id={id}
-        className="no-scrollbar flex snap-x snap-mandatory [scroll-padding-inline:var(--spacing-gutter)] gap-5 overflow-x-auto scroll-smooth"
+        className="-mx-gutter no-scrollbar flex snap-x snap-mandatory [scroll-padding-inline:var(--spacing-gutter)] gap-5 overflow-x-auto scroll-smooth px-gutter"
       >
         {slides.map((slide, i) => (
           <div
@@ -87,35 +113,7 @@ export function Carousel({
           </div>
         ))}
       </div>
-
-      <div className="mt-6 flex items-center gap-4">
-        <button
-          type="button"
-          className={buttonClass}
-          onClick={() => scrollTo(Math.max(0, index - 1))}
-          disabled={index === 0}
-          aria-controls={id}
-          aria-label="Previous slide"
-        >
-          <ChevronLeftIcon />
-        </button>
-        <span
-          className={cn("text-small tabular-nums", paper ? "text-paper/70" : "text-muted")}
-          aria-live="polite"
-        >
-          {String(index + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
-        </span>
-        <button
-          type="button"
-          className={buttonClass}
-          onClick={() => scrollTo(Math.min(slides.length - 1, index + 1))}
-          disabled={index >= slides.length - 1}
-          aria-controls={id}
-          aria-label="Next slide"
-        >
-          <ChevronRightIcon />
-        </button>
-      </div>
+      {controls === "bottom" && controlsNode}
     </div>
   );
 }

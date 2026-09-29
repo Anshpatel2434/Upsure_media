@@ -200,10 +200,10 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
 
       {/* Testimonial + call back */}
       {(testimonial || callbackForm) && (
-        <Section tone="teal-ink">
+        <Section tone="paper">
           <Container className="grid gap-10 lg:grid-cols-2">
             {testimonial ? (
-              <TestimonialCard testimonial={testimonial} tone="teal-ink" size="lg" />
+              <TestimonialCard testimonial={testimonial} tone="paper" size="lg" />
             ) : (
               <div />
             )}

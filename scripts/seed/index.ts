@@ -14,7 +14,7 @@ loadEnv({ path: [".env.local", ".env"] });
 import { getPayload, type Payload } from "payload";
 
 import * as data from "./content";
-import { placeholderImage, placeholderLogo } from "./images";
+import { demoArt, demoLogo, demoPhoto } from "./images";
 import { richText } from "./lexical";
 
 type Id = number | string;
@@ -146,18 +146,21 @@ async function main() {
   /* Media ------------------------------------------------------------------ */
   console.log("Media…");
   for (const [key, spec] of Object.entries(data.mediaSpecs)) {
-    const buffer = await placeholderImage(spec.label, spec.w, spec.h, spec.palette);
+    const buffer =
+      spec.kind === "photo"
+        ? await demoPhoto(spec.seed, spec.w, spec.h, spec.palette)
+        : await demoArt(spec.seed, spec.w, spec.h, spec.palette);
     ctx.media[key] = await uploadMedia(payload, key, spec.alt, {
       data: buffer,
       mimetype: "image/webp",
-      name: `placeholder-${key}.webp`,
+      name: `demo-${key}.webp`,
     });
   }
   const logoIds: Record<string, Id> = {};
   for (const name of data.clients) {
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     logoIds[name] = await uploadMedia(payload, `logo-${slug}`, `${name} logo`, {
-      data: placeholderLogo(name),
+      data: demoLogo(name),
       mimetype: "image/svg+xml",
       name: `logo-${slug}.svg`,
     });
@@ -293,7 +296,7 @@ async function main() {
         beforeAfter: {
           before: ctx.media["before"],
           after: ctx.media["after"],
-          caption: "Placeholder before / after",
+          caption: "Homepage, before and after the relaunch",
         },
         testimonial: ctx.testimonials[testimonialKeys[(i + 1) % testimonialKeys.length] ?? "akash"],
         _status: "published",
@@ -369,6 +372,18 @@ async function main() {
     );
     console.log(`  page   /${page.slug === "home" ? "" : page.slug}`);
   }
+
+  /* Remove superseded placeholder artwork ------------------------------------ */
+  const stale = await payload.find({
+    collection: "media",
+    where: { filename: { like: "placeholder-" } },
+    limit: 500,
+    depth: 0,
+  });
+  for (const doc of stale.docs) {
+    await payload.delete({ collection: "media", id: doc.id, context: { disableRevalidate: true } });
+  }
+  if (stale.docs.length) console.log(`Removed ${stale.docs.length} old placeholder images.`);
 
   console.log(`Done in ${((Date.now() - t0) / 1000).toFixed(1)}s.`);
   process.exit(0);

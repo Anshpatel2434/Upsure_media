@@ -39,15 +39,22 @@ export function Accordion({
           <summary
             className={cn(
               "flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left text-h3 font-medium select-none",
-              "transition-colors duration-(--duration-fast)",
               tone === "ink" ? "hover:text-teal" : "hover:text-sun",
             )}
           >
             <span>{item.title}</span>
-            <PlusIcon
-              size={22}
-              className="shrink-0 transition-transform duration-(--duration-base) ease-(--ease-out) group-open:rotate-45"
-            />
+            <span
+              aria-hidden
+              className={cn(
+                "inline-flex size-10 shrink-0 items-center justify-center rounded-pill border transition-[background-color,border-color,color,transform] duration-(--duration-base) ease-(--ease-smooth)",
+                "group-open:rotate-45 group-hover:scale-110",
+                tone === "ink"
+                  ? "border-line-strong text-ink group-open:border-ink group-open:bg-ink group-open:text-paper group-hover:border-teal group-hover:bg-teal group-hover:text-white"
+                  : "border-paper/30 text-paper group-open:border-sun group-open:bg-sun group-open:text-ink group-hover:border-sun group-hover:bg-sun group-hover:text-ink",
+              )}
+            >
+              <PlusIcon size={20} />
+            </span>
           </summary>
           <div
             className={cn(

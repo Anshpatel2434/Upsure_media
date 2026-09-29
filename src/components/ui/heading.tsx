@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { cn } from "@/lib/cn";
 
@@ -27,15 +27,37 @@ export function Heading({
   return <Tag className={cn(sizeClass[size], className)}>{children}</Tag>;
 }
 
-/** Emphasised words inside a heading: teal offset underline (never a highlighter box). */
-export function Highlight({
-  children,
-  tone = "teal",
-}: {
+type HighlightProps = {
   children: ReactNode;
-  tone?: "teal" | "coral";
-}) {
+  tone?: "teal" | "coral" | "sun";
+  /** `underline` (default) or `marker` — a pill that fills behind the words once revealed. */
+  variant?: "underline" | "marker";
+};
+
+/** Emphasised words inside a heading or statement. */
+export function Highlight({ children, tone = "teal", variant = "underline" }: HighlightProps) {
+  if (variant === "marker") {
+    const color =
+      tone === "sun"
+        ? "var(--color-sun)"
+        : tone === "coral"
+          ? "var(--color-coral-soft)"
+          : "var(--color-teal-soft)";
+    return (
+      <span className="marker" style={{ "--marker-color": color } as CSSProperties}>
+        {children}
+      </span>
+    );
+  }
   return (
-    <span className={cn("highlight", tone === "coral" && "decoration-coral")}>{children}</span>
+    <span
+      className={cn(
+        "highlight",
+        tone === "coral" && "decoration-coral",
+        tone === "sun" && "decoration-sun",
+      )}
+    >
+      {children}
+    </span>
   );
 }

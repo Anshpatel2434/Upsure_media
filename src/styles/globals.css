@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Design tokens — see docs/04-design-direction.md
+   Design tokens — see docs/04-design-direction.md and docs/06-ui-polish-audit.md
    --------------------------------------------------------------------------- */
 @theme {
   /* Colours */
@@ -11,8 +11,8 @@
   --color-ink: #0b0d10;
   --color-ink-2: #2a2e35;
   --color-muted: #5d626b;
-  --color-line: rgb(11 13 16 / 0.12);
-  --color-line-strong: rgb(11 13 16 / 0.24);
+  --color-line: rgb(11 13 16 / 0.1);
+  --color-line-strong: rgb(11 13 16 / 0.22);
   --color-teal: #0b7577;
   --color-teal-2: #0f8b8d;
   --color-teal-soft: #d8efee;
@@ -24,14 +24,14 @@
 
   /* Type */
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  --text-display: clamp(3.5rem, 2rem + 6.5vw, 7rem);
-  --text-display--line-height: 0.95;
-  --text-display--letter-spacing: -0.035em;
-  --text-h1: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
-  --text-h1--line-height: 1;
+  --text-display: clamp(3.25rem, 1.6rem + 7vw, 7.5rem);
+  --text-display--line-height: 0.94;
+  --text-display--letter-spacing: -0.04em;
+  --text-h1: clamp(2.5rem, 1.6rem + 3.6vw, 4.75rem);
+  --text-h1--line-height: 0.98;
   --text-h1--letter-spacing: -0.03em;
-  --text-h2: clamp(2rem, 1.4rem + 2.2vw, 3rem);
-  --text-h2--line-height: 1.05;
+  --text-h2: clamp(2rem, 1.4rem + 2.2vw, 3.25rem);
+  --text-h2--line-height: 1.04;
   --text-h2--letter-spacing: -0.025em;
   --text-h3: clamp(1.5rem, 1.25rem + 0.9vw, 1.875rem);
   --text-h3--line-height: 1.15;
@@ -48,25 +48,29 @@
 
   /* Shape */
   --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.375rem;
+  --radius-xl: 1.75rem;
   --radius-pill: 999px;
 
   /* Layout */
-  --spacing-gutter: clamp(1rem, 4vw, 2rem);
-  --spacing-section: clamp(4rem, 10vw, 8rem);
-  --container-site: 80rem;
+  --spacing-gutter: clamp(1rem, 4vw, 2.5rem);
+  --spacing-section: clamp(4.5rem, 11vw, 9rem);
+  --container-site: 84rem;
 
   /* Motion */
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --duration-fast: 160ms;
-  --duration-base: 240ms;
-  --duration-slow: 400ms;
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-expo: cubic-bezier(0.77, 0, 0.175, 1);
+  --duration-fast: 200ms;
+  --duration-base: 350ms;
+  --duration-slow: 600ms;
+  --duration-reveal: 1000ms;
 
-  /* Shadows */
-  --shadow-card: 0 1px 2px rgb(11 13 16 / 0.04), 0 8px 24px -12px rgb(11 13 16 / 0.18);
-  --shadow-lift: 0 2px 4px rgb(11 13 16 / 0.06), 0 20px 40px -16px rgb(15 139 141 / 0.28);
+  /* Shadows — soft elevation instead of hard borders */
+  --shadow-card: 0 1px 2px rgb(11 13 16 / 0.03), 0 12px 32px -16px rgb(11 13 16 / 0.16);
+  --shadow-lift: 0 2px 6px rgb(11 13 16 / 0.05), 0 28px 56px -20px rgb(11 30 33 / 0.28);
+  --shadow-chip: 0 6px 18px -8px rgb(11 13 16 / 0.35);
 }
 
 /* ---------------------------------------------------------------------------
@@ -118,9 +122,17 @@
     height: auto;
   }
 
-  /* Hide native <details> marker; the Accordion draws its own icon. */
   summary::-webkit-details-marker {
     display: none;
+  }
+
+  /* Every interactive surface eases its state changes. */
+  a,
+  button,
+  summary {
+    transition-property: color, background-color, border-color, opacity, transform, box-shadow;
+    transition-duration: var(--duration-base);
+    transition-timing-function: var(--ease-smooth);
   }
 }
 
@@ -137,6 +149,12 @@
   mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 40%, transparent 100%);
 }
 
+/* Soft colour blob used behind heroes and CTAs. */
+@utility bg-glow {
+  background: radial-gradient(closest-side, rgb(15 139 141 / 0.22), transparent 70%);
+  filter: blur(40px);
+}
+
 /* Teal offset underline used for emphasised words in headings. */
 @utility highlight {
   text-decoration: underline;
@@ -146,13 +164,27 @@
   text-decoration-skip-ink: none;
 }
 
-/* Fade-up on entering the viewport. Pure CSS scroll-driven animation; browsers
-   without support simply show the element. Zero JavaScript. */
-@utility reveal {
-  @supports (animation-timeline: view()) {
-    animation: reveal-up var(--duration-slow) var(--ease-out) both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 30%;
+/* Marker highlight: a pill that fills behind the phrase once revealed. */
+@utility marker {
+  display: inline;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.28em 0.08em;
+  border-radius: 999px;
+  background-image: linear-gradient(
+    var(--marker-color, var(--color-sun)),
+    var(--marker-color, var(--color-sun))
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position: 0 0;
+  transition: background-size var(--duration-reveal) var(--ease-smooth);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -163,22 +195,76 @@
   animation: marquee var(--marquee-duration, 40s) linear infinite;
 }
 
-@utility no-scrollbar {
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
+/* Slow, gentle float for hero chips/tiles. */
+@utility float-slow {
+  animation: float 9s ease-in-out infinite;
+}
+@utility float-slower {
+  animation: float 13s ease-in-out infinite reverse;
+}
+
+/* Pulsing dot on eyebrows. */
+@utility dot-pulse {
+  animation: dot-pulse 2.2s ease-in-out infinite;
+}
+
+/* Slow image zoom on hover for tiles (apply to the img inside a .group). */
+@utility zoom-slow {
+  transition: transform 5s cubic-bezier(0.25, 0.7, 0.2, 1);
+  .group:hover & {
+    transform: scale(1.08);
   }
 }
 
-@keyframes reveal-up {
-  from {
-    opacity: 0;
-    transform: translateY(1.25rem);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+/* ---------------------------------------------------------------------------
+   Reveal-on-scroll. The Reveal component toggles [data-visible] via
+   IntersectionObserver. Children with [data-rv] stagger using --i.
+   --------------------------------------------------------------------------- */
+:where(html[data-rv-ready]) [data-rv] {
+  opacity: 0;
+  transform: translate3d(var(--rv-x, 0), var(--rv-y, 28px), 0);
+  transition:
+    opacity var(--duration-reveal) var(--ease-smooth),
+    transform var(--duration-reveal) var(--ease-smooth);
+  transition-delay: calc(var(--i, 0) * 90ms + var(--rv-delay, 0ms));
+  will-change: opacity, transform;
+}
+[data-rv="left"] {
+  --rv-x: -32px;
+  --rv-y: 0;
+}
+[data-rv="right"] {
+  --rv-x: 32px;
+  --rv-y: 0;
+}
+[data-rv="fade"] {
+  --rv-y: 0;
+}
+[data-visible] [data-rv],
+[data-rv][data-visible] {
+  opacity: 1;
+  transform: none;
+}
+[data-visible] .marker,
+.marker[data-visible] {
+  background-size: 100% 100%;
+}
+
+/* Image reveal: clip from the bottom and settle from a slight zoom. */
+:where(html[data-rv-ready]) [data-rv="image"] {
+  --rv-y: 0;
+  opacity: 1;
+  clip-path: inset(100% 0 0 0 round var(--radius-lg));
+  transform: scale(1.04);
+  transition:
+    clip-path 1.2s var(--ease-expo),
+    transform 1.4s var(--ease-expo);
+  transition-delay: calc(var(--i, 0) * 90ms + var(--rv-delay, 0ms));
+}
+[data-visible] [data-rv="image"],
+[data-rv="image"][data-visible] {
+  clip-path: inset(0 0 0 0 round var(--radius-lg));
+  transform: none;
 }
 
 @keyframes marquee {
@@ -186,10 +272,61 @@
     transform: translateX(calc(-50% - var(--marquee-gap, 3rem) / 2));
   }
 }
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -10px, 0) rotate(calc(var(--rot, 0deg) + 1deg));
+  }
+}
+@keyframes dot-pulse {
+  0%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Mobile drawer slide-in and staggered links. */
+dialog[open].drawer {
+  animation: drawer-in 0.6s var(--ease-expo);
+}
+dialog[open].drawer [data-stagger] {
+  animation: fade-up 0.6s var(--ease-smooth) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 200ms);
+}
+
+/* Cross-document page transition (hard navigations, e.g. from admin links). */
+@view-transition {
+  navigation: auto;
+}
 
 /* ---------------------------------------------------------------------------
    Reduced motion / low data: every animation off, layout unchanged.
-   `data-motion="off"` is set by the low-data toggle (Phase 12).
    --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -202,8 +339,13 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .marquee-track {
-    animation: none;
+  [data-rv] {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+  .marker {
+    background-size: 100% 100%;
   }
 }
 
@@ -212,4 +354,12 @@ html[data-motion="off"] *::before,
 html[data-motion="off"] *::after {
   animation: none !important;
   transition: none !important;
+}
+html[data-motion="off"] [data-rv] {
+  opacity: 1;
+  transform: none;
+  clip-path: none;
+}
+html[data-motion="off"] .marker {
+  background-size: 100% 100%;
 }

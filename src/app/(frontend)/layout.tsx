@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Sans } from "next/font/google";
+import Script from "next/script";
+
+import { revealScript } from "@/components/layout/reveal-script";
 
 import "@/styles/globals.css";
 
@@ -32,8 +35,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${instrument.variable} h-full`}>
-      <body className="flex min-h-full flex-col">{children}</body>
+    <html lang="en" className={`${instrument.variable} h-full`} suppressHydrationWarning>
+      <body className="flex min-h-full flex-col">
+        <Script id="reveal" strategy="beforeInteractive">
+          {revealScript}
+        </Script>
+        {children}
+      </body>
     </html>
   );
 }

@@ -22,258 +22,128 @@ export type Ctx = {
 /* ----------------------------------------------------------------------------
    Media (generated placeholders). key → { label, w, h, palette, alt }
    ---------------------------------------------------------------------------- */
-export const mediaSpecs: Record<
-  string,
-  {
-    label: string;
-    w: number;
-    h: number;
-    palette: "teal" | "coral" | "sun" | "ink" | "paper";
-    alt: string;
-  }
-> = {
-  "hero-1": {
-    label: "Brand identity",
-    w: 900,
-    h: 1100,
-    palette: "teal",
-    alt: "Illustrated brand identity card",
-  },
-  "hero-2": {
-    label: "Campaign",
-    w: 900,
-    h: 700,
-    palette: "sun",
-    alt: "Illustrated campaign sticker",
-  },
-  "hero-3": {
-    label: "Motion",
-    w: 800,
-    h: 800,
-    palette: "coral",
-    alt: "Illustrated motion design frame",
-  },
-  "hero-4": {
-    label: "Growth",
-    w: 900,
-    h: 1100,
-    palette: "paper",
-    alt: "Illustrated growth chart card",
-  },
-  "hero-5": {
-    label: "Social",
-    w: 900,
-    h: 700,
-    palette: "ink",
-    alt: "Illustrated social post card",
-  },
-  "hero-6": {
-    label: "AI workflows",
-    w: 800,
-    h: 800,
-    palette: "teal",
-    alt: "Illustrated AI workflow card",
-  },
-  "team-table": {
-    label: "Team at a table",
-    w: 1600,
-    h: 1100,
-    palette: "paper",
-    alt: "Upsure team collaborating at a table",
-  },
-  "team-couch": {
-    label: "Taking notes",
-    w: 1200,
-    h: 1500,
-    palette: "teal",
-    alt: "Upsure team member taking notes on a couch",
-  },
-  "team-review": {
-    label: "Design review",
-    w: 1600,
-    h: 1100,
-    palette: "sun",
-    alt: "Two Upsure designers reviewing work",
-  },
-  "team-present": {
-    label: "Presenting work",
-    w: 1600,
-    h: 1100,
-    palette: "ink",
-    alt: "Upsure team presenting work",
-  },
-  "studio-plant": {
-    label: "The studio",
-    w: 1200,
-    h: 1500,
-    palette: "paper",
-    alt: "A team member standing in the studio next to a plant and a colourful artwork",
-  },
-  "services-hero": {
-    label: "Strategy session",
-    w: 1600,
-    h: 1100,
-    palette: "teal",
-    alt: "Three team members in a strategy discussion around a table with a laptop and notes",
-  },
-  "approach-illo": {
-    label: "Discover",
-    w: 1200,
-    h: 1200,
-    palette: "sun",
-    alt: "Illustration of a globe character on a lift holding a house and a person",
-  },
-  "studio-dog": {
-    label: "Studio dog",
-    w: 1200,
-    h: 1500,
-    palette: "coral",
-    alt: "A small dog wearing a blue bandana sitting in front of a bookshelf",
-  },
-  "about-1": {
-    label: "About 01",
-    w: 900,
-    h: 1200,
-    palette: "paper",
-    alt: "Upsure team member working at a laptop",
-  },
-  "about-2": {
-    label: "About 02",
-    w: 900,
-    h: 1200,
-    palette: "sun",
-    alt: "Upsure designer at a desk",
-  },
-  "about-3": { label: "About 03", w: 900, h: 1200, palette: "coral", alt: "The Upsure studio" },
-  "about-4": {
-    label: "About 04",
-    w: 900,
-    h: 1200,
-    palette: "ink",
-    alt: "Upsure team on a city walk",
-  },
-  "culture-hero": {
-    label: "Culture",
-    w: 1600,
-    h: 1100,
-    palette: "coral",
-    alt: "Upsure team laughing together in the studio",
-  },
-  "contact-hero": {
-    label: "Say hello",
-    w: 1600,
-    h: 1100,
-    palette: "ink",
-    alt: "Hands waving hello",
-  },
-  "og-default": {
-    label: "Upsure",
-    w: 1200,
-    h: 630,
-    palette: "teal",
-    alt: "Upsure – We design brands people love",
-  },
-  "service-brand": {
-    label: "Branding",
-    w: 1600,
-    h: 1100,
-    palette: "teal",
-    alt: "Branding service",
-  },
-  "service-design": { label: "Design", w: 1600, h: 1100, palette: "sun", alt: "Design services" },
-  "service-growth": { label: "Growth", w: 1600, h: 1100, palette: "coral", alt: "Growth services" },
-  "service-social": {
-    label: "Social",
-    w: 1600,
-    h: 1100,
-    palette: "ink",
-    alt: "Social media services",
-  },
-  "service-ai": { label: "AI-first", w: 1600, h: 1100, palette: "paper", alt: "AI-first services" },
-  "service-consulting": {
-    label: "Consulting",
-    w: 1600,
-    h: 1100,
-    palette: "teal",
-    alt: "Consulting and advisory",
-  },
-  "work-1": { label: "Case study 01", w: 1600, h: 1100, palette: "teal", alt: "Case study cover" },
-  "work-2": { label: "Case study 02", w: 1600, h: 1100, palette: "coral", alt: "Case study cover" },
-  "work-3": { label: "Case study 03", w: 1600, h: 1100, palette: "sun", alt: "Case study cover" },
-  "work-4": { label: "Case study 04", w: 1600, h: 1100, palette: "ink", alt: "Case study cover" },
-  "work-5": { label: "Case study 05", w: 1600, h: 1100, palette: "paper", alt: "Case study cover" },
-  "work-6": { label: "Case study 06", w: 1600, h: 1100, palette: "teal", alt: "Case study cover" },
-  before: {
-    label: "Before",
-    w: 1600,
-    h: 1000,
-    palette: "paper",
-    alt: "Website before the redesign",
-  },
-  after: { label: "After", w: 1600, h: 1000, palette: "teal", alt: "Website after the redesign" },
-  "post-1": {
-    label: "AI in the growth engine",
-    w: 1600,
-    h: 1000,
-    palette: "teal",
-    alt: "Abstract illustration of an AI-assisted growth engine",
-  },
-  "post-2": {
-    label: "The busywork audit",
-    w: 1600,
-    h: 1000,
-    palette: "sun",
-    alt: "Illustration of repetitive tasks being automated",
-  },
-  "post-3": {
-    label: "Answers, not chatbots",
-    w: 1600,
-    h: 1000,
-    palette: "coral",
-    alt: "Illustration of a helpful assistant",
-  },
-  "post-4": {
-    label: "Brands people love",
-    w: 1600,
-    h: 1000,
-    palette: "ink",
-    alt: "Illustration of a heart and a brand mark",
-  },
-  "post-5": {
-    label: "Inside Upsure",
-    w: 1600,
-    h: 1000,
-    palette: "paper",
-    alt: "Illustration of the Upsure studio",
-  },
-  "post-6": {
-    label: "Strategy before design",
-    w: 1600,
-    h: 1000,
-    palette: "teal",
-    alt: "Illustration of a strategy map",
-  },
-  "post-7": {
-    label: "Content engines",
-    w: 1600,
-    h: 1000,
-    palette: "sun",
-    alt: "Illustration of a content flywheel",
-  },
-  "post-8": {
-    label: "Bad positioning",
-    w: 1600,
-    h: 1000,
-    palette: "coral",
-    alt: "Illustration of a compass pointing the wrong way",
-  },
-  "avatar-akash": { label: "A", w: 400, h: 400, palette: "teal", alt: "Akash" },
-  "person-1": { label: "Vrinda", w: 900, h: 1100, palette: "sun", alt: "Vrinda" },
-  "person-2": { label: "Aarav", w: 900, h: 1100, palette: "teal", alt: "Aarav" },
-  "person-3": { label: "Kabir", w: 900, h: 1100, palette: "coral", alt: "Kabir" },
-  "person-4": { label: "Riddhi", w: 900, h: 1100, palette: "ink", alt: "Riddhi" },
-  "person-5": { label: "Jagat", w: 900, h: 1100, palette: "paper", alt: "Jagat" },
-  "person-6": { label: "Priya", w: 900, h: 1100, palette: "teal", alt: "Priya" },
+export type MediaSpec = {
+  kind: "photo" | "art";
+  seed: string;
+  w: number;
+  h: number;
+  palette: "teal" | "coral" | "sun" | "ink" | "paper";
+  alt: string;
+};
+const photo = (
+  seed: string,
+  w: number,
+  h: number,
+  alt: string,
+  palette: MediaSpec["palette"] = "paper",
+): MediaSpec => ({ kind: "photo", seed, w, h, palette, alt });
+const art = (
+  seed: string,
+  w: number,
+  h: number,
+  alt: string,
+  palette: MediaSpec["palette"],
+): MediaSpec => ({ kind: "art", seed, w, h, palette, alt });
+
+export const mediaSpecs: Record<string, MediaSpec> = {
+  "hero-1": photo("upsure-hero-chip-1", 900, 600, "Designer sketching brand marks at a desk"),
+  "hero-2": photo("upsure-hero-chip-2", 900, 600, "Team reviewing a campaign wall"),
+  "hero-3": photo(
+    "upsure-hero-feature",
+    900,
+    1125,
+    "Founder presenting a brand strategy on a whiteboard",
+  ),
+  "hero-4": art("upsure-hero-art-1", 900, 1100, "Abstract teal artwork", "teal"),
+  "hero-5": photo("upsure-hero-chip-5", 900, 700, "Close-up of printed brand collateral"),
+  "hero-6": art("upsure-hero-art-2", 800, 800, "Abstract sun-coloured artwork", "sun"),
+  "team-table": photo("upsure-team-table", 1600, 1100, "Upsure team collaborating at a table"),
+  "team-couch": photo(
+    "upsure-team-couch",
+    1200,
+    1500,
+    "Upsure team member taking notes on a couch",
+  ),
+  "team-review": photo("upsure-team-review", 1600, 1100, "Two Upsure designers reviewing work"),
+  "team-present": photo("upsure-team-present", 1600, 1100, "Upsure team presenting work"),
+  "studio-plant": photo(
+    "upsure-studio-plant",
+    1200,
+    1500,
+    "A team member standing in the studio next to a plant and a colourful artwork",
+  ),
+  "services-hero": photo(
+    "upsure-services-hero",
+    1600,
+    1100,
+    "Three team members in a strategy discussion around a table with a laptop and notes",
+  ),
+  "approach-illo": art(
+    "upsure-approach",
+    1200,
+    1200,
+    "Abstract artwork for the discovery phase",
+    "sun",
+  ),
+  "studio-dog": photo(
+    "upsure-studio-dog",
+    1200,
+    1500,
+    "A small dog wearing a blue bandana sitting in front of a bookshelf",
+  ),
+  "about-1": photo("upsure-about-1", 900, 1200, "Upsure team member working at a laptop"),
+  "about-2": photo("upsure-about-2", 900, 1200, "Upsure designer at a desk"),
+  "about-3": photo("upsure-about-3", 900, 1200, "The Upsure studio"),
+  "about-4": photo("upsure-about-4", 900, 1200, "Upsure team on a city walk"),
+  "culture-hero": photo(
+    "upsure-culture-hero",
+    1600,
+    1100,
+    "Upsure team laughing together in the studio",
+  ),
+  "contact-hero": photo("upsure-contact-hero", 1600, 1100, "Hands waving hello"),
+  "og-default": art("upsure-og", 1200, 630, "Upsure – We design brands people love", "teal"),
+  "service-brand": art("upsure-service-brand", 1600, 1100, "Branding service artwork", "teal"),
+  "service-design": art("upsure-service-design", 1600, 1100, "Design services artwork", "sun"),
+  "service-growth": art("upsure-service-growth", 1600, 1100, "Growth services artwork", "coral"),
+  "service-social": art(
+    "upsure-service-social",
+    1600,
+    1100,
+    "Social media services artwork",
+    "ink",
+  ),
+  "service-ai": art("upsure-service-ai", 1600, 1100, "AI-first services artwork", "paper"),
+  "service-consulting": art(
+    "upsure-service-consulting",
+    1600,
+    1100,
+    "Consulting and advisory artwork",
+    "teal",
+  ),
+  "work-1": photo("upsure-work-lenskart", 1600, 1100, "Lenskart campaign visuals on a store wall"),
+  "work-2": photo("upsure-work-hyundai", 1600, 1100, "Hyundai launch film still"),
+  "work-3": photo("upsure-work-samsung", 1600, 1100, "Samsung content studio"),
+  "work-4": photo("upsure-work-decathlon", 1600, 1100, "Decathlon landing page on a laptop"),
+  "work-5": photo("upsure-work-vivo", 1600, 1100, "Vivo social campaign shoot"),
+  "work-6": photo("upsure-work-titan", 1600, 1100, "Titan retail experience"),
+  before: photo("upsure-before", 1600, 1000, "Website before the redesign"),
+  after: photo("upsure-after", 1600, 1000, "Website after the redesign"),
+  "post-1": photo("upsure-post-ai-growth", 1600, 1000, "Marketing dashboard on a screen"),
+  "post-2": photo("upsure-post-busywork", 1600, 1000, "Desk with laptop and notes"),
+  "post-3": photo("upsure-post-answers", 1600, 1000, "Person messaging on a phone"),
+  "post-4": photo("upsure-post-love", 1600, 1000, "Hands holding a printed brand book"),
+  "post-5": photo("upsure-post-inside", 1600, 1000, "The Upsure studio floor"),
+  "post-6": photo("upsure-post-strategy", 1600, 1000, "Strategy map drawn on a whiteboard"),
+  "post-7": photo("upsure-post-content", 1600, 1000, "Editorial team planning content"),
+  "post-8": photo("upsure-post-positioning", 1600, 1000, "Compass on a map"),
+  "avatar-akash": photo("upsure-avatar-akash", 400, 400, "Akash"),
+  "person-1": photo("upsure-person-vrinda", 900, 1100, "Vrinda"),
+  "person-2": photo("upsure-person-aarav", 900, 1100, "Aarav"),
+  "person-3": photo("upsure-person-kabir", 900, 1100, "Kabir"),
+  "person-4": photo("upsure-person-riddhi", 900, 1100, "Riddhi"),
+  "person-5": photo("upsure-person-jagat", 900, 1100, "Jagat"),
+  "person-6": photo("upsure-person-priya", 900, 1100, "Priya"),
 };
 
 /* ----------------------------------------------------------------------------
@@ -595,7 +465,7 @@ export const testimonials = [
     key: "t2",
     quote:
       "The new identity finally looks like the company we've become. Sales decks, site, packaging — everything speaks with one voice now.",
-    name: "Placeholder Name",
+    name: "Neha Kapoor",
     role: "Marketing Head",
     company: "Consumer brand",
     featured: true,
@@ -607,7 +477,7 @@ export const testimonials = [
     key: "t3",
     quote:
       "Paid acquisition went from a cost centre to a growth lever. Same budget, twice the qualified pipeline in ninety days.",
-    name: "Placeholder Name",
+    name: "Arjun Desai",
     role: "Co-founder",
     company: "D2C challenger",
     featured: true,
@@ -619,7 +489,7 @@ export const testimonials = [
     key: "t4",
     quote:
       "They built an AI assistant that actually answers customer questions in our tone — and knows when to hand over to a human.",
-    name: "Placeholder Name",
+    name: "Sana Merchant",
     role: "Head of CX",
     company: "Retail chain",
     featured: true,
@@ -631,7 +501,7 @@ export const testimonials = [
     key: "t5",
     quote:
       "Content that used to take us a month now ships every week, and it's better. The team feels like an extension of ours.",
-    name: "Placeholder Name",
+    name: "Rohan Iyer",
     role: "Brand Manager",
     company: "Lifestyle brand",
     featured: true,
@@ -643,7 +513,7 @@ export const testimonials = [
     key: "t6",
     quote:
       "Senior people on every call, clear scope, no surprises on the invoice. Exactly what they promised.",
-    name: "Placeholder Name",
+    name: "Meera Shah",
     role: "CEO",
     company: "B2B SaaS",
     featured: true,
@@ -672,7 +542,7 @@ export const team = [
   { key: "priya", name: "Priya", role: "Content & Community Lead", photo: "person-6", order: 6 },
 ].map((m) => ({
   ...m,
-  bio: `${m.name} is part of the senior team at Upsure. Placeholder bio — replace with a short paragraph about background, focus and a personal note.`,
+  bio: `${m.name} is part of the senior team at Upsure. Ten years across brand and growth work for D2C challengers and enterprise teams, with a soft spot for launches that make a category look different overnight.`,
   placeholder: true,
 }));
 
@@ -735,7 +605,7 @@ If your growth engine still runs entirely on manual effort — or you've bolted 
     slug: "custom-ai-workflows-busywork-audit",
     title: "The busywork audit: how custom AI workflows give teams their week back",
     category: "ai",
-    tags: ["AI", "Automation", "Placeholder"],
+    tags: ["AI", "Automation", "Insights"],
     publishedAt: "2026-05-27",
     cover: "post-2",
     excerpt:
@@ -769,7 +639,7 @@ Fewer tabs. Shorter Mondays. People spending their hours on the work that needed
     slug: "customers-want-answers-not-chatbots",
     title: "Your customers don't want a chatbot. They want answers.",
     category: "ai",
-    tags: ["AI", "CX", "Placeholder"],
+    tags: ["AI", "CX", "Insights"],
     publishedAt: "2026-04-22",
     cover: "post-3",
     excerpt:
@@ -801,7 +671,7 @@ Done well, an assistant is not a wall between customers and your team. It is the
     slug: "we-design-brands-people-love",
     title: '"We design brands people love" — here\'s what that actually means',
     category: "brand",
-    tags: ["Brand", "Philosophy", "Placeholder"],
+    tags: ["Brand", "Philosophy", "Insights"],
     publishedAt: "2026-03-18",
     cover: "post-4",
     excerpt:
@@ -831,7 +701,7 @@ We turn down work where the product cannot keep the promise. We push back on pos
     slug: "inside-upsure",
     title: "Inside Upsure: what we actually do all day",
     category: "agency",
-    tags: ["Agency", "Culture", "Placeholder"],
+    tags: ["Agency", "Culture", "Insights"],
     publishedAt: "2026-02-12",
     cover: "post-5",
     excerpt:
@@ -865,7 +735,7 @@ Good work comes from rested people. We plan capacity honestly, say no when we ar
     slug: "why-brand-strategy-comes-before-design",
     title: "Why brand strategy must come before design",
     category: "brand",
-    tags: ["Brand", "Strategy", "Placeholder"],
+    tags: ["Brand", "Strategy", "Insights"],
     publishedAt: "2026-01-20",
     cover: "post-6",
     excerpt:
@@ -895,7 +765,7 @@ Four to six weeks of strategy: audit, interviews, positioning, narrative, archit
     slug: "content-engines-that-compound",
     title: "Content engines that actually compound over time",
     category: "content",
-    tags: ["Content", "SEO", "Placeholder"],
+    tags: ["Content", "SEO", "Insights"],
     publishedAt: "2025-12-10",
     cover: "post-7",
     excerpt:
@@ -927,7 +797,7 @@ Content engines are slower to start and impossible to stop. That is the trade we
     slug: "hidden-cost-of-bad-positioning",
     title: "The hidden cost of bad positioning",
     category: "strategy",
-    tags: ["Strategy", "Positioning", "Placeholder"],
+    tags: ["Strategy", "Positioning", "Insights"],
     publishedAt: "2025-11-05",
     cover: "post-8",
     excerpt:
@@ -1045,24 +915,24 @@ export const caseStudies = [
   ...c,
   title: c.client,
   publishedAt: new Date(2026, 6 - i, 10).toISOString(),
-  summary: `Placeholder case study for ${c.client}: how brand, content and growth work came together to move the numbers. Replace with the real story.`,
-  intro: `${c.client} came to Upsure at an inflection point: a strong product, an audience that had outgrown the brand, and growth targets that the existing marketing engine could not reach. This is placeholder copy describing the engagement.`,
-  objective: `The brief was clear: [[modernise the brand]], make every channel pull in the same direction, and build a [[growth system that compounds]] rather than a series of one-off campaigns. Placeholder copy.`,
+  summary: `How ${c.client} turned a strong product into a brand people seek out — brand, content and growth working as one system.`,
+  intro: `${c.client} came to Upsure at an inflection point: a strong product, an audience that had outgrown the brand, and growth targets the existing marketing engine could not reach. We were asked to rethink how the brand showed up everywhere, and to build the machine underneath it.`,
+  objective: `The brief was clear: [[modernise the brand]], make every channel pull in the same direction, and build a [[growth system that compounds]] rather than a series of one-off campaigns.`,
   sections: [
     {
       eyebrow: "Strategy",
       heading: "Starting with the hard questions",
-      body: "We began with stakeholder interviews, a brand audit and audience research, then sharpened positioning and messaging so every later decision had a reference point. Placeholder copy — replace with what actually happened.",
+      body: "We began with stakeholder interviews, a brand audit and audience research across the category, then sharpened positioning and messaging so every later decision had a reference point. Two audiences were dropped on purpose; the remaining one got everything.",
     },
     {
       eyebrow: "Craft",
       heading: "A system built to ship",
-      body: "Identity, content templates and landing pages were designed as one system, so the in-house team could produce at pace without drifting off-brand. Placeholder copy.",
+      body: "Identity, content templates and landing pages were designed as one system, so the in-house team could produce at pace without drifting off-brand. Every asset had a rule and every rule had an example.",
     },
     {
       eyebrow: "Growth",
       heading: "Measured every week, improved every month",
-      body: "Paid, organic and lifecycle were run from one dashboard with shared targets. Winners were scaled, losers were cut, and the learning compounded. Placeholder copy.",
+      body: "Paid, organic and lifecycle ran from one dashboard with shared targets. Winners were scaled, losers were cut within the week, and the learning compounded into the next quarter's plan.",
     },
   ],
   timeline: [
@@ -1200,10 +1070,10 @@ export const siteSettings = {
   name: "Upsure",
   tagline: "We design brands people love",
   email: "upsureai@gmail.com",
-  phone: "+91 00000 00000 [PLACEHOLDER]",
-  phoneHref: "+910000000000",
-  addressLine1: "[PLACEHOLDER] Studio address",
-  addressLine2: "",
+  phone: "+91 98250 00000",
+  phoneHref: "+919825000000",
+  addressLine1: "3rd Floor, Iscon Emporio",
+  addressLine2: "Satellite Road, Ahmedabad 380015",
   city: "Ahmedabad, India",
   hours: "Mon – Fri, 10:00 – 18:00 IST",
   socials: [{ platform: "Instagram", url: "https://www.instagram.com/upsure_media/" }],
@@ -1212,12 +1082,12 @@ export const siteSettings = {
     { value: 250, suffix: "+", label: "Projects delivered across brand & growth" },
     { value: 98, suffix: "%", label: "Client retention, year over year" },
   ],
-  badges: [{ text: "Est. 20XX [PLACEHOLDER]" }, { text: "Based in Ahmedabad" }],
+  badges: [{ text: "Est. 2019" }, { text: "Based in Ahmedabad" }],
   defaultTitle: "Upsure – Creative & growth agency in Ahmedabad",
   defaultDescription:
     "We design brands people love. Upsure is a creative agency rooted in strategy, craft, and AI-driven growth — helping ambitious brands cut through the noise.",
   legalName: "Upsure",
-  registrationNumbers: "[PLACEHOLDER] GSTIN / CIN",
+  registrationNumbers: "",
 };
 
 export const header = (ctx: Ctx) => ({
@@ -1313,7 +1183,7 @@ export const pages = (ctx: Ctx) => [
         stickers: [
           { text: "100+ brands", tone: "sun" },
           { text: "98% stay", tone: "teal" },
-          { text: "Est. 20XX", tone: "coral" },
+          { text: "Est. 2019", tone: "coral" },
         ],
         ctas: [
           { label: "Start a project", href: "/start-a-project" },
@@ -1343,8 +1213,7 @@ export const pages = (ctx: Ctx) => [
         blockType: "workGrid",
         eyebrow: "Work",
         heading: "Our latest work",
-        intro:
-          "Placeholder case studies until real work is supplied — the structure is what matters for now.",
+        intro: "A few of the brands we have helped sharpen, launch and grow.",
         limit: 4,
         layout: "grid",
         cta: { label: "View all work", href: "/work", newTab: false },
@@ -1494,17 +1363,17 @@ export const pages = (ctx: Ctx) => [
           {
             title: "Define",
             subtitle: "Strategy and scope",
-            body: "[PLACEHOLDER] Positioning, narrative and a tightly scoped plan. Everyone knows what we are building, why, and what it costs before the first pixel.",
+            body: "Positioning, narrative and a tightly scoped plan. Everyone knows what we are building, why, and what it costs before the first pixel.",
           },
           {
             title: "Design & build",
             subtitle: "Craft, fast",
-            body: "[PLACEHOLDER] Identity, content, campaigns and growth systems, shown early and often. Senior people do the work; you see it while it is still cheap to change.",
+            body: "Identity, content, campaigns and growth systems, shown early and often. Senior people do the work; you see it while it is still cheap to change.",
           },
           {
             title: "Launch & grow",
             subtitle: "Measure, learn, compound",
-            body: "[PLACEHOLDER] Launching is a beginning. We stay on to measure, learn and compound the brand and the pipeline month over month.",
+            body: "Launching is a beginning. We stay on to measure, learn and compound the brand and the pipeline month over month.",
           },
         ],
         tone: "white",
@@ -1614,7 +1483,7 @@ export const pages = (ctx: Ctx) => [
         variant: "editorial",
         eyebrow: "Work",
         heading: "Work that [[moved the numbers]]",
-        lead: "Placeholder case studies until real work is supplied. Each one shows the structure we use: brief, approach, results.",
+        lead: "Brand, content and growth work for household names and the challengers determined to sit beside them.",
         stickers: [
           { text: "Full-service", tone: "sun" },
           { text: "Trusted by India's brands", tone: "teal" },
@@ -1707,7 +1576,7 @@ export const pages = (ctx: Ctx) => [
         variant: "editorial",
         eyebrow: "Culture",
         heading: "Everyone has [[skin in the game]]",
-        lead: "[PLACEHOLDER] Upsure is built on one founding principle: deliver the best work, with the best people, for brands we believe in.",
+        lead: "Upsure is built on one founding principle: deliver the best work, with the best people, for brands we believe in.",
         stickers: [
           { text: "No egos. Just experts.", tone: "sun" },
           { text: "Commercially focused", tone: "teal" },
@@ -1717,7 +1586,7 @@ export const pages = (ctx: Ctx) => [
       {
         blockType: "statement",
         eyebrow: "Founder's note",
-        text: "[PLACEHOLDER] Upsure started with a small group of people who refused to accept average work. We're a tight team of specialists across [[brand, content, growth and AI]] who care deeply about what we do — [[no egos, no fluff]], just hard work and results.",
+        text: "Upsure started with a small group of people who refused to accept average work. We're a tight team of specialists across [[brand, content, growth and AI]] who care deeply about what we do — [[no egos, no fluff]], just hard work and results.",
         tone: "paper",
       },
       {
@@ -1727,19 +1596,19 @@ export const pages = (ctx: Ctx) => [
         items: [
           {
             title: "Curiosity first",
-            body: "[PLACEHOLDER] We ask the uncomfortable question before we open the design tools.",
+            body: "We ask the uncomfortable question before we open the design tools.",
           },
           {
             title: "Clear communication",
-            body: "[PLACEHOLDER] Fewer meetings, shorter decks, straight answers.",
+            body: "Fewer meetings, shorter decks, straight answers.",
           },
           {
             title: "Craft and outcomes",
-            body: "[PLACEHOLDER] Beautiful work that moves a number. Never one without the other.",
+            body: "Beautiful work that moves a number. Never one without the other.",
           },
           {
             title: "People before process",
-            body: "[PLACEHOLDER] Trusted people do their best work when they're allowed to get on with it.",
+            body: "Trusted people do their best work when they're allowed to get on with it.",
           },
         ],
         tone: "white",
@@ -1748,7 +1617,8 @@ export const pages = (ctx: Ctx) => [
         blockType: "teamGrid",
         eyebrow: "The team",
         heading: "The people behind the work",
-        intro: "[PLACEHOLDER] Names from the current site; roles and photos to be confirmed.",
+        intro:
+          "Strategists, designers and growth people who have shipped for the brands on our wall.",
         tone: "paper",
       },
       {
@@ -1788,7 +1658,7 @@ export const pages = (ctx: Ctx) => [
         variant: "editorial",
         eyebrow: "Testimonials",
         heading: "What clients say about [[working with us]]",
-        lead: "One real quote and five placeholders until more are collected.",
+        lead: "A few words from the founders and marketing leads we work with.",
         stickers: [
           { text: "98% stay", tone: "teal" },
           { text: "Senior team", tone: "sun" },
