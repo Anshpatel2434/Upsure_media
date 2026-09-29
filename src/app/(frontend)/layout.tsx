@@ -5,7 +5,10 @@ import "@/styles/globals.css";
 
 const instrument = Instrument_Sans({
   subsets: ["latin"],
-  display: "swap",
+  // "optional": on slow first visits the metric-matched fallback paints immediately
+  // (no swap, no layout shift) and the brand font is used once cached. Flip to
+  // "swap" if brand font on first paint matters more than LCP.
+  display: "optional",
   variable: "--font-instrument",
 });
 
