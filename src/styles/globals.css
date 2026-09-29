@@ -1,0 +1,215 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — see docs/04-design-direction.md
+   --------------------------------------------------------------------------- */
+@theme {
+  /* Colours */
+  --color-paper: #faf8f3;
+  --color-paper-2: #f1eee6;
+  --color-white: #ffffff;
+  --color-ink: #0b0d10;
+  --color-ink-2: #2a2e35;
+  --color-muted: #6b7079;
+  --color-line: rgb(11 13 16 / 0.12);
+  --color-line-strong: rgb(11 13 16 / 0.24);
+  --color-teal: #0f8b8d;
+  --color-teal-2: #12a5a7;
+  --color-teal-soft: #d8efee;
+  --color-teal-ink: #0a1e21;
+  --color-coral: #ff6b4a;
+  --color-coral-soft: #ffe1d8;
+  --color-sun: #ffd166;
+  --color-sun-soft: #fff1c9;
+
+  /* Type */
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --text-display: clamp(3.5rem, 2rem + 6.5vw, 7rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.035em;
+  --text-h1: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
+  --text-h1--line-height: 1;
+  --text-h1--letter-spacing: -0.03em;
+  --text-h2: clamp(2rem, 1.4rem + 2.2vw, 3rem);
+  --text-h2--line-height: 1.05;
+  --text-h2--letter-spacing: -0.025em;
+  --text-h3: clamp(1.5rem, 1.25rem + 0.9vw, 1.875rem);
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.015em;
+  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --text-lead--line-height: 1.45;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.6;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.12em;
+
+  /* Shape */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-pill: 999px;
+
+  /* Layout */
+  --spacing-gutter: clamp(1rem, 4vw, 2rem);
+  --spacing-section: clamp(4rem, 10vw, 8rem);
+  --container-site: 80rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 160ms;
+  --duration-base: 240ms;
+  --duration-slow: 400ms;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgb(11 13 16 / 0.04), 0 8px 24px -12px rgb(11 13 16 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(11 13 16 / 0.06), 0 20px 40px -16px rgb(15 139 141 / 0.28);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-feature-settings: "ss01", "cv11";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-sun);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+    font-weight: 600;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Hide native <details> marker; the Accordion draws its own icon. */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities
+   --------------------------------------------------------------------------- */
+
+/* Faint hairline grid used behind heroes and feature areas. */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 40%, transparent 100%);
+}
+
+/* Teal offset underline used for emphasised words in headings. */
+@utility highlight {
+  text-decoration: underline;
+  text-decoration-color: var(--color-teal);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.12em;
+  text-decoration-skip-ink: none;
+}
+
+/* Fade-up on entering the viewport. Pure CSS scroll-driven animation; browsers
+   without support simply show the element. Zero JavaScript. */
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    animation: reveal-up var(--duration-slow) var(--ease-out) both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+}
+
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  gap: var(--marquee-gap, 3rem);
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(calc(-50% - var(--marquee-gap, 3rem) / 2));
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion / low data: every animation off, layout unchanged.
+   `data-motion="off"` is set by the low-data toggle (Phase 12).
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}
+
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation: none !important;
+  transition: none !important;
+}

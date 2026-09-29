@@ -1,0 +1,36 @@
+import type { Metadata, Viewport } from "next";
+import { Instrument_Sans } from "next/font/google";
+
+import "@/styles/globals.css";
+
+const instrument = Instrument_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-instrument",
+});
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Upsure – Creative & growth agency in Ahmedabad",
+    template: "%s – Upsure",
+  },
+  description:
+    "We design brands people love. Upsure is a creative agency rooted in strategy, craft, and AI-driven growth.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#faf8f3",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
+  return (
+    <html lang="en" className={`${instrument.variable} h-full`}>
+      <body className="flex min-h-full flex-col">{children}</body>
+    </html>
+  );
+}
