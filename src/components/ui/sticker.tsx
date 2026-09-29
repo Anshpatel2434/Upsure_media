@@ -6,7 +6,7 @@ type Tone = "sun" | "coral" | "teal" | "ink";
 
 const toneClass: Record<Tone, string> = {
   sun: "bg-sun text-ink",
-  coral: "bg-coral text-white",
+  coral: "bg-coral text-ink",
   teal: "bg-teal text-white",
   ink: "bg-ink text-paper",
 };

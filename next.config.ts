@@ -35,4 +35,19 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withPayload(nextConfig, { devBundleServerPackages: false });
+const config = withPayload(nextConfig, { devBundleServerPackages: false });
+
+// withPayload adds Accept-CH / Critical-CH (for the admin's dark mode) to every
+// route. Critical-CH makes Chrome re-request the page, costing a full round trip
+// on slow networks, so keep those hints on the admin only.
+const payloadHeaders = config.headers;
+config.headers = async () => {
+  const rules = (await payloadHeaders?.()) ?? [];
+  return rules.map((rule) =>
+    rule.source === "/:path*" && rule.headers.some((h) => h.key === "Critical-CH")
+      ? { ...rule, source: "/admin/:path*" }
+      : rule,
+  );
+};
+
+export default config;

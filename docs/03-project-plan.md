@@ -1,6 +1,6 @@
 # Upsure Media — new website: project plan
 
-Status: **DECIDED — see `adr/0001-stack-and-scope-decisions.md`. Awaiting go-ahead for Phase 1.**
+Status: **Phases 1–10 built and verified locally (2026-09-29). Remaining: 11 admin polish, 12 perf/a11y hardening (baseline in `perf/`), 13 launch.**
 Companion docs: `01-current-site-content-inventory.md` (all current copy), `02-marino-reference-analysis.md` (reference structure + gap list).
 
 ---
@@ -156,57 +156,57 @@ Each phase ends with a checklist that must pass before the next starts. "Verify"
 - [x] `/dev/ui` (dev-only) page showcasing every primitive
 - Verify: primitives render on the showcase page at 360px, 768px, 1280px; keyboard works on accordion/carousel; axe reports 0 violations; zero client JS shipped for Marquee/Accordion.
 
-### Phase 3 — CMS & data layer (Payload)
-- [ ] Install Payload 3 into the app; Postgres adapter (Neon); S3 adapter (R2); Lexical rich text
-- [ ] Collections, globals and blocks from §5 with field validation and required alt text
-- [ ] Access control: `admin` vs `editor`; public read for published only
-- [ ] Drafts, versions, autosave; Live Preview config with breakpoints
-- [ ] `afterChange`/`afterDelete` hooks → `revalidateTag`; typed data fetchers in `lib/cms/*` using Payload Local API with `'use cache'` + tags
-- [ ] Image sizes + blur placeholder generation on upload; focal point
-- [ ] Form Builder plugin + submissions; Resend notification; Turnstile verification server-side
-- [ ] `scripts/seed.ts`: idempotent seed of every item in doc 01 + all placeholders from §6; generated placeholder images
-- [ ] Generate `payload-types.ts`; admin branding (logo, favicon)
+### Phase 3 — CMS & data layer (Payload) ✅ (verified locally 2026-09-29)
+- [x] Install Payload 3 into the app; Postgres adapter (Neon); S3 adapter (R2); Lexical rich text
+- [x] Collections, globals and blocks from §5 with field validation and required alt text
+- [x] Access control: `admin` vs `editor`; public read for published only
+- [x] Drafts, versions, autosave; Live Preview config with breakpoints
+- [x] `afterChange`/`afterDelete` hooks → `revalidateTag`; typed data fetchers in `lib/cms/*` using Payload Local API with `'use cache'` + tags
+- [x] Image sizes + blur placeholder generation on upload; focal point
+- [x] Form Builder plugin + submissions; Resend notification; Turnstile verification server-side
+- [x] `scripts/seed.ts`: idempotent seed of every item in doc 01 + all placeholders from §6; generated placeholder images
+- [x] Generate `payload-types.ts`; admin branding (logo, favicon)
 - Verify: `pnpm seed` on an empty DB produces every page/collection with no errors; log in at `/admin` as admin and editor and confirm role limits; editing a testimonial and publishing updates the public page within ~1 s (revalidation) without a rebuild; Live Preview shows unpublished changes; uploading a 5 MB JPEG yields AVIF/WebP sizes + blurDataURL.
 
-### Phase 4 — Global layout
-- [ ] Header: floating pill nav, mega-menu dropdowns (Services, About), mint Contact CTA, scroll-aware (hide/show), mobile drawer with focus trap
-- [ ] Footer (from CMS global): description, contact block, nav, newsletter form, legal, company numbers
-- [ ] CTA band (global), Cookie consent (only if analytics needs it)
-- [ ] SEO: `generateMetadata` from CMS, default OG image route (`opengraph-image.tsx`), `sitemap.ts`, `robots.ts`, JSON-LD Organization, canonical
-- [ ] `not-found.tsx`, `error.tsx`, loading skeletons
+### Phase 4 — Global layout ✅ (verified locally 2026-09-29)
+- [x] Header: floating pill nav, mega-menu dropdowns (Services, About), mint Contact CTA, scroll-aware (hide/show), mobile drawer with focus trap
+- [x] Footer (from CMS global): description, contact block, nav, newsletter form, legal, company numbers
+- [x] CTA band (global), Cookie consent (only if analytics needs it)
+- [x] SEO: `generateMetadata` from CMS, default OG image route (`opengraph-image.tsx`), `sitemap.ts`, `robots.ts`, JSON-LD Organization, canonical
+- [x] `not-found.tsx`, `error.tsx`, loading skeletons
 - Verify: nav is fully keyboard/screen-reader operable (Esc closes, arrow keys in menus); Lighthouse SEO 100 on a blank page; sitemap lists all published routes; header/footer edits in admin appear on site immediately.
 
-### Phase 5 — Home page
-- [ ] Blocks: Hero (Upsure collage variant with media chips + stat badges), Intro/Text-reveal, Logo ticker, Services grid (5), Latest work (4 cards, dark band), Testimonial carousel (6), Proof stats ticker, Need-picker (6), "What's happening" blog carousel, Results feature (case study stat + quote), FAQ (from Services FAQ), Team teaser, CTA band
-- [ ] All content served from the seeded "home" page; every block editable/reorderable in admin
+### Phase 5 — Home page ✅ (verified locally 2026-09-29)
+- [x] Blocks: Hero (Upsure collage variant with media chips + stat badges), Intro/Text-reveal, Logo ticker, Services grid (5), Latest work (4 cards, dark band), Testimonial carousel (6), Proof stats ticker, Need-picker (6), "What's happening" blog carousel, Results feature (case study stat + quote), FAQ (from Services FAQ), Team teaser, CTA band
+- [x] All content served from the seeded "home" page; every block editable/reorderable in admin
 - Verify: content matches doc 01 word-for-word for existing copy; Lighthouse mobile ≥ 90 perf / ≥ 95 a11y / 100 SEO with throttling; first-load JS ≤ 100 kB; reorder blocks in admin → order changes on site.
 
-### Phase 6 — Services overview + service detail
-- [ ] `/services`: hero (listing template with trust pills), intro, service cards, capabilities cloud (19), need-picker (8), approach stepper (4 steps), why-us (3), FAQ (8), CTA
-- [ ] `/services/[slug]`: hero with sub-service pills + inline consultation form, blurb/checklist/media, related work carousel, service FAQs, CTA; `generateStaticParams`
+### Phase 6 — Services overview + service detail ✅ (verified locally 2026-09-29)
+- [x] `/services`: hero (listing template with trust pills), intro, service cards, capabilities cloud (19), need-picker (8), approach stepper (4 steps), why-us (3), FAQ (8), CTA
+- [x] `/services/[slug]`: hero with sub-service pills + inline consultation form, blurb/checklist/media, related work carousel, service FAQs, CTA; `generateStaticParams`
 - Verify: 5 detail pages build statically; each "Know more" card links to the right slug; form submission creates a `form-submissions` record and emails; invalid submissions return field errors without page reload; Lighthouse targets met.
 
-### Phase 7 — Work / case studies
-- [ ] `/work` grid with service filter (URL param, server-rendered)
-- [ ] `/work/[slug]`: hero + service tags, objective, 3-stat row, sections, lazy video block, testimonial + call-back form, similar work (same service, excluding self)
+### Phase 7 — Work / case studies ✅ (verified locally 2026-09-29)
+- [x] `/work` grid with service filter (URL param, server-rendered)
+- [x] `/work/[slug]`: hero + service tags, objective, 3-stat row, sections, lazy video block, testimonial + call-back form, similar work (same service, excluding self)
 - Verify: 6 placeholders render; filter works without client JS (links) and with progressive enhancement; video does not download until in viewport; stats animate only when reduced-motion is off.
 
-### Phase 8 — About, Culture, Testimonials
-- [ ] `/about`: floating photo-card hero (Upsure teal variant), manifesto, stats (100+/250+/98%), mission, call-back form + copy, logo ticker, services band, results grid, CTA
-- [ ] `/culture`: hero, founder story, pull-quote, values, team grid (6), "Join us / Collaborate" (moved from Contact and kept there too)
-- [ ] `/testimonials`: hero + full list/grid with company logos
+### Phase 8 — About, Culture, Testimonials ✅ (verified locally 2026-09-29)
+- [x] `/about`: floating photo-card hero (Upsure teal variant), manifesto, stats (100+/250+/98%), mission, call-back form + copy, logo ticker, services band, results grid, CTA
+- [x] `/culture`: hero, founder story, pull-quote, values, team grid (6), "Join us / Collaborate" (moved from Contact and kept there too)
+- [x] `/testimonials`: hero + full list/grid with company logos
 - Verify: About copy matches doc 01; team/testimonial items added in admin appear immediately; images use blur placeholders; pages pass budgets.
 
-### Phase 9 — Blog
-- [ ] `/blog` listing (featured latest + grid, category chips), `/blog/category/[slug]`, pagination
-- [ ] `/blog/[slug]`: breadcrumb, tags, title/dek, author/date, Lexical rich text (headings, images, code, embeds), reading time, newsletter band, related posts (same category), Article JSON-LD, OG image per post
-- [ ] Newsletter subscribe (server action → `newsletter-subscribers`, double-opt-in email optional)
+### Phase 9 — Blog ✅ (verified locally 2026-09-29)
+- [x] `/blog` listing (featured latest + grid, category chips), `/blog/category/[slug]`, pagination
+- [x] `/blog/[slug]`: breadcrumb, tags, title/dek, author/date, Lexical rich text (headings, images, code, embeds), reading time, newsletter band, related posts (same category), Article JSON-LD, OG image per post
+- [x] Newsletter subscribe (server action → `newsletter-subscribers`, double-opt-in email optional)
 - Verify: all 5 current posts + 3 missing "related" posts exist; RSS feed at `/blog/feed.xml`; new post published in admin shows on `/blog` and Home carousel within ~1 s; rich text renders every block type from a test post.
 
-### Phase 10 — Contact & forms
-- [ ] `/contact`: dark hero, contact details, long form (Name*, Email*, Phone, Company, "How did you hear about us?", Message*), 3-step "Start a collaboration", Join/Collaborate
-- [ ] Shared `LeadForm` component (variants: contact / consultation / call-back) with Zod validation, honeypot, Turnstile, rate limiting, success state, error state
-- [ ] Email templates (Resend) + admin inbox
+### Phase 10 — Contact & forms ✅ (verified locally 2026-09-29)
+- [x] `/contact`: dark hero, contact details, long form (Name*, Email*, Phone, Company, "How did you hear about us?", Message*), 3-step "Start a collaboration", Join/Collaborate
+- [x] Shared `LeadForm` component (variants: contact / consultation / call-back) with Zod validation, honeypot, Turnstile, rate limiting, success state, error state
+- [x] Email templates (Resend) + admin inbox
 - Verify: submit valid/invalid/spam cases; each creates/blocks a record correctly; form works with JS disabled (progressive enhancement); Turnstile fails closed; screen reader announces errors.
 
 ### Phase 11 — Admin panel polish

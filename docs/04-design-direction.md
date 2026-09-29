@@ -8,7 +8,7 @@ Goal: borrow Marino's **information architecture and section patterns**, but mak
 |---|---|---|
 | Canvas | Flat light grey `#F3F3F3` | Warm paper `#FAF8F3` with faint hairline grid lines in hero/feature areas |
 | Ink | Pure black | Deep ink `#0B0D10`; dark bands are **deep teal-ink `#0A1E21`**, never pure black |
-| Accents | Mint `#82FFCD` + lilac `#E2CBFF` pills | **Teal `#0F8B8D`** (brand), **coral `#FF6B4A`** (emphasis/CTA hover), **sun `#FFD166`** (sticker labels) |
+| Accents | Mint `#82FFCD` + lilac `#E2CBFF` pills | **Teal `#0B7577`** (brand; passes 4.5:1 on paper), **coral `#FF6B4A`** (emphasis/CTA hover), **sun `#FFD166`** (sticker labels) |
 | Type | Plus Jakarta Sans everywhere | **Instrument Sans** variable; headings tight (-0.03em), oversized editorial numerals |
 | Radius | 50px pills, 33px cards | **12px** buttons, **16px** cards/images, pills only for tags |
 | Nav | Floating centred white pill bar | Left logo · inline links with animated underline · right ink button "Start a project"; compacts with backdrop blur on scroll |
