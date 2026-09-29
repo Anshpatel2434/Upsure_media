@@ -139,21 +139,21 @@ Each phase ends with a checklist that must pass before the next starts. "Verify"
 - [ ] Create GitHub repo, Neon project, R2 bucket, Resend account (or alternatives) — credentials go in `.env.local` only
 - Verify: ADR committed; `.env.example` lists every variable with a comment.
 
-### Phase 1 — Repository scaffold & tooling
-- [ ] `pnpm create next-app` (TS, App Router, `src/`, Tailwind v4, ESLint) on Next 16.x
-- [ ] Strict tsconfig, `@/` alias, `next.config.ts` (images remotePatterns, `optimizePackageImports`, headers)
-- [ ] ESLint flat config (next, ts, jsx-a11y, import order) + Prettier (+ tailwind plugin)
-- [ ] Husky + lint-staged + commitlint; `.editorconfig`; `.nvmrc`; `packageManager` + `engines`
-- [ ] GitHub Actions CI: install → lint → `tsc --noEmit` → build; Dependabot config
-- [ ] README (setup, scripts, env, deploy), CONTRIBUTING (branching, commits, PR checklist), LICENSE
+### Phase 1 — Repository scaffold & tooling ✅ (done 2026-09-29, commit 2bb6be6)
+- [x] `pnpm create next-app` (TS, App Router, `src/`, Tailwind v4, ESLint) on Next 16.x
+- [x] Strict tsconfig, `@/` alias, `next.config.ts` (images remotePatterns, `optimizePackageImports`, headers)
+- [x] ESLint flat config (next, ts, jsx-a11y, import order) + Prettier (+ tailwind plugin)
+- [x] Husky + lint-staged + commitlint; `.editorconfig`; `.nvmrc`; `packageManager` + `engines`
+- [x] GitHub Actions CI: install → lint → `tsc --noEmit` → build; Dependabot config
+- [x] README (setup, scripts, env, deploy), CONTRIBUTING (branching, commits, PR checklist), LICENSE
 - Verify: `pnpm lint && pnpm typecheck && pnpm build` pass locally and in CI on a PR; a bad commit message is rejected; a formatting error is auto-fixed on commit.
 
-### Phase 2 — Design system
-- [ ] Tokens in `globals.css`: colours (light grey bg, ink, mint, lilac, teal, dark band), spacing, radii (pill 999px, card 24px), type scale (fluid `clamp()` H1–H6), shadows
-- [ ] `next/font` setup (font decision from §9), fallback metrics
-- [ ] UI primitives: Button (variants: primary mint, ghost, dark), Pill/Badge, Container, Section (bg variants), Heading (with highlight spans), Input/Textarea/Select, Accordion (native `<details>` based), Marquee (pure CSS), Carousel (CSS scroll-snap + buttons, no library), Card, RichText renderer
-- [ ] Motion utilities: `FadeIn` (IntersectionObserver + CSS), `TextReveal` (CSS scroll-driven animation with JS fallback), all gated by reduced-motion
-- [ ] `/dev/ui` (dev-only) page showcasing every primitive
+### Phase 2 — Design system ✅ (done 2026-09-29)
+- [x] Tokens in `globals.css`: colours (light grey bg, ink, mint, lilac, teal, dark band), spacing, radii (pill 999px, card 24px), type scale (fluid `clamp()` H1–H6), shadows
+- [x] `next/font` setup (font decision from §9), fallback metrics
+- [x] UI primitives: Button (variants: primary mint, ghost, dark), Pill/Badge, Container, Section (bg variants), Heading (with highlight spans), Input/Textarea/Select, Accordion (native `<details>` based), Marquee (pure CSS), Carousel (CSS scroll-snap + buttons, no library), Card, RichText renderer
+- [x] Motion utilities: `FadeIn` (IntersectionObserver + CSS), `TextReveal` (CSS scroll-driven animation with JS fallback), all gated by reduced-motion
+- [x] `/dev/ui` (dev-only) page showcasing every primitive
 - Verify: primitives render on the showcase page at 360px, 768px, 1280px; keyboard works on accordion/carousel; axe reports 0 violations; zero client JS shipped for Marquee/Accordion.
 
 ### Phase 3 — CMS & data layer (Payload)

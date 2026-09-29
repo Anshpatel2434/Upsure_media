@@ -1,3 +1,4 @@
+import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
 
 const securityHeaders = [
@@ -18,6 +19,8 @@ const nextConfig: NextConfig = {
     deviceSizes: [360, 414, 640, 768, 1024, 1280, 1536, 1920],
     imageSizes: [48, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,
+    // Media served by Payload from local disk in development.
+    localPatterns: [{ pathname: "/api/media/file/**" }, { pathname: "/**" }],
     remotePatterns: [
       // Media served from an S3-compatible bucket in production (see S3_PUBLIC_URL).
       ...(process.env.S3_PUBLIC_URL
@@ -26,8 +29,10 @@ const nextConfig: NextConfig = {
     ],
   },
   async headers() {
-    return [{ source: "/(.*)", headers: securityHeaders }];
+    // The admin panel embeds the site in an iframe for Live Preview, so the
+    // frame-options header is only applied to non-preview routes.
+    return [{ source: "/((?!preview).*)", headers: securityHeaders }];
   },
 };
 
-export default nextConfig;
+export default withPayload(nextConfig, { devBundleServerPackages: false });
