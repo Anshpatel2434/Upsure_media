@@ -1,6 +1,6 @@
 import type { Block, Field } from "payload";
 
-import { linkArrayField, linkField } from "@/payload/fields/link";
+import { linkArrayField, linkField, optionalLinkField } from "@/payload/fields/link";
 
 /* ----------------------------------------------------------------------------
    Shared field fragments
@@ -105,7 +105,7 @@ export const Statement: Block = {
         description: "One big paragraph. Wrap phrases in [[double brackets]] to emphasise.",
       },
     },
-    linkField("cta", { required: false } as Partial<Field>),
+    optionalLinkField("cta"),
     tone,
   ],
 };
@@ -137,7 +137,7 @@ export const LogoTicker: Block = {
   fields: [
     { name: "heading", type: "text", defaultValue: "Trusted by India's leading brands" },
     { name: "statement", type: "textarea" },
-    linkField("cta", { required: false } as Partial<Field>),
+    optionalLinkField("cta"),
     tone,
   ],
 };
@@ -153,7 +153,7 @@ export const ProofTicker: Block = {
       fields: [{ name: "text", type: "text", required: true }],
     },
     { name: "heading", type: "text" },
-    linkField("cta", { required: false } as Partial<Field>),
+    optionalLinkField("cta"),
   ],
 };
 
@@ -205,7 +205,7 @@ export const WorkGrid: Block = {
       defaultValue: "grid",
       options: ["grid", "carousel"],
     },
-    linkField("cta", { required: false } as Partial<Field>),
+    optionalLinkField("cta"),
     { ...tone, defaultValue: "teal-ink" },
   ],
 };
@@ -505,7 +505,7 @@ export const ProcessSteps: Block = {
       fields: [
         { name: "title", type: "text", required: true },
         { name: "body", type: "textarea", required: true },
-        linkField("link", { required: false } as Partial<Field>),
+        optionalLinkField("link"),
       ],
     },
     tone,
@@ -536,7 +536,7 @@ export const TextColumns: Block = {
       fields: [
         { name: "heading", type: "text", required: true },
         { name: "body", type: "textarea", required: true },
-        linkField("link", { required: false } as Partial<Field>),
+        optionalLinkField("link"),
       ],
     },
     {

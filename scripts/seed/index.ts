@@ -7,11 +7,11 @@
  *   npm run seed            # seed / update
  *   npm run seed -- --reset # wipe content collections first
  */
-import "dotenv/config";
+import { config as loadEnv } from "dotenv";
+
+loadEnv({ path: [".env.local", ".env"] });
 
 import { getPayload, type Payload } from "payload";
-
-import config from "@payload-config";
 
 import * as data from "./content";
 import { placeholderImage, placeholderLogo } from "./images";
@@ -103,8 +103,23 @@ async function uploadMedia(
 }
 
 async function main() {
+  const { default: config } = await import("@payload-config");
   const payload = await getPayload({ config });
   const t0 = Date.now();
+
+  /* Demo admin (local only) --------------------------------------------- */
+  const users = await payload.find({ collection: "users", limit: 1, depth: 0 });
+  if (users.totalDocs === 0 && process.env.SEED_ADMIN_EMAIL && process.env.SEED_ADMIN_PASSWORD) {
+    await payload.create({
+      collection: "users",
+      data: {
+        email: process.env.SEED_ADMIN_EMAIL,
+        password: process.env.SEED_ADMIN_PASSWORD,
+        name: "Upsure Admin",
+      },
+    });
+    console.log(`Created admin user ${process.env.SEED_ADMIN_EMAIL}`);
+  }
 
   if (RESET) {
     console.log("Resetting content collections…");

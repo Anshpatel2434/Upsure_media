@@ -226,15 +226,12 @@ export interface Page {
          * One big paragraph. Wrap phrases in [[double brackets]] to emphasise.
          */
         text: string;
-        cta: {
-          label: string;
+        cta?: {
+          label?: string | null;
           /**
-           * Internal path (e.g. /contact) or full URL (https://…).
+           * Leave empty to hide the link.
            */
-          href: string;
-          /**
-           * Open in a new tab (external links).
-           */
+          href?: string | null;
           newTab?: boolean | null;
         };
         /**
@@ -273,15 +270,12 @@ export interface Page {
     | {
         heading?: string | null;
         statement?: string | null;
-        cta: {
-          label: string;
+        cta?: {
+          label?: string | null;
           /**
-           * Internal path (e.g. /contact) or full URL (https://…).
+           * Leave empty to hide the link.
            */
-          href: string;
-          /**
-           * Open in a new tab (external links).
-           */
+          href?: string | null;
           newTab?: boolean | null;
         };
         /**
@@ -300,15 +294,12 @@ export interface Page {
             }[]
           | null;
         heading?: string | null;
-        cta: {
-          label: string;
+        cta?: {
+          label?: string | null;
           /**
-           * Internal path (e.g. /contact) or full URL (https://…).
+           * Leave empty to hide the link.
            */
-          href: string;
-          /**
-           * Open in a new tab (external links).
-           */
+          href?: string | null;
           newTab?: boolean | null;
         };
         id?: string | null;
@@ -348,15 +339,12 @@ export interface Page {
         items?: (number | CaseStudy)[] | null;
         limit?: number | null;
         layout?: ('grid' | 'carousel') | null;
-        cta: {
-          label: string;
+        cta?: {
+          label?: string | null;
           /**
-           * Internal path (e.g. /contact) or full URL (https://…).
+           * Leave empty to hide the link.
            */
-          href: string;
-          /**
-           * Open in a new tab (external links).
-           */
+          href?: string | null;
           newTab?: boolean | null;
         };
         /**
@@ -611,15 +599,12 @@ export interface Page {
           | {
               title: string;
               body: string;
-              link: {
-                label: string;
+              link?: {
+                label?: string | null;
                 /**
-                 * Internal path (e.g. /contact) or full URL (https://…).
+                 * Leave empty to hide the link.
                  */
-                href: string;
-                /**
-                 * Open in a new tab (external links).
-                 */
+                href?: string | null;
                 newTab?: boolean | null;
               };
               id?: string | null;
@@ -654,15 +639,12 @@ export interface Page {
           | {
               heading: string;
               body: string;
-              link: {
-                label: string;
+              link?: {
+                label?: string | null;
                 /**
-                 * Internal path (e.g. /contact) or full URL (https://…).
+                 * Leave empty to hide the link.
                  */
-                href: string;
-                /**
-                 * Open in a new tab (external links).
-                 */
+                href?: string | null;
                 newTab?: boolean | null;
               };
               id?: string | null;
@@ -999,15 +981,12 @@ export interface Service {
               | {
                   heading: string;
                   body: string;
-                  link: {
-                    label: string;
+                  link?: {
+                    label?: string | null;
                     /**
-                     * Internal path (e.g. /contact) or full URL (https://…).
+                     * Leave empty to hide the link.
                      */
-                    href: string;
-                    /**
-                     * Open in a new tab (external links).
-                     */
+                    href?: string | null;
                     newTab?: boolean | null;
                   };
                   id?: string | null;
@@ -1507,15 +1486,12 @@ export interface CaseStudy {
               | {
                   heading: string;
                   body: string;
-                  link: {
-                    label: string;
+                  link?: {
+                    label?: string | null;
                     /**
-                     * Internal path (e.g. /contact) or full URL (https://…).
+                     * Leave empty to hide the link.
                      */
-                    href: string;
-                    /**
-                     * Open in a new tab (external links).
-                     */
+                    href?: string | null;
                     newTab?: boolean | null;
                   };
                   id?: string | null;

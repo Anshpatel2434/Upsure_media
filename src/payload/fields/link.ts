@@ -39,3 +39,14 @@ export const linkArrayField = (name: string, label: string, maxRows = 8): Field 
     { name: "newTab", type: "checkbox", defaultValue: false },
   ],
 });
+
+/** Same shape as linkField but nothing is required, for blocks where the link is optional. */
+export const optionalLinkField = (name: string): Field => ({
+  name,
+  type: "group",
+  fields: [
+    { name: "label", type: "text" },
+    { name: "href", type: "text", admin: { description: "Leave empty to hide the link." } },
+    { name: "newTab", type: "checkbox", defaultValue: false },
+  ],
+});
