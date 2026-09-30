@@ -1,22 +1,28 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
 import type { Service } from "@/content/types";
 
 import type { BlockProps } from "@/components/blocks/render-blocks";
-import { SectionHeader } from "@/components/blocks/section-header";
+import { ArrowPill } from "@/components/ui/arrow-pill";
 import { Container } from "@/components/ui/container";
-import { ArrowRightIcon } from "@/components/ui/icons";
+import { Dot } from "@/components/ui/dot";
+import { LongArrowIcon } from "@/components/ui/icons";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { cn } from "@/lib/cn";
 import { isDoc } from "@/lib/relations";
 
+/** Hover colours for the pills, cycled so neighbours never match. */
+const FILLS = ["var(--color-sun)", "var(--color-mint)", "var(--color-peach)"];
+
 /**
- * "How can we help you?" pills. Heading sits on the right; the pills wrap in a
- * wide ragged block on the left. Each need links to its service page and
- * carries the need text to the brief builder via ?need=.
+ * "How can we help you?": a pulsing dot and question on one line, then large
+ * pills that flow across the full width. Each pill floods with an accent on
+ * hover while its arrow slides out; it links to the matching service and
+ * carries the need to the brief builder via ?need=.
  */
-export function NeedPickerBlock({ block, index }: BlockProps<"needPicker">) {
+export function NeedPickerBlock({ block }: BlockProps<"needPicker">) {
   const items = block.items ?? [];
   const tone = block.tone ?? "paper-2";
   const dark = tone === "teal-ink" || tone === "teal";
@@ -24,38 +30,62 @@ export function NeedPickerBlock({ block, index }: BlockProps<"needPicker">) {
   return (
     <Section tone={tone}>
       <Container>
-        <Reveal self={false} className="grid gap-10 lg:grid-cols-12">
-          <SectionHeader
-            index={index}
-            eyebrow={block.eyebrow}
-            heading={block.heading}
-            intro={block.subheading}
-            tone={dark ? "paper" : "ink"}
-            className="lg:order-2 lg:col-span-4"
-            align="right"
-          />
-          <ul className="flex flex-wrap gap-3 lg:order-1 lg:col-span-8">
+        <Reveal self={false} className="flex flex-col gap-8 md:gap-10">
+          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div className="flex flex-col gap-5">
+              {block.eyebrow && (
+                <RevealItem index={0} direction="left">
+                  <ArrowPill tone={dark ? "dark" : "light"}>{block.eyebrow}</ArrowPill>
+                </RevealItem>
+              )}
+              <RevealItem index={1} className="flex items-center gap-4 md:gap-5">
+                <Dot tone={dark ? "sun" : "teal"} />
+                <h2 className="text-[30px] leading-[1.1] font-semibold tracking-[-0.025em] md:text-[44px] xl:text-[53px]">
+                  {block.heading}
+                </h2>
+              </RevealItem>
+            </div>
+            {block.subheading && (
+              <RevealItem index={2}>
+                <p
+                  className={cn("text-base md:text-[17px]", dark ? "text-paper/70" : "text-ink-2")}
+                >
+                  {block.subheading}
+                </p>
+              </RevealItem>
+            )}
+          </div>
+
+          <ul className="flex flex-wrap gap-2.5 md:gap-3">
             {items.map((item, i) => {
               const service = isDoc(item.service) ? (item.service as Service) : null;
               const href = service
                 ? `/services/${service.slug}?need=${encodeURIComponent(item.label)}`
                 : `/start-a-project?need=${encodeURIComponent(item.label)}`;
               return (
-                <RevealItem as="li" key={item.id ?? item.label} index={i + 3}>
+                <RevealItem
+                  as="li"
+                  key={item.id ?? item.label}
+                  index={i + 3}
+                  style={{ "--fill": FILLS[i % FILLS.length] } as CSSProperties}
+                >
                   <Link
                     href={href}
                     className={cn(
-                      "group inline-flex items-center gap-3 rounded-pill border px-5 py-3 text-lead font-medium transition-[border-color,background-color,color,transform,box-shadow] duration-(--duration-base) ease-(--ease-smooth) hover:-translate-y-0.5 hover:shadow-card",
+                      "group inline-flex min-h-14 items-center rounded-pill px-6 py-3 text-[15px] font-medium md:min-h-[66px] md:px-8 md:text-[17px]",
+                      "transition-[background-color,color,box-shadow] duration-500 ease-(--ease-smooth) hover:bg-(--fill) hover:text-ink",
                       dark
-                        ? "border-paper/30 text-paper hover:border-sun hover:bg-sun hover:text-ink"
-                        : "border-line-strong bg-white text-ink hover:border-teal hover:bg-teal hover:text-white",
+                        ? "bg-paper/10 text-paper"
+                        : "bg-white text-ink shadow-[0_1px_2px_rgb(11_13_16/0.04)] hover:shadow-card",
                     )}
                   >
                     {item.label}
-                    <ArrowRightIcon
-                      size={18}
-                      className="transition-transform group-hover:translate-x-1"
-                    />
+                    <span className="grid w-0 overflow-hidden transition-[width,margin] duration-500 ease-(--ease-smooth) group-hover:ml-4 group-hover:w-10 group-focus-visible:ml-4 group-focus-visible:w-10">
+                      <LongArrowIcon
+                        width={40}
+                        className="-translate-x-3 transition-transform duration-500 ease-(--ease-smooth) group-hover:translate-x-0"
+                      />
+                    </span>
                   </Link>
                 </RevealItem>
               );

@@ -24,9 +24,9 @@ const isActive = (pathname: string, href: string) =>
   href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
 /**
- * Sticky header. Desktop: inline links with a sliding underline and
- * fade/slide dropdowns. Mobile: native <dialog> drawer that slides in from the
- * right with staggered links. Compacts with a blur once the page is scrolled.
+ * Desktop: the logo sits in the page flow while a frosted navigation pill stays
+ * fixed to the top right. Mobile: a sticky bar that blurs once scrolled, and a
+ * native <dialog> drawer that slides in from the right with staggered links.
  */
 export function HeaderNav({ items, cta, secondary, contact }: Props) {
   const pathname = usePathname();
@@ -72,13 +72,15 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
     };
   }, [open]);
 
+  const expanded = items.some((i) => i.label === open && i.children?.length);
+
   return (
     <>
       <div ref={sentinel} aria-hidden className="h-px w-full" />
       <header
         data-scrolled={scrolled || undefined}
         className={cn(
-          "sticky top-0 z-40 transition-[background-color,box-shadow] duration-(--duration-slow) ease-(--ease-smooth)",
+          "sticky top-0 z-40 transition-[background-color,box-shadow] duration-(--duration-slow) ease-(--ease-smooth) lg:static lg:bg-transparent lg:shadow-none lg:backdrop-blur-none",
           scrolled
             ? "bg-paper/80 shadow-[0_1px_0_0_var(--color-line)] backdrop-blur-xl"
             : "bg-transparent",
@@ -90,126 +92,141 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
         >
           Skip to content
         </a>
-        <nav
-          ref={navRef}
-          aria-label="Primary"
+        <div
           className={cn(
-            "mx-auto flex max-w-(--container-site) items-center justify-between gap-6 px-gutter transition-[height] duration-(--duration-slow) ease-(--ease-smooth)",
+            "mx-auto flex max-w-(--container-site) items-center justify-between gap-6 px-gutter transition-[height] duration-(--duration-slow) ease-(--ease-smooth) lg:h-[126px] lg:items-end",
             scrolled ? "h-16" : "h-22",
           )}
         >
-          <Link href="/" className="rounded-sm" aria-label="Upsure home">
+          <Link
+            href="/"
+            className="rounded-sm lg:flex lg:h-[76px] lg:items-center"
+            aria-label="Upsure home"
+          >
             <Logo />
           </Link>
 
-          {/* Desktop links */}
-          <ul className="hidden items-center gap-1 lg:flex">
-            {items.map((item) => {
-              const hasChildren = Boolean(item.children?.length);
-              const active = isActive(pathname, item.href);
-              const menuId = `${id}-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
-              const isOpen = open === item.label;
-              return (
-                <li
-                  key={item.label}
-                  className="relative"
-                  onMouseEnter={() => hasChildren && setOpen(item.label)}
-                  onMouseLeave={() => hasChildren && setOpen((o) => (o === item.label ? null : o))}
-                >
-                  <span className="flex items-center">
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "group relative rounded-md px-3 py-2 text-[0.95rem] font-medium text-ink-2 hover:text-ink",
-                        active && "text-ink",
-                      )}
-                      aria-current={active ? "page" : undefined}
-                    >
-                      {item.label}
-                      <span
-                        aria-hidden
-                        className={cn(
-                          "absolute inset-x-3 -bottom-0.5 h-0.5 origin-left scale-x-0 rounded-full bg-teal transition-transform duration-(--duration-base) ease-(--ease-smooth) group-hover:scale-x-100",
-                          active && "scale-x-100",
-                        )}
-                      />
-                    </Link>
-                    {hasChildren && (
-                      <button
-                        type="button"
-                        className="-ml-2 rounded-md p-1 text-muted hover:text-ink"
-                        aria-expanded={isOpen}
-                        aria-controls={menuId}
-                        aria-label={`${item.label} menu`}
-                        onClick={() => setOpen((o) => (o === item.label ? null : item.label))}
-                      >
-                        <ChevronRightIcon
-                          size={16}
-                          className={cn(
-                            "transition-transform duration-(--duration-fast)",
-                            isOpen ? "-rotate-90" : "rotate-90",
-                          )}
-                        />
-                      </button>
-                    )}
-                  </span>
-
-                  {hasChildren && (
-                    <div
-                      id={menuId}
-                      role="group"
-                      aria-hidden={!isOpen}
-                      className={cn(
-                        "absolute top-full left-0 z-50 w-[22rem] pt-3 transition-[opacity,transform,visibility] duration-(--duration-base) ease-(--ease-smooth)",
-                        isOpen
-                          ? "visible translate-y-0 opacity-100"
-                          : "invisible -translate-y-1 opacity-0",
-                      )}
-                    >
-                      <ul className="grid gap-1 rounded-lg bg-white/95 p-2 shadow-lift ring-1 ring-line backdrop-blur-md">
-                        {item.children!.map((child) => (
-                          <li key={child.href}>
-                            <Link
-                              href={child.href}
-                              tabIndex={isOpen ? 0 : -1}
-                              className="group/item flex items-center justify-between gap-3 rounded-md px-3 py-2.5 hover:bg-paper-2 focus-visible:bg-paper-2"
-                            >
-                              <span className="flex flex-col gap-0.5">
-                                <span className="font-medium text-ink">{child.label}</span>
-                                {child.description && (
-                                  <span className="text-small text-muted">{child.description}</span>
-                                )}
-                              </span>
-                              <ChevronRightIcon
-                                size={16}
-                                className="shrink-0 text-muted transition-transform group-hover/item:translate-x-1 group-hover/item:text-teal"
-                              />
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 lg:hidden">
             <Button href={cta.href} size="md" withArrow className="hidden sm:inline-flex">
               {cta.label}
             </Button>
             <button
               type="button"
-              className="inline-flex size-11 items-center justify-center rounded-pill border border-line-strong text-ink hover:bg-ink hover:text-paper lg:hidden"
+              className="inline-flex size-11 items-center justify-center rounded-pill border border-line-strong text-ink hover:bg-ink hover:text-paper"
               aria-label="Open menu"
               onClick={() => dialog.current?.showModal()}
             >
               <MenuIcon />
             </button>
           </div>
-        </nav>
+        </div>
       </header>
+
+      {/*
+        Desktop: a frosted pill fixed to the top right. Items share the width
+        equally; hovering an item with children grows the pill downwards and
+        reveals its sub-links in a row.
+      */}
+      <div className="pointer-events-none fixed inset-x-0 top-[50px] z-50 hidden lg:block">
+        <div className="mx-auto flex max-w-(--container-site) justify-end px-gutter">
+          <nav
+            ref={navRef}
+            aria-label="Primary"
+            onMouseLeave={() => setOpen(null)}
+            className={cn(
+              "pointer-events-auto relative w-[66%] overflow-hidden rounded-[38px] bg-white/70 p-[15px] backdrop-blur-[9px] xl:w-[62%]",
+              "transition-[height,box-shadow] duration-(--duration-base) ease-(--ease-smooth)",
+              expanded ? "h-[152px] shadow-[0_0_25px_rgb(0_0_0/0.06)]" : "h-[76px]",
+            )}
+          >
+            <span
+              aria-hidden
+              className={cn(
+                "absolute inset-x-0 top-[76px] h-[76px] rounded-b-[38px] bg-[rgb(235_235_235/0.5)] transition-opacity duration-(--duration-base) ease-(--ease-smooth)",
+                expanded ? "opacity-100" : "opacity-0",
+              )}
+            />
+            <ul className="flex gap-[3px]">
+              {items.map((item) => {
+                const hasChildren = Boolean(item.children?.length);
+                const active = isActive(pathname, item.href);
+                const menuId = `${id}-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
+                const isOpen = open === item.label;
+                return (
+                  <li
+                    key={item.label}
+                    className="flex-1"
+                    onMouseEnter={() => setOpen(hasChildren ? item.label : null)}
+                    onFocus={() => setOpen(hasChildren ? item.label : null)}
+                  >
+                    <Link
+                      href={item.href}
+                      aria-current={active ? "page" : undefined}
+                      aria-expanded={hasChildren ? isOpen : undefined}
+                      aria-controls={hasChildren ? menuId : undefined}
+                      className={cn(
+                        "group/nav relative flex h-[46px] items-center justify-center overflow-hidden rounded-[33px] px-2.5 text-[13px] font-medium text-ink",
+                        "transition-colors duration-(--duration-base) ease-(--ease-smooth) hover:bg-[#e9e9e9] focus-visible:bg-[#e9e9e9]",
+                        (active || isOpen) && "bg-[#f1f1f1]",
+                      )}
+                    >
+                      <span className="transition-transform duration-(--duration-base) ease-(--ease-smooth) xl:group-hover/nav:-translate-x-2">
+                        {item.label}
+                      </span>
+                      <ChevronRightIcon
+                        size={14}
+                        aria-hidden
+                        className={cn(
+                          "absolute right-3 hidden translate-x-[200%] opacity-0 transition-[transform,opacity] duration-(--duration-base) ease-(--ease-smooth) xl:block",
+                          "group-hover/nav:translate-x-0 group-hover/nav:opacity-100",
+                          hasChildren && "rotate-90",
+                        )}
+                      />
+                    </Link>
+
+                    {hasChildren && (
+                      <ul
+                        id={menuId}
+                        aria-label={`${item.label} pages`}
+                        className={cn(
+                          "absolute inset-x-0 top-[61px] no-scrollbar flex h-[91px] items-center gap-5 overflow-x-auto px-[30px] pt-[15px]",
+                          "transition-[opacity,visibility] duration-150 ease-(--ease-smooth)",
+                          isOpen ? "visible opacity-100" : "invisible opacity-0",
+                        )}
+                      >
+                        {item.children!.map((child) => (
+                          <li key={child.href} className="shrink-0">
+                            <Link
+                              href={child.href}
+                              tabIndex={isOpen ? 0 : -1}
+                              className="group/sub flex items-center gap-2 text-[13px] font-medium whitespace-nowrap text-ink hover:text-black"
+                            >
+                              <ChevronRightIcon
+                                size={11}
+                                aria-hidden
+                                className="shrink-0 transition-transform duration-300 ease-(--ease-smooth) group-hover/sub:translate-x-1"
+                              />
+                              {child.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+              <li className="flex-1" onMouseEnter={() => setOpen(null)}>
+                <Link
+                  href={cta.href}
+                  className="flex h-[46px] items-center justify-center rounded-[33px] bg-sun px-3 text-[13px] font-semibold whitespace-nowrap text-ink transition-colors duration-(--duration-base) ease-(--ease-smooth) hover:bg-ink hover:text-paper"
+                >
+                  {cta.label}
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
 
       {/* Mobile drawer */}
       <dialog

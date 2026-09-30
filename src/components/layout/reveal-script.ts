@@ -2,11 +2,12 @@
  * Inline script for reveal-on-scroll. Runs before hydration so elements never
  * flash, and needs no client component.
  *
- * Behaviour mirrors the reference site: a section becomes "active"
- * (`data-visible`) once it is 200 px inside the viewport (125 px on screens
- * narrower than 1000 px) and is reset when it leaves, so its entrance plays
- * again on re-entry. CSS hides `[data-rv]` only while `html[data-rv-ready]`
- * is set.
+ * A section becomes "active" (`data-visible`) once its top crosses a line a
+ * little above the bottom of the viewport (15 % of its height, capped at
+ * 200 px). It is reset only when it drops back below the viewport, so the
+ * entrance replays when you scroll down to it again, but content you have
+ * scrolled past never fades out or leaves holes at the top of the screen.
+ * CSS hides `[data-rv]` only while `html[data-rv-ready]` is set.
  *
  * Skipped entirely under prefers-reduced-motion or the low-data toggle, so
  * content simply renders visible.
@@ -17,14 +18,14 @@ export const revealScript = `
   if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   try{if(localStorage.getItem('upsure:motion')==='off')return;}catch(e){}
   h.setAttribute('data-rv-ready','');
-  var tol=innerWidth>=1000?200:125;
+  var tol=Math.round(Math.min(innerWidth>=1000?200:125,innerHeight*0.15));
   var io=new IntersectionObserver(function(es){
     for(var i=0;i<es.length;i++){
-      var t=es[i].target;
-      if(es[i].isIntersecting)t.setAttribute('data-visible','');
-      else if(t.hasAttribute('data-visible'))t.removeAttribute('data-visible');
+      var e=es[i],t=e.target;
+      if(e.isIntersecting)t.setAttribute('data-visible','');
+      else if(e.boundingClientRect.top>0&&t.hasAttribute('data-visible'))t.removeAttribute('data-visible');
     }
-  },{threshold:0,rootMargin:'-'+tol+'px 0px -'+tol+'px 0px'});
+  },{threshold:0,rootMargin:'0px 0px -'+tol+'px 0px'});
   function scan(root){
     var list=root.querySelectorAll?root.querySelectorAll('[data-rv-root],[data-rv]'):[];
     for(var i=0;i<list.length;i++){
