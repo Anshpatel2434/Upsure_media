@@ -1,4 +1,4 @@
-import type { Category } from "@/payload-types";
+import type { Category } from "@/content/types";
 
 import type { BlockProps } from "@/components/blocks/render-blocks";
 import { MediaTile, TILE_COLOURS } from "@/components/cards/media-tile";
@@ -8,7 +8,7 @@ import { Dot } from "@/components/ui/dot";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { TextLink } from "@/components/ui/text-link";
-import { getPosts } from "@/lib/cms/queries";
+import { getPosts } from "@/lib/queries";
 import { renderEmphasis } from "@/lib/markers";
 import { isDoc } from "@/lib/relations";
 import { formatDate } from "@/lib/text";

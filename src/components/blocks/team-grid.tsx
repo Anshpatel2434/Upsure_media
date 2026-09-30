@@ -6,7 +6,7 @@ import { ArrowUpRightIcon } from "@/components/ui/icons";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Sticker } from "@/components/ui/sticker";
-import { getTeam } from "@/lib/cms/queries";
+import { getTeam } from "@/lib/queries";
 import { cn } from "@/lib/cn";
 
 /** Offset masonry: alternating portrait/landscape crops, every second column pushed down. */

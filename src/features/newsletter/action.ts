@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 
-import { getCms } from "@/lib/cms/client";
+import { sendEmail } from "@/lib/email";
 
 export type NewsletterState = { status: "idle" | "success" | "error"; message?: string };
 
@@ -26,28 +26,12 @@ export async function subscribe(
   }
   if (parsed.data.website) return { status: "success", message: "You're on the list." }; // silently drop bots
 
-  const cms = await getCms();
-  try {
-    const existing = await cms.find({
-      collection: "newsletter-subscribers",
-      where: { email: { equals: parsed.data.email.toLowerCase() } },
-      limit: 1,
-      depth: 0,
-    });
-    if (!existing.docs.length) {
-      await cms.create({
-        collection: "newsletter-subscribers",
-        data: {
-          email: parsed.data.email.toLowerCase(),
-          source: parsed.data.source,
-          confirmed: true,
-        },
-        overrideAccess: true,
-      });
-    }
-    return { status: "success", message: "You're on the list. Sharp takes, once a month." };
-  } catch (error) {
-    cms.logger.error({ err: error }, "Newsletter subscribe failed");
-    return { status: "error", message: "Something went wrong. Please try again." };
-  }
+  const sent = await sendEmail({
+    subject: "New newsletter subscriber",
+    text: `Email: ${parsed.data.email.toLowerCase()}
+Source: ${parsed.data.source ?? "website"}`,
+  });
+  return sent
+    ? { status: "success", message: "You're on the list. Sharp takes, once a month." }
+    : { status: "error", message: "Something went wrong. Please try again." };
 }

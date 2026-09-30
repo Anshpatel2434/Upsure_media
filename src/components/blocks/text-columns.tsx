@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-import type { Media } from "@/payload-types";
+import type { Media } from "@/content/types";
 
 import { BlockImage } from "@/components/blocks/block-image";
 import type { BlockProps } from "@/components/blocks/render-blocks";

@@ -5,7 +5,7 @@ import { Carousel } from "@/components/ui/carousel";
 import { Container } from "@/components/ui/container";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
-import { getTestimonials } from "@/lib/cms/queries";
+import { getTestimonials } from "@/lib/queries";
 
 /** Heading on the left third, quotes sliding on the right with circle controls above. */
 export async function TestimonialCarouselBlock({

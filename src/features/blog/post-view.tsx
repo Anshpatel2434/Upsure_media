@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { Category, Post } from "@/payload-types";
+import type { Category, Post } from "@/content/types";
 
 import { BlockImage } from "@/components/blocks/block-image";
 import { SectionHeader } from "@/components/blocks/section-header";
@@ -13,7 +13,7 @@ import { Prose } from "@/components/ui/prose";
 import { Section } from "@/components/ui/section";
 import { Tag } from "@/components/ui/tag";
 import { NewsletterForm } from "@/features/newsletter/newsletter-form";
-import { getPosts } from "@/lib/cms/queries";
+import { getPosts } from "@/lib/queries";
 import { getSiteUrl } from "@/lib/site";
 import { formatDate, readingTime } from "@/lib/text";
 import { isDoc } from "@/lib/relations";

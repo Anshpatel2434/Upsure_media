@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
-import { getGlobals } from "@/lib/cms/queries";
+import { getGlobals } from "@/lib/queries";
 
 /** Global "Ready to move forward?" band: giant two lines, button hanging off the line end. */
 export async function CtaBand() {

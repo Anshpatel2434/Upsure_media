@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 
-import type { Page } from "@/payload-types";
+import type { Page } from "@/content/types";
 
 import { ApproachStepsBlock } from "@/components/blocks/approach-steps";
 import { BlogCarouselBlock } from "@/components/blocks/blog-carousel";

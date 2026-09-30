@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Marquee } from "@/components/ui/marquee";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
-import { getClients } from "@/lib/cms/queries";
+import { getClients } from "@/lib/queries";
 import { cn } from "@/lib/cn";
 import { imageProps } from "@/lib/media";
 

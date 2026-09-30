@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import type { Service } from "@/payload-types";
+import type { Service } from "@/content/types";
 
 import { ArrowRightIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";

@@ -3,7 +3,8 @@
 import { headers } from "next/headers";
 import { z } from "zod";
 
-import { getCms } from "@/lib/cms/client";
+import { store } from "@/content/store";
+import { sendEmail } from "@/lib/email";
 
 export type FormState = {
   status: "idle" | "success" | "error";
@@ -39,12 +40,11 @@ async function verifyTurnstile(token: string | undefined, ip: string): Promise<b
 }
 
 /**
- * Generic submit for any Form Builder form. Validates required fields against
- * the form definition in the CMS, stores the submission, and lets the plugin
- * send its configured emails.
+ * Generic submit for every site form. Validates the fields against the form
+ * definition in src/content, then emails the submission to the team. Nothing
+ * is stored.
  */
 export async function submitForm(_prev: FormState, formData: FormData): Promise<FormState> {
-  const cms = await getCms();
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
 
   const formId = String(formData.get("__form") ?? "");
@@ -56,7 +56,7 @@ export async function submitForm(_prev: FormState, formData: FormData): Promise<
     return { status: "error", message: "Spam check failed. Please try again." };
   }
 
-  const form = await cms.findByID({ collection: "forms", id: formId, depth: 0 }).catch(() => null);
+  const form = Object.values(store.forms).find((f) => String(f.id) === formId);
   if (!form) return { status: "error", message: "Form not found." };
 
   // Build a Zod schema from the form definition.
@@ -94,33 +94,22 @@ export async function submitForm(_prev: FormState, formData: FormData): Promise<
     return { status: "error", message: "Please check the highlighted fields.", errors };
   }
 
-  try {
-    await cms.create({
-      collection: "form-submissions",
-      data: {
-        form: form.id,
-        submissionData: Object.entries(parsed.data)
-          .filter(([, v]) => v !== undefined && v !== "")
-          .map(([field, value]) => ({ field, value: String(value) })),
-      },
-      overrideAccess: true,
-    });
-  } catch (error) {
-    cms.logger.error({ err: error }, "Form submission failed");
+  const fields = Object.entries(parsed.data).filter(([, v]) => v !== undefined && v !== "");
+  const labelOf = (name: string) => {
+    const field = form.fields?.find((f) => "name" in f && f.name === name);
+    return (field && "label" in field && field.label) || name;
+  };
+  const sent = await sendEmail({
+    subject: `New ${form.title.toLowerCase()} from the website`,
+    text: fields.map(([name, value]) => `${labelOf(name)}: ${String(value)}`).join("\n"),
+    replyTo: typeof parsed.data.email === "string" ? parsed.data.email : undefined,
+  });
+  if (!sent) {
     return { status: "error", message: "Something went wrong. Please email us instead." };
   }
 
-  const confirmation =
-    form.confirmationType === "message" && form.confirmationMessage
-      ? extractText(form.confirmationMessage)
-      : "Thanks — we'll be in touch within one business day.";
-  return { status: "success", message: confirmation };
-}
-
-function extractText(node: unknown): string {
-  if (!node || typeof node !== "object") return "";
-  const n = node as { text?: string; children?: unknown[]; root?: unknown };
-  if (n.root) return extractText(n.root);
-  if (typeof n.text === "string") return n.text;
-  return (n.children ?? []).map(extractText).join(" ").replace(/\s+/g, " ").trim();
+  return {
+    status: "success",
+    message: form.confirmationMessage ?? "Thanks — we'll be in touch within one business day.",
+  };
 }

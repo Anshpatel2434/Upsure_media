@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { Service } from "@/payload-types";
+import type { Service } from "@/content/types";
 
 import type { BlockProps } from "@/components/blocks/render-blocks";
 import { SectionHeader } from "@/components/blocks/section-header";

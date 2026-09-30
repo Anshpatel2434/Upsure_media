@@ -4,7 +4,7 @@ import { Logo } from "@/components/layout/logo";
 import { LowDataToggle } from "@/components/layout/low-data-toggle";
 import { ArrowUpRightIcon } from "@/components/ui/icons";
 import { NewsletterForm } from "@/features/newsletter/newsletter-form";
-import { getGlobals } from "@/lib/cms/queries";
+import { getGlobals } from "@/lib/queries";
 
 export async function Footer() {
   const { footer, settings } = await getGlobals();

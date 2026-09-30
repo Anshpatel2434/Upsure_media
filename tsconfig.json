@@ -22,8 +22,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@payload-config": ["./src/payload/payload.config.ts"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -34,5 +33,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", "media"]
+  "exclude": ["node_modules"]
 }

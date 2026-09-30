@@ -9,7 +9,7 @@ import { Container } from "@/components/ui/container";
 import { LongArrowIcon } from "@/components/ui/icons";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
-import { getServices } from "@/lib/cms/queries";
+import { getServices } from "@/lib/queries";
 import { cn } from "@/lib/cn";
 import { imageProps } from "@/lib/media";
 

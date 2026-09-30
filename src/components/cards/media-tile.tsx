@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
-import type { Media } from "@/payload-types";
+import type { Media } from "@/content/types";
 
 import { LongArrowIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";

@@ -1,4 +1,4 @@
-import type { Form, Service } from "@/payload-types";
+import type { Form, Service } from "@/content/types";
 
 import { BlockImage } from "@/components/blocks/block-image";
 import { RenderBlocks, type LayoutBlock } from "@/components/blocks/render-blocks";
@@ -14,8 +14,7 @@ import { CheckIcon } from "@/components/ui/icons";
 import { Section } from "@/components/ui/section";
 import { Tag } from "@/components/ui/tag";
 import { LeadForm } from "@/features/forms/lead-form";
-import { getCms } from "@/lib/cms/client";
-import { getCaseStudies, getFaqs, getTestimonials } from "@/lib/cms/queries";
+import { getCaseStudies, getFaqs, getTestimonials } from "@/lib/queries";
 import { renderHighlights } from "@/lib/text";
 import { isDoc } from "@/lib/relations";
 
@@ -24,15 +23,8 @@ import { isDoc } from "@/lib/relations";
  * service testimonials, service FAQs, plus any extra CMS blocks.
  */
 export async function ServiceView({ service }: { service: Service }) {
-  const cms = await getCms();
-  const [form, work, testimonials, faqs] = await Promise.all([
-    isDoc(service.form)
-      ? Promise.resolve(service.form as Form)
-      : service.form
-        ? (cms
-            .findByID({ collection: "forms", id: service.form, depth: 0 })
-            .catch(() => null) as Promise<Form | null>)
-        : Promise.resolve(null),
+  const form = isDoc(service.form) ? (service.form as Form) : null;
+  const [work, testimonials, faqs] = await Promise.all([
     getCaseStudies({ ids: service.relatedWork, service: service.id, limit: 4 }),
     getTestimonials({ service: service.id }),
     getFaqs({ service: service.id }),

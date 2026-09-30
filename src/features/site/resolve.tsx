@@ -9,24 +9,19 @@ import { BriefBuilder } from "@/features/brief/brief-builder";
 import { ServiceView } from "@/features/services/service-view";
 import { CaseStudyView } from "@/features/work/case-study-view";
 import { WorkListing } from "@/features/work/work-listing";
-import { getCaseStudy, getGlobals, getPage, getPost, getService } from "@/lib/cms/queries";
+import { getCaseStudy, getGlobals, getPage, getPost, getService } from "@/lib/queries";
 import { buildMetadata } from "@/lib/seo";
 
 export type RouteResult = { node: ReactNode; metadata: Metadata } | null;
 
-type Opts = { draft: boolean };
-
-/**
- * Single source of truth for URL → content. Used by the public catch-all
- * route (published content, statically rendered) and by /preview/… (drafts).
- */
-export async function resolveRoute(segments: string[], { draft }: Opts): Promise<RouteResult> {
+/** Single source of truth for URL → content, used by the catch-all route. */
+export async function resolveRoute(segments: string[]): Promise<RouteResult> {
   const [head, second, third] = segments;
   const path = `/${segments.join("/")}`;
 
   // ---- Services --------------------------------------------------------
   if (head === "services" && second && !third) {
-    const service = await getService(second, { draft });
+    const service = await getService(second);
     if (!service) return null;
     return {
       node: (
@@ -46,7 +41,7 @@ export async function resolveRoute(segments: string[], { draft }: Opts): Promise
 
   // ---- Work --------------------------------------------------------------
   if (head === "work" && second === "service" && third) {
-    return withPage("work", path, draft, (page) => (
+    return withPage("work", path, (page) => (
       <>
         <RenderBlocks blocks={page.layout} />
         <WorkListing serviceSlug={third} />
@@ -54,7 +49,7 @@ export async function resolveRoute(segments: string[], { draft }: Opts): Promise
     ));
   }
   if (head === "work" && second && !third) {
-    const study = await getCaseStudy(second, { draft });
+    const study = await getCaseStudy(second);
     if (!study) return null;
     return {
       node: (
@@ -74,7 +69,7 @@ export async function resolveRoute(segments: string[], { draft }: Opts): Promise
     };
   }
   if (head === "work" && !second) {
-    return withPage("work", path, draft, (page) => (
+    return withPage("work", path, (page) => (
       <>
         <RenderBlocks blocks={page.layout} />
         <WorkListing />
@@ -86,7 +81,7 @@ export async function resolveRoute(segments: string[], { draft }: Opts): Promise
   if (head === "blog" && second === "page" && third) {
     const pageNumber = Number(third);
     if (!Number.isInteger(pageNumber) || pageNumber < 1) return null;
-    return withPage("blog", path, draft, (page) => (
+    return withPage("blog", path, (page) => (
       <>
         <RenderBlocks blocks={page.layout} />
         <BlogListing page={pageNumber} />
@@ -94,7 +89,7 @@ export async function resolveRoute(segments: string[], { draft }: Opts): Promise
     ));
   }
   if (head === "blog" && second === "category" && third) {
-    return withPage("blog", path, draft, (page) => (
+    return withPage("blog", path, (page) => (
       <>
         <RenderBlocks blocks={page.layout} />
         <BlogListing category={third} />
@@ -102,7 +97,7 @@ export async function resolveRoute(segments: string[], { draft }: Opts): Promise
     ));
   }
   if (head === "blog" && second && !third) {
-    const post = await getPost(second, { draft });
+    const post = await getPost(second);
     if (!post) return null;
     return {
       node: (
@@ -122,7 +117,7 @@ export async function resolveRoute(segments: string[], { draft }: Opts): Promise
     };
   }
   if (head === "blog" && !second) {
-    return withPage("blog", path, draft, (page) => (
+    return withPage("blog", path, (page) => (
       <>
         <RenderBlocks blocks={page.layout} />
         <BlogListing page={1} />
@@ -132,7 +127,7 @@ export async function resolveRoute(segments: string[], { draft }: Opts): Promise
 
   // ---- Brief builder -------------------------------------------------------
   if (head === "start-a-project" && !second) {
-    return withPage("start-a-project", path, draft, (page) => (
+    return withPage("start-a-project", path, (page) => (
       <>
         <RenderBlocks blocks={page.layout} />
         <BriefBuilder />
@@ -143,7 +138,7 @@ export async function resolveRoute(segments: string[], { draft }: Opts): Promise
   // ---- Any other page-builder page (home, services, about, culture, …) ------
   if (segments.length <= 1) {
     const slug = head ?? "home";
-    return withPage(slug, path, draft, (page) => <RenderBlocks blocks={page.layout} />);
+    return withPage(slug, path, (page) => <RenderBlocks blocks={page.layout} />);
   }
 
   return null;
@@ -154,10 +149,9 @@ type PageDoc = NonNullable<Awaited<ReturnType<typeof getPage>>>;
 async function withPage(
   slug: string,
   path: string,
-  draft: boolean,
   render: (page: PageDoc) => ReactNode,
 ): Promise<RouteResult> {
-  const [page, { settings }] = await Promise.all([getPage(slug, { draft }), getGlobals()]);
+  const [page, { settings }] = await Promise.all([getPage(slug), getGlobals()]);
   if (!page) return null;
   return {
     node: (

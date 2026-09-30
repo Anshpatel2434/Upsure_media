@@ -5,7 +5,7 @@ import { Accordion } from "@/components/ui/accordion";
 import { Container } from "@/components/ui/container";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
-import { getFaqs } from "@/lib/cms/queries";
+import { getFaqs } from "@/lib/queries";
 
 /** Heading in a sticky left column beside a hairline list with circle controls. */
 export async function FaqBlock({ block, index }: BlockProps<"faq">) {

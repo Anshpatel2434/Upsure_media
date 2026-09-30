@@ -10,7 +10,7 @@ import { QuoteFader } from "@/components/ui/quote-fader";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { TextLink } from "@/components/ui/text-link";
-import { getCaseStudies, getTestimonials } from "@/lib/cms/queries";
+import { getCaseStudies, getTestimonials } from "@/lib/queries";
 import { renderEmphasis } from "@/lib/markers";
 
 /**

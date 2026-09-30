@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import type { Media } from "@/payload-types";
+import type { Media } from "@/content/types";
 
 import { cn } from "@/lib/cn";
 import { imageProps } from "@/lib/media";

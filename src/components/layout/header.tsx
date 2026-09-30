@@ -1,5 +1,5 @@
 import { HeaderNav } from "@/components/layout/header-nav";
-import { getGlobals } from "@/lib/cms/queries";
+import { getGlobals } from "@/lib/queries";
 
 export async function Header() {
   const { header, settings } = await getGlobals();

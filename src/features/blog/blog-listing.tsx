@@ -4,7 +4,7 @@ import { PostCard } from "@/components/cards/post-card";
 import { Container } from "@/components/ui/container";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
 import { Section } from "@/components/ui/section";
-import { getCategories, getPosts } from "@/lib/cms/queries";
+import { getCategories, getPosts } from "@/lib/queries";
 import { cn } from "@/lib/cn";
 
 const PAGE_SIZE = 9;

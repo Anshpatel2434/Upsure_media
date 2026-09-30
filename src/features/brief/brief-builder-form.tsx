@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useActionState, useState } from "react";
 
-import type { Form } from "@/payload-types";
+import type { Form } from "@/content/types";
 
 import { Button } from "@/components/ui/button";
 import { InputField, SelectField, TextareaField } from "@/components/ui/field";

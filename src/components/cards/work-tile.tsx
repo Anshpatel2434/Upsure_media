@@ -1,4 +1,4 @@
-import type { CaseStudy, Service } from "@/payload-types";
+import type { CaseStudy, Service } from "@/content/types";
 
 import { MediaTile, TILE_COLOURS } from "@/components/cards/media-tile";
 import { isDoc } from "@/lib/relations";

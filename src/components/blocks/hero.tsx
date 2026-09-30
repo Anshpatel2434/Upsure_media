@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 
-import type { Media } from "@/payload-types";
+import type { Media } from "@/content/types";
 
 import type { BlockProps } from "@/components/blocks/render-blocks";
 import { ArrowPill } from "@/components/ui/arrow-pill";
@@ -11,7 +11,7 @@ import { Container } from "@/components/ui/container";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { TextLink } from "@/components/ui/text-link";
-import { getGlobals } from "@/lib/cms/queries";
+import { getGlobals } from "@/lib/queries";
 import { cn } from "@/lib/cn";
 import { renderEmphasis, plainText } from "@/lib/markers";
 import { imageProps } from "@/lib/media";

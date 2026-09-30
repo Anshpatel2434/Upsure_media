@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CaseStudyCard } from "@/components/cards/case-study-card";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { getCaseStudies, getServices } from "@/lib/cms/queries";
+import { getCaseStudies, getServices } from "@/lib/queries";
 import { cn } from "@/lib/cn";
 
 /**

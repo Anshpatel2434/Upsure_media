@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import type { Media } from "@/payload-types";
+import type { Media } from "@/content/types";
 
 import { getSiteUrl, SITE_NAME } from "@/lib/site";
 import { stripHighlights } from "@/lib/text";

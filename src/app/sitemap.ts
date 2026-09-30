@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { getAllRoutes } from "@/lib/cms/queries";
+import { getAllRoutes } from "@/lib/queries";
 import { getSiteUrl } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { CaseStudy, Form, Service, Testimonial } from "@/payload-types";
+import type { CaseStudy, Service, Testimonial } from "@/content/types";
 
 import { BlockImage } from "@/components/blocks/block-image";
 import { RenderBlocks, type LayoutBlock } from "@/components/blocks/render-blocks";
@@ -16,25 +16,16 @@ import { LazyVideo } from "@/components/ui/lazy-video";
 import { Section } from "@/components/ui/section";
 import { Tag } from "@/components/ui/tag";
 import { LeadForm } from "@/features/forms/lead-form";
-import { getCms } from "@/lib/cms/client";
-import { getCaseStudies } from "@/lib/cms/queries";
+import { getCaseStudies, getForm } from "@/lib/queries";
 import { imageProps, isVideo, mediaUrl } from "@/lib/media";
 import { renderHighlights } from "@/lib/text";
 import { isDoc } from "@/lib/relations";
 
 export async function CaseStudyView({ study }: { study: CaseStudy }) {
-  const cms = await getCms();
   const services = (study.services ?? []).filter((s): s is Service => isDoc(s));
   const [similar, callbackForm] = await Promise.all([
     getCaseStudies({ service: services[0]?.id, exclude: study.id, limit: 4 }),
-    cms
-      .find({
-        collection: "forms",
-        where: { title: { equals: "Request a call back" } },
-        limit: 1,
-        depth: 0,
-      })
-      .then((r) => (r.docs[0] as Form | undefined) ?? null),
+    getForm("callback"),
   ]);
   const testimonial = isDoc(study.testimonial) ? (study.testimonial as Testimonial) : null;
   const before = imageProps(study.beforeAfter?.before, "large");

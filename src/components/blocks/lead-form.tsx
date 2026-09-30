@@ -1,24 +1,15 @@
-import type { Form } from "@/payload-types";
+import type { Form } from "@/content/types";
 
 import type { BlockProps } from "@/components/blocks/render-blocks";
 import { SectionHeader } from "@/components/blocks/section-header";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { LeadForm } from "@/features/forms/lead-form";
-import { getCms } from "@/lib/cms/client";
 import { cn } from "@/lib/cn";
 import { isDoc } from "@/lib/relations";
 
-async function resolveForm(form: Form | number | string): Promise<Form | null> {
-  if (isDoc(form)) return form;
-  const cms = await getCms();
-  return (await cms
-    .findByID({ collection: "forms", id: form, depth: 0 })
-    .catch(() => null)) as Form | null;
-}
-
-export async function LeadFormBlock({ block, index }: BlockProps<"leadForm">) {
-  const form = await resolveForm(block.form);
+export function LeadFormBlock({ block, index }: BlockProps<"leadForm">) {
+  const form = isDoc(block.form) ? (block.form as Form) : null;
   if (!form) return null;
   const tone = block.tone ?? "paper";
   const dark = tone === "teal-ink" || tone === "teal";
