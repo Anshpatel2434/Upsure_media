@@ -54,7 +54,10 @@ export const Hero: Block = {
       name: "heading",
       type: "text",
       required: true,
-      admin: { description: "Wrap words in [[double brackets]] to highlight them." },
+      admin: {
+        description:
+          "Wrap words in [[double brackets]] to highlight them. On the Home hero, “|” starts a new display line, e.g. “We design|brands people|[[love.]]”.",
+      },
     },
     { name: "lead", type: "textarea" },
     {
@@ -177,7 +180,7 @@ export const ServiceGrid: Block = {
       defaultValue: "cards",
       options: [
         { label: "Cards", value: "cards" },
-        { label: "Accordion rows", value: "accordion" },
+        { label: "Rows (hover reveals image and sub-services)", value: "accordion" },
       ],
     },
     tone,

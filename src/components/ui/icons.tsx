@@ -87,3 +87,34 @@ export function CheckIcon(props: IconProps) {
     </svg>
   );
 }
+
+/** Long horizontal arrow (line + chevron). Width is free; height follows. */
+export function LongArrowIcon({
+  width = 60,
+  className,
+  strokeWidth = 1.6,
+}: {
+  width?: number;
+  className?: string;
+  strokeWidth?: number;
+}) {
+  const w = Math.max(24, width);
+  return (
+    <svg
+      width={w}
+      height={16}
+      viewBox={`0 0 ${w} 16`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      focusable={false}
+      className={className}
+    >
+      <path d={`M1 8H${w - 2}`} />
+      <path d={`M${w - 9} 1.5 ${w - 2} 8l-7 6.5`} />
+    </svg>
+  );
+}

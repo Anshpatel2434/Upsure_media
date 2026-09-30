@@ -2,7 +2,7 @@ import type { CSSProperties, ElementType, ReactNode } from "react";
 
 import { cn } from "@/lib/cn";
 
-type Direction = "up" | "left" | "right" | "fade" | "image";
+type Direction = "up" | "left" | "right" | "fade" | "image" | "chip";
 
 /**
  * Reveal-on-scroll wrapper. Renders `data-rv-root`; the inline script in

@@ -1,42 +1,47 @@
 import type { BlockProps } from "@/components/blocks/render-blocks";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Reveal, RevealItem } from "@/components/ui/reveal";
+import { Dot } from "@/components/ui/dot";
+import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
+import { cn } from "@/lib/cn";
 import { renderEmphasis } from "@/lib/markers";
-import { sectionIndex } from "@/lib/text";
 
 /**
- * One oversized paragraph set on the right 10 columns, with marker pills that
- * fill behind the emphasised phrases as the section reveals.
+ * "About" statement in the text-reveal style: one large right-aligned
+ * paragraph capped to 85 % of the row, a pulsing dot on its right edge, and
+ * pastel markers that fill behind each `[[phrase]]` one after another each
+ * time the section scrolls into view. A pill button closes the paragraph.
  */
-export function StatementBlock({ block, index }: BlockProps<"statement">) {
+export function StatementBlock({ block }: BlockProps<"statement">) {
   const tone = block.tone ?? "paper";
   const dark = tone === "teal-ink" || tone === "teal";
   return (
-    <Section tone={tone}>
+    <Section tone={tone} padding="none" className="py-12 md:py-[50px] xl:py-[70px]">
       <Container>
-        <Reveal self={false} className="grid gap-8 lg:grid-cols-12">
-          {block.eyebrow && (
-            <RevealItem index={0} className="lg:col-span-2">
-              <Eyebrow index={sectionIndex(index)} tone={dark ? "paper" : "ink"}>
-                {block.eyebrow}
-              </Eyebrow>
-            </RevealItem>
-          )}
-          <RevealItem index={1} className="lg:col-span-10 lg:col-start-3">
-            <p className="text-h2 font-medium text-balance">
-              {renderEmphasis(block.text, { tone: dark ? "sun" : "teal", variant: "marker" })}
+        <Reveal self={false}>
+          <div className="relative ml-auto text-right md:max-w-[85%] md:pr-[50px]">
+            <Dot
+              tone={dark ? "paper" : "ink"}
+              className="absolute top-[6px] -right-0.5 hidden md:top-[13px] md:block"
+            />
+            {block.eyebrow && <p className="sr-only">{block.eyebrow}</p>}
+            <p
+              className={cn(
+                "text-[20px] leading-[1.55] font-medium tracking-[-0.01em] md:text-[24px] lg:text-[30px] xl:text-[33px]",
+                dark ? "text-paper" : "text-ink",
+              )}
+            >
+              {renderEmphasis(block.text, { variant: "marker", tone: dark ? "sun" : "teal" })}
             </p>
-          </RevealItem>
-          {block.cta?.href && block.cta.label && (
-            <RevealItem index={2} className="lg:col-span-10 lg:col-start-3">
-              <Button href={block.cta.href} variant="ghost" tone={dark ? "paper" : "ink"} withArrow>
-                {block.cta.label}
-              </Button>
-            </RevealItem>
-          )}
+            {block.cta?.href && block.cta.label && (
+              <div className="mt-6 md:mt-[25px]">
+                <Button href={block.cta.href} tone={dark ? "paper" : "ink"} withArrow>
+                  {block.cta.label}
+                </Button>
+              </div>
+            )}
+          </div>
         </Reveal>
       </Container>
     </Section>

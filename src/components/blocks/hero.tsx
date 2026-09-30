@@ -1,135 +1,79 @@
 import Image from "next/image";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties } from "react";
 
 import type { Media } from "@/payload-types";
 
-import { BlockImage } from "@/components/blocks/block-image";
 import type { BlockProps } from "@/components/blocks/render-blocks";
+import { ArrowPill } from "@/components/ui/arrow-pill";
+import { Bubble } from "@/components/ui/bubble";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
-import { Sticker } from "@/components/ui/sticker";
+import { TextLink } from "@/components/ui/text-link";
 import { getGlobals } from "@/lib/cms/queries";
 import { cn } from "@/lib/cn";
+import { renderEmphasis, plainText } from "@/lib/markers";
 import { imageProps } from "@/lib/media";
 import { isDoc } from "@/lib/relations";
-import { renderEmphasis } from "@/lib/markers";
 
 type Hero = BlockProps<"hero">["block"];
-
-const rotations = [-6, 4, -3, 5, -5, 3];
+type Tone = "ink" | "paper";
 
 const images = (block: Hero) =>
   (block.images ?? []).map((i) => i.image).filter((m): m is Media => isDoc(m));
 
-/** Small rounded image set inline with the headline text, Marino-style "media chip". */
-function Chip({ media, className }: { media: Media; className?: string }) {
+/** Rounded media chip that wipes in and pulses a soft glow. */
+function Chip({
+  media,
+  order,
+  aspect = "aspect-video",
+  className,
+  priority = false,
+}: {
+  media: Media;
+  order: number;
+  aspect?: string;
+  className?: string;
+  priority?: boolean;
+}) {
   const img = imageProps(media, "card");
   if (!img) return null;
   return (
     <span
       className={cn(
-        "relative mx-[0.12em] inline-block h-[0.82em] w-[1.6em] translate-y-[0.06em] overflow-hidden rounded-[0.28em] align-baseline shadow-chip",
+        "glow pointer-events-none block w-[25vw] rounded-[12px] md:w-[14vw] xl:w-[180px] xl:rounded-[22px]",
         className,
       )}
+      style={{ "--glow-delay": `${order}s` } as CSSProperties}
+      aria-hidden
     >
-      <Image
-        src={img.src}
-        alt={img.alt}
-        fill
-        sizes="200px"
-        priority
-        placeholder={img.blurDataURL ? "blur" : "empty"}
-        blurDataURL={img.blurDataURL}
-        className="object-cover"
-      />
+      <span
+        data-rv="chip"
+        className={cn("relative block overflow-hidden rounded-[inherit] bg-paper-2", aspect)}
+        style={{ "--rv-delay": `${350 + order * 250}ms`, "--i": 0 } as CSSProperties}
+      >
+        <Image
+          src={img.src}
+          alt=""
+          fill
+          sizes="(min-width: 1280px) 180px, (min-width: 768px) 14vw, 25vw"
+          priority={priority}
+          placeholder={img.blurDataURL ? "blur" : "empty"}
+          blurDataURL={img.blurDataURL}
+          className="object-cover"
+        />
+      </span>
     </span>
   );
 }
 
-/**
- * Headline with media chips embedded between the words: the first chip after
- * roughly a third of the words, the second after two thirds. Emphasis markers
- * (`[[…]]`) are preserved.
- */
-function HeadlineWithChips({
-  heading,
-  chips,
-  tone,
-}: {
-  heading: string;
-  chips: Media[];
-  tone: "teal" | "sun";
-}) {
-  const tokens = heading.split(/(\[\[[^\]]+\]\]|\s+)/).filter(Boolean);
-  const words = tokens.filter((t) => t.trim()).length;
-  const slots = chips.length
-    ? [Math.max(1, Math.round(words / 3)), Math.max(2, Math.round((words * 2) / 3))]
-    : [];
-  const out: ReactNode[] = [];
-  let count = 0;
-  let chipIndex = 0;
-  for (let i = 0; i < tokens.length; i++) {
-    const t = tokens[i]!;
-    out.push(<span key={`t${i}`}>{renderEmphasis(t, { tone })}</span>);
-    if (t.trim()) {
-      count += 1;
-      if (slots.includes(count) && chips[chipIndex]) {
-        out.push(<Chip key={`c${i}`} media={chips[chipIndex]!} />);
-        chipIndex += 1;
-      }
-    }
-  }
-  return <>{out}</>;
-}
-
-function Stickers({ block, className }: { block: Hero; className?: string }) {
-  if (!block.stickers?.length) return null;
-  return (
-    <div className={cn("flex flex-wrap gap-3", className)}>
-      {block.stickers.map((s, i) => (
-        <Sticker key={s.id ?? i} tone={s.tone ?? "sun"} rotate={rotations[i % rotations.length]}>
-          {s.text}
-        </Sticker>
-      ))}
-    </div>
-  );
-}
-
-function Ctas({ block, tone }: { block: Hero; tone: "ink" | "paper" }) {
-  if (!block.ctas?.length) return null;
-  return (
-    <div className="flex flex-wrap items-center gap-3">
-      {block.ctas.map((c, i) => (
-        <Button
-          key={c.id ?? c.href}
-          href={c.href}
-          external={Boolean(c.newTab)}
-          size="lg"
-          tone={tone}
-          variant={i === 0 ? "solid" : "ghost"}
-          withArrow={i === 0}
-        >
-          {c.label}
-        </Button>
-      ))}
-    </div>
-  );
-}
-
-async function ContactLine({ tone }: { tone: "ink" | "paper" }) {
+async function ContactLine({ tone, className }: { tone: Tone; className?: string }) {
   const { settings } = await getGlobals();
   const link = cn("underline-offset-4 hover:underline", tone === "ink" ? "text-ink" : "text-paper");
   return (
-    <p
-      className={cn(
-        "flex flex-wrap gap-x-6 gap-y-1 text-body",
-        tone === "ink" ? "text-muted" : "text-paper/70",
-      )}
-    >
-      <a href={`mailto:${settings.email}`} className={link}>
+    <p className={cn("flex flex-wrap gap-x-2.5 gap-y-1 text-sm", className)}>
+      <a href={`mailto:${settings.email}`} className={cn(link, "font-bold")}>
         {settings.email}
       </a>
       {settings.phone && settings.phoneHref && (
@@ -141,127 +85,273 @@ async function ContactLine({ tone }: { tone: "ink" | "paper" }) {
   );
 }
 
+function Ctas({ block, tone }: { block: Hero; tone: Tone }) {
+  if (!block.ctas?.length) return null;
+  const [primary, ...rest] = block.ctas;
+  return (
+    <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+      {primary && (
+        <Button
+          href={primary.href}
+          external={Boolean(primary.newTab)}
+          size="lg"
+          tone={tone}
+          withArrow
+        >
+          {primary.label}
+        </Button>
+      )}
+      {rest.map((c) => (
+        <TextLink key={c.id ?? c.href} href={c.href} tone={tone === "ink" ? "ink" : "accent"}>
+          {c.label}
+        </TextLink>
+      ))}
+    </div>
+  );
+}
+
 /**
- * Editorial hero. All variants share: left-set headline with inline media
- * chips, eyebrow with a pulsing dot, lead + buttons, and one tall photo card
- * overlapping the right edge with a slow float. Variants change tone and how
- * many floating pieces surround the headline.
+ * Home hero: three display lines with media chips set between the words,
+ * two floating pills, and the intro paragraph beside the last line. Lines
+ * slide in alternately from the right and left, 0.25 s apart.
+ *
+ * Headline lines are separated with "|" in the CMS; `[[…]]` marks the words
+ * shown in the accent colour.
  */
-export function HeroBlock({ block }: BlockProps<"hero">) {
-  const variant = block.variant ?? "editorial";
+function HomeHero({ block }: { block: Hero }) {
+  const lines = block.heading.split("|").map((l) => l.trim());
+  while (lines.length < 3) lines.push("");
+  const [l1, l2, l3] = lines;
   const imgs = images(block);
-  const dark = variant === "dark";
-  const teal = variant === "photo-cards";
-  const tone: "ink" | "paper" = dark || teal ? "paper" : "ink";
-  const chips = imgs.slice(0, 2);
-  const feature = imgs[2] ?? imgs[0];
-  const floaters = variant === "collage" ? imgs.slice(3, 6) : teal ? imgs.slice(3, 5) : [];
+  const [s1, s2] = block.stickers ?? [];
 
   return (
     <Section
-      tone={dark ? "teal-ink" : teal ? "teal" : "paper"}
-      grid={!dark && !teal}
+      tone="paper"
+      grid
       padding="none"
-      className="overflow-hidden pt-8 pb-16 md:pt-14 md:pb-24"
+      className="overflow-hidden pt-6 pb-14 md:pt-10 md:pb-16"
     >
-      {!dark && (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -top-32 left-[10%] -z-10 size-[40rem] bg-glow"
-        />
-      )}
       <Container>
-        <Reveal self={false} className="grid gap-10 lg:grid-cols-12 lg:gap-6">
-          <div className="flex flex-col gap-7 lg:col-span-8">
-            {block.eyebrow && (
-              <RevealItem index={0}>
-                <Eyebrow dot tone={tone}>
-                  {block.eyebrow}
-                </Eyebrow>
-              </RevealItem>
-            )}
-            <RevealItem index={1}>
-              <h1
-                className={cn(
-                  "max-w-[13ch] text-display",
-                  dark && "text-paper",
-                  teal && "text-white",
-                )}
-              >
-                <HeadlineWithChips
-                  heading={block.heading}
-                  chips={chips}
-                  tone={tone === "paper" ? "sun" : "teal"}
+        <Reveal self={false} style={{ "--rv-step": "250ms" } as CSSProperties}>
+          <h1 className="sr-only">{plainText(block.heading.replace(/\|/g, " "))}</h1>
+
+          {block.eyebrow && (
+            <RevealItem index={0} direction="fade">
+              <ArrowPill>{block.eyebrow}</ArrowPill>
+            </RevealItem>
+          )}
+
+          <div className="mt-2.5 text-[13vw] leading-[1.1] font-semibold tracking-[-0.035em] text-ink md:text-[8vw] xl:text-[123px]">
+            {/* Line 1 — text, chip to the right, floating pill */}
+            <RevealItem direction="right" index={0} className="relative block md:inline-block">
+              <span aria-hidden className="relative z-10">
+                {renderEmphasis(l1, { variant: "color" })}
+              </span>
+              {imgs[0] && (
+                <Chip
+                  media={imgs[0]}
+                  order={1}
+                  priority
+                  className="hidden md:absolute md:bottom-0 md:left-[104%] md:block xl:bottom-3"
                 />
-              </h1>
+              )}
+              {s1 && (
+                <span className="absolute top-[29vw] right-0 z-20 text-base md:top-[60%] md:right-auto md:left-[123%] xl:left-[120%]">
+                  <Bubble index={0} tone={s1.tone === "coral" ? "white" : "sun"}>
+                    {s1.text}
+                  </Bubble>
+                </span>
+              )}
             </RevealItem>
-            <RevealItem index={2}>
-              <Stickers block={block} />
+
+            {/* Line 2 — chip in the left gutter, indented text */}
+            <RevealItem
+              direction="left"
+              index={1}
+              className="relative block md:pl-[19vw] xl:pl-[285px]"
+            >
+              {imgs[1] && (
+                <Chip
+                  media={imgs[1]}
+                  order={2}
+                  priority
+                  className="mr-[2vw] inline-block align-middle md:absolute md:bottom-0 md:left-[3%] md:mr-0 xl:bottom-3 xl:left-[5%]"
+                />
+              )}
+              <span aria-hidden className="relative z-10">
+                {renderEmphasis(l2, { variant: "color" })}
+              </span>
             </RevealItem>
-            {block.lead && (
-              <RevealItem index={3}>
-                <p
-                  className={cn(
-                    "max-w-[52ch] text-lead font-medium",
-                    tone === "ink" ? "text-ink-2" : "text-paper/80",
-                  )}
-                >
-                  {block.lead}
-                </p>
-              </RevealItem>
-            )}
-            <RevealItem index={4} className="flex flex-col gap-5">
-              <Ctas block={block} tone={tone} />
-              {block.showContact && <ContactLine tone={tone} />}
+
+            {/* Line 3 — text, then paragraph + chip; second pill below */}
+            <RevealItem direction="right" index={2} className="relative block md:flex">
+              <span aria-hidden className="relative z-10 shrink-0">
+                {renderEmphasis(l3, { variant: "color" })}
+              </span>
+              <span className="block md:w-[42vw] md:pl-[2vw] xl:w-[42%] xl:pl-[30px]">
+                {block.lead && (
+                  <span className="block pt-5 text-base leading-[1.6] font-normal tracking-normal text-ink-2 md:pt-[3vw] md:text-[1.2vw] xl:pt-[44px] xl:text-base">
+                    {renderEmphasis(block.lead, { variant: "strong" })}
+                  </span>
+                )}
+                {imgs[2] && (
+                  <span className="block pt-5 md:pt-[2vw] xl:pt-[34px]">
+                    <Chip media={imgs[2]} order={3} aspect="aspect-[10/7]" className="w-[45vw]" />
+                  </span>
+                )}
+              </span>
+              {s2 && (
+                <span className="absolute right-0 bottom-[12vw] z-20 text-base md:top-[10.8vw] md:right-auto md:bottom-auto md:-left-[30px] xl:top-[166px]">
+                  <Bubble index={1} tone="sun">
+                    {s2.text}
+                  </Bubble>
+                </span>
+              )}
             </RevealItem>
           </div>
 
-          {feature && (
-            <div className="relative lg:col-span-4 lg:self-end">
-              <RevealItem
-                index={2}
-                direction="image"
-                className="float-slower lg:-mr-10 lg:mb-6"
-                style={{ "--rot": "2deg" } as CSSProperties}
-              >
-                <BlockImage
-                  media={feature}
-                  size="large"
-                  sizes="(min-width: 1024px) 34vw, 100vw"
-                  aspect="aspect-[4/5]"
-                  priority
-                  className="rounded-xl shadow-lift"
-                />
-              </RevealItem>
-              {floaters.map((m, i) => (
-                <RevealItem
-                  key={m.id}
-                  index={4 + i}
-                  direction="image"
+          <RevealItem
+            index={3}
+            direction="fade"
+            className="mt-10 flex flex-col gap-6 md:mt-8 md:flex-row md:items-end md:justify-between"
+          >
+            <Ctas block={block} tone="ink" />
+            {block.showContact !== false && <ContactLine tone="ink" className="md:justify-end" />}
+          </RevealItem>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
+/** Headline size scales down with length so long CMS headings stay balanced. */
+function defaultHeadingSize(text: string) {
+  const len = plainText(text).length;
+  if (len <= 24) return "text-[12vw] md:text-[7.5vw] xl:text-[115px]";
+  if (len <= 50) return "text-[9vw] md:text-[5.2vw] xl:text-[80px]";
+  return "text-[7.5vw] md:text-[3.6vw] xl:text-[54px]";
+}
+
+/**
+ * Listing-page hero ("default"): two thirds hold one display line with a
+ * floating pill breaking into the right column, then a second pill beside the
+ * intro paragraph; the right third holds a glowing rounded image.
+ */
+function DefaultHero({ block, tone }: { block: Hero; tone: "paper" | "teal" | "teal-ink" }) {
+  const imgs = images(block);
+  const feature = imgs[0];
+  const [s1, s2] = block.stickers ?? [];
+  const onDark = tone !== "paper";
+  const text: Tone = onDark ? "paper" : "ink";
+  const img = feature ? imageProps(feature, "large") : null;
+
+  return (
+    <Section
+      tone={tone}
+      grid={!onDark}
+      padding="none"
+      className="overflow-hidden pt-6 pb-14 md:pt-10 md:pb-16"
+    >
+      <Container>
+        <Reveal self={false} style={{ "--rv-step": "250ms" } as CSSProperties}>
+          {block.eyebrow && (
+            <RevealItem index={0} direction="fade">
+              <ArrowPill tone={onDark ? "dark" : "light"}>{block.eyebrow}</ArrowPill>
+            </RevealItem>
+          )}
+
+          <div className="mt-2.5 grid gap-10 md:grid-cols-3 md:gap-[30px]">
+            <div className={cn(img ? "md:col-span-2" : "md:col-span-3")}>
+              <RevealItem index={1} direction="right" className="relative">
+                <h1
                   className={cn(
-                    "absolute hidden w-[38%] lg:block",
-                    i === 0 && "top-[8%] -left-[28%]",
-                    i === 1 && "bottom-[-6%] -left-[18%]",
-                    i === 2 && "top-[-14%] right-[-8%] w-[30%]",
-                    i % 2 ? "float-slow" : "float-slower",
+                    "leading-[1.1] font-semibold tracking-[-0.035em] text-balance",
+                    defaultHeadingSize(block.heading),
+                    onDark ? "text-paper" : "text-ink",
                   )}
-                  style={
-                    { "--rot": `${rotations[(i + 1) % rotations.length]}deg` } as CSSProperties
-                  }
                 >
-                  <BlockImage
-                    media={m}
-                    size="card"
-                    sizes="16vw"
-                    aspect={(m.width ?? 1) > (m.height ?? 1) ? "aspect-[4/3]" : "aspect-[4/5]"}
-                    className="rounded-lg shadow-lift"
-                  />
+                  {renderEmphasis(block.heading.replace(/\|/g, " "), {
+                    variant: "color",
+                    tone: onDark ? "sun" : "teal",
+                  })}
+                </h1>
+                {s1 && (
+                  <span className="absolute -top-5 right-0 z-20 md:-top-[2.5vw] md:-right-[18%]">
+                    <Bubble index={0} tone="sun">
+                      {s1.text}
+                    </Bubble>
+                  </span>
+                )}
+              </RevealItem>
+
+              {(block.lead || s2) && (
+                <RevealItem index={2} direction="left" className="mt-8 md:flex md:items-end">
+                  {s2 && (
+                    <span className="mb-5 block shrink-0 md:mb-0 md:-ml-[15px] xl:-ml-[30px]">
+                      <Bubble index={1} tone={onDark ? "white" : "sun"}>
+                        {s2.text}
+                      </Bubble>
+                    </span>
+                  )}
+                  {block.lead && (
+                    <p
+                      className={cn(
+                        "text-base leading-[1.6] md:w-[73%] md:pl-[6%]",
+                        onDark ? "text-paper/80" : "text-ink-2",
+                      )}
+                    >
+                      {renderEmphasis(block.lead, { variant: "strong" })}
+                    </p>
+                  )}
                 </RevealItem>
-              ))}
+              )}
+
+              {block.ctas?.length ? (
+                <RevealItem index={3} direction="fade" className="mt-8">
+                  <Ctas block={block} tone={text} />
+                </RevealItem>
+              ) : null}
             </div>
+
+            {img && (
+              <RevealItem index={2} direction="image">
+                <div
+                  className="glow rounded-[22px]"
+                  style={{ "--glow-delay": "0.5s" } as CSSProperties}
+                >
+                  <div className="relative aspect-[9/5] overflow-hidden rounded-[22px] bg-paper-2">
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      priority
+                      sizes="(min-width: 768px) 32vw, 100vw"
+                      placeholder={img.blurDataURL ? "blur" : "empty"}
+                      blurDataURL={img.blurDataURL}
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+              </RevealItem>
+            )}
+          </div>
+
+          {block.showContact && (
+            <RevealItem index={4} direction="fade" className="mt-8 hidden md:block">
+              <ContactLine tone={text} className="justify-end" />
+            </RevealItem>
           )}
         </Reveal>
       </Container>
     </Section>
   );
+}
+
+export function HeroBlock({ block }: BlockProps<"hero">) {
+  const variant = block.variant ?? "editorial";
+  if (variant === "collage") return <HomeHero block={block} />;
+  if (variant === "dark") return <DefaultHero block={block} tone="teal-ink" />;
+  if (variant === "photo-cards") return <DefaultHero block={block} tone="teal" />;
+  return <DefaultHero block={block} tone="paper" />;
 }

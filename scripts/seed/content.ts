@@ -1178,20 +1178,17 @@ export const pages = (ctx: Ctx) => [
         blockType: "hero",
         variant: "collage",
         eyebrow: "Creative & growth agency, Ahmedabad",
-        heading: "We design brands [[people love]]",
-        lead: "We are Upsure, a creative agency rooted in strategy, craft, and growth. We help ambitious brands cut through the noise through brand, content, and performance that compounds.",
+        heading: "We design|brands people|[[love.]]",
+        lead: "We are Upsure, a creative agency rooted in [[strategy, craft, and growth]]. We help ambitious brands cut through the noise through [[brand, content, and performance]] that compounds.",
         stickers: [
-          { text: "100+ brands", tone: "sun" },
-          { text: "98% stay", tone: "teal" },
-          { text: "Est. 2019", tone: "coral" },
+          { text: "100+ brands served", tone: "sun" },
+          { text: "98% client retention", tone: "teal" },
         ],
         ctas: [
           { label: "Start a project", href: "/start-a-project" },
           { label: "Our services", href: "/services" },
         ],
-        images: ["hero-1", "hero-2", "hero-3", "hero-4", "hero-5", "hero-6"].map((k) => ({
-          image: ctx.media[k],
-        })),
+        images: ["hero-1", "hero-2", "hero-3"].map((k) => ({ image: ctx.media[k] })),
       },
       {
         blockType: "logoTicker",
@@ -1201,28 +1198,30 @@ export const pages = (ctx: Ctx) => [
         tone: "paper",
       },
       {
-        blockType: "serviceGrid",
-        eyebrow: "Services",
-        heading: "Brand, content and growth — [[under one roof]]",
-        intro:
-          "Most agencies pick one. We refuse to. Strategy, creative and performance run as one team, so the work is as effective as it is beautiful.",
-        layout: "cards",
-        tone: "white",
+        blockType: "statement",
+        eyebrow: "About us",
+        text: "We're a [[tight-knit team]] of strategists, designers, and growth experts, [[obsessed with doing excellent work]] for the brands we partner with. From Ahmedabad, for ambitious brands [[everywhere]].",
+        cta: { label: "Get to know us", href: "/about", newTab: false },
+        tone: "paper",
       },
       {
         blockType: "workGrid",
         eyebrow: "Work",
         heading: "Our latest work",
-        intro: "A few of the brands we have helped sharpen, launch and grow.",
+        intro:
+          "A few of the brands we have helped sharpen, launch and grow. Every project pairs senior strategy with craft, and is measured by what it moves.",
         limit: 4,
         layout: "grid",
         cta: { label: "View all work", href: "/work", newTab: false },
         tone: "teal-ink",
       },
       {
-        blockType: "testimonialCarousel",
-        eyebrow: "Kind words",
-        heading: "What partners say",
+        blockType: "serviceGrid",
+        eyebrow: "Our services",
+        heading: "Brand, content and growth — [[under one roof]]",
+        intro:
+          "Most agencies pick one. We refuse to. Strategy, creative and performance run as one team, so the work is as effective as it is beautiful.",
+        layout: "accordion",
         tone: "paper",
       },
       {
@@ -1260,19 +1259,6 @@ export const pages = (ctx: Ctx) => [
         tone: "teal-ink",
       },
       { blockType: "faq", eyebrow: "FAQ", heading: "Good questions", scope: "home", tone: "paper" },
-      {
-        blockType: "textColumns",
-        eyebrow: "The team",
-        columns: [
-          {
-            heading: "A tight-knit senior team",
-            body: "We're a tight-knit team of strategists, designers, and growth experts — obsessed with doing excellent work for the brands we partner with.",
-            link: { label: "Get to know us", href: "/about", newTab: false },
-          },
-        ],
-        images: [{ image: ctx.media["team-table"] }, { image: ctx.media["team-couch"] }],
-        tone: "white",
-      },
     ],
   },
   {
@@ -1499,11 +1485,16 @@ export const pages = (ctx: Ctx) => [
     layout: [
       {
         blockType: "hero",
-        variant: "photo-cards",
+        variant: "editorial",
         eyebrow: "About",
-        heading:
-          "We're a creative agency shaped by the [[brands we build for]], and the [[people we build with]].",
-        images: ["about-1", "about-2", "about-3", "about-4"].map((k) => ({ image: ctx.media[k] })),
+        heading: "About [[Upsure]]",
+        lead: "We're a creative agency shaped by the [[brands we build for]], and the [[people we build with]]. We design brands people love.",
+        stickers: [
+          { text: "Proudly from Ahmedabad", tone: "sun" },
+          { text: "Est. 2019", tone: "teal" },
+        ],
+        images: [{ image: ctx.media["about-1"] }],
+        showContact: true,
       },
       {
         blockType: "textColumns",
@@ -1518,7 +1509,7 @@ export const pages = (ctx: Ctx) => [
             body: "We help companies cut through the noise and establish new growth — from household names like Vivo, Titan, Realme, and Axis Max Life to the challengers determined to sit beside them. Like the brands we work with, Upsure is constantly evolving, driven to shape what's next. Curiosity and clear communication guide us at every step.",
           },
         ],
-        images: [{ image: ctx.media["team-couch"] }, { image: ctx.media["team-review"] }],
+        images: ["team-table", "team-couch", "team-review"].map((k) => ({ image: ctx.media[k] })),
         tone: "paper",
       },
       {
@@ -1541,7 +1532,7 @@ export const pages = (ctx: Ctx) => [
             link: { label: "Our services", href: "/services", newTab: false },
           },
         ],
-        images: [{ image: ctx.media["team-present"] }],
+        images: ["team-present", "about-2", "about-3"].map((k) => ({ image: ctx.media[k] })),
         tone: "paper",
       },
       {

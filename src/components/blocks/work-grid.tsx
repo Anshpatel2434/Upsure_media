@@ -1,19 +1,24 @@
 import type { BlockProps } from "@/components/blocks/render-blocks";
 import { SectionHeader } from "@/components/blocks/section-header";
 import { CaseStudyCard } from "@/components/cards/case-study-card";
-import { TestimonialCard } from "@/components/cards/testimonial-card";
+import { WORK_TILE_COLOURS, WorkTile } from "@/components/cards/work-tile";
 import { Button } from "@/components/ui/button";
 import { Carousel } from "@/components/ui/carousel";
 import { Container } from "@/components/ui/container";
+import { Dot } from "@/components/ui/dot";
+import { QuoteFader } from "@/components/ui/quote-fader";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
+import { TextLink } from "@/components/ui/text-link";
 import { getCaseStudies, getTestimonials } from "@/lib/cms/queries";
-import { cn } from "@/lib/cn";
+import { renderEmphasis } from "@/lib/markers";
 
 /**
- * Bento composition: the first study is a tall tile spanning two rows, the
- * next two stack beside it, anything else runs two-up underneath. A featured
- * quote with an accent bar hangs beneath the grid.
+ * Work showcase. One rounded dark card holding two columns: the right column
+ * opens with the heading, intro and "View all" link, then two tiles; the left
+ * column carries two tiles and a cross-fading quote slider. Columns are offset
+ * by the header height, so the tiles interlock rather than line up in rows.
+ * `carousel` keeps the older sliding layout for inner pages.
  */
 export async function WorkGridBlock({ block, index }: BlockProps<"workGrid">) {
   const [studies, quotes] = await Promise.all([
@@ -21,38 +26,35 @@ export async function WorkGridBlock({ block, index }: BlockProps<"workGrid">) {
     getTestimonials({ featuredOnly: true }),
   ]);
   if (!studies.length) return null;
-  const tone = block.tone ?? "teal-ink";
-  const dark = tone === "teal-ink" || tone === "teal";
-  const quote = quotes[0];
-  const [first, second, third, ...rest] = studies;
 
-  return (
-    <Section tone={tone} className="overflow-hidden">
-      <Container>
-        <Reveal self={false} className="flex flex-col gap-12">
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <SectionHeader
-              index={index}
-              eyebrow={block.eyebrow}
-              heading={block.heading}
-              intro={block.intro}
-              tone={dark ? "paper" : "ink"}
-            />
-            {block.cta?.href && block.cta.label && (
-              <RevealItem index={3}>
-                <Button
-                  href={block.cta.href}
-                  variant="ghost"
-                  tone={dark ? "paper" : "ink"}
-                  withArrow
-                >
-                  {block.cta.label}
-                </Button>
-              </RevealItem>
-            )}
-          </div>
-
-          {block.layout === "carousel" ? (
+  if (block.layout === "carousel") {
+    const tone = block.tone ?? "teal-ink";
+    const dark = tone === "teal-ink" || tone === "teal";
+    return (
+      <Section tone={tone} className="overflow-hidden">
+        <Container>
+          <Reveal self={false} className="flex flex-col gap-12">
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <SectionHeader
+                index={index}
+                eyebrow={block.eyebrow}
+                heading={block.heading}
+                intro={block.intro}
+                tone={dark ? "paper" : "ink"}
+              />
+              {block.cta?.href && block.cta.label && (
+                <RevealItem index={3}>
+                  <Button
+                    href={block.cta.href}
+                    variant="ghost"
+                    tone={dark ? "paper" : "ink"}
+                    withArrow
+                  >
+                    {block.cta.label}
+                  </Button>
+                </RevealItem>
+              )}
+            </div>
             <RevealItem index={4} direction="fade">
               <Carousel
                 label={block.heading ?? "Case studies"}
@@ -65,42 +67,72 @@ export async function WorkGridBlock({ block, index }: BlockProps<"workGrid">) {
                 ))}
               </Carousel>
             </RevealItem>
-          ) : (
-            <div className="grid gap-5 md:grid-cols-12 md:grid-rows-2">
-              {first && (
-                <RevealItem index={4} direction="image" className="md:col-span-7 md:row-span-2">
-                  <CaseStudyCard study={first} size="large" priority />
+          </Reveal>
+        </Container>
+      </Section>
+    );
+  }
+
+  const right = studies.filter((_, i) => i % 2 === 0);
+  const left = studies.filter((_, i) => i % 2 === 1);
+  const colourOf = (study: (typeof studies)[number]) =>
+    WORK_TILE_COLOURS[studies.indexOf(study) % WORK_TILE_COLOURS.length];
+  const quoteItems = quotes.map((q) => ({
+    id: String(q.id),
+    quote: q.quote,
+    name: q.role ? `${q.name}, ${q.role}` : q.name,
+    detail: q.company,
+  }));
+
+  return (
+    <Section tone="paper" padding="none" className="py-3 md:py-5">
+      <Container>
+        <div className="rounded-[22px] bg-teal-ink px-[25px] py-[50px] text-paper md:rounded-[40px] md:px-[50px] md:py-[80px] xl:px-[70px] xl:py-[100px]">
+          <div className="grid gap-[25px] md:grid-cols-2 md:gap-x-[60px] md:gap-y-0 xl:gap-x-[100px]">
+            {/* Right column (first in reading order: heading, then the lead tiles). */}
+            <div className="flex flex-col gap-[25px] md:order-2 md:gap-[35px] xl:gap-[50px]">
+              <Reveal self={false} className="flex flex-col gap-4 md:gap-5">
+                <RevealItem index={0} className="flex items-center gap-4 md:gap-5">
+                  <Dot tone="sun" />
+                  {block.heading && (
+                    <h2 className="text-[24px] leading-[1.25] font-semibold tracking-[-0.01em] md:text-[30px] xl:text-[33px]">
+                      {renderEmphasis(block.heading, { variant: "color", tone: "sun" })}
+                    </h2>
+                  )}
                 </RevealItem>
-              )}
-              {second && (
-                <RevealItem index={5} direction="image" className="md:col-span-5">
-                  <CaseStudyCard study={second} />
-                </RevealItem>
-              )}
-              {third && (
-                <RevealItem index={6} direction="image" className="md:col-span-5">
-                  <CaseStudyCard study={third} />
-                </RevealItem>
-              )}
-              {rest.map((s, i) => (
-                <RevealItem key={s.id} index={7 + i} direction="image" className="md:col-span-6">
-                  <CaseStudyCard study={s} size="wide" />
-                </RevealItem>
+                {block.intro && (
+                  <RevealItem index={1}>
+                    <p className="text-[15px] leading-[1.6] text-paper/80 md:text-base xl:text-[17px]">
+                      {block.intro}
+                    </p>
+                  </RevealItem>
+                )}
+                {block.cta?.href && block.cta.label && (
+                  <RevealItem index={2}>
+                    <TextLink href={block.cta.href} tone="accent">
+                      {block.cta.label}
+                    </TextLink>
+                  </RevealItem>
+                )}
+              </Reveal>
+              {right.map((s, i) => (
+                <WorkTile key={s.id} study={s} colour={colourOf(s)} priority={i === 0} />
               ))}
             </div>
-          )}
 
-          {quote && (
-            <RevealItem index={8} className={cn("max-w-3xl", "lg:ml-[41.66%]")}>
-              <TestimonialCard
-                testimonial={quote}
-                tone={dark ? "paper" : "ink"}
-                size="lg"
-                boxed={false}
-              />
-            </RevealItem>
-          )}
-        </Reveal>
+            {/* Left column. */}
+            <div className="flex flex-col gap-[25px] md:gap-[35px] xl:gap-[50px]">
+              {left.map((s) => (
+                <WorkTile key={s.id} study={s} colour={colourOf(s)} />
+              ))}
+              {quoteItems.length > 0 && (
+                <div className="pt-[25px] md:pt-0">
+                  <QuoteFader items={quoteItems} />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </Container>
     </Section>
   );

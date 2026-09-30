@@ -75,7 +75,7 @@ async function uploadMedia(
   payload: Payload,
   key: string,
   alt: string,
-  file: { data: Buffer; mimetype: string; name: string },
+  file: { data: () => Buffer | Promise<Buffer>; mimetype: string; name: string },
 ): Promise<Id> {
   const existing = await payload.find({
     collection: "media",
@@ -92,10 +92,12 @@ async function uploadMedia(
     });
     return existing.docs[0].id;
   }
+  // Files are only generated when missing, which keeps re-seeding fast.
+  const data = await file.data();
   const created = await payload.create({
     collection: "media",
     data: { alt },
-    file: { ...file, size: file.data.byteLength },
+    file: { data, mimetype: file.mimetype, name: file.name, size: data.byteLength },
     context: { disableRevalidate: true },
   });
   console.log(`  media  ${key} → #${created.id}`);
@@ -146,12 +148,11 @@ async function main() {
   /* Media ------------------------------------------------------------------ */
   console.log("Media…");
   for (const [key, spec] of Object.entries(data.mediaSpecs)) {
-    const buffer =
-      spec.kind === "photo"
-        ? await demoPhoto(spec.seed, spec.w, spec.h, spec.palette)
-        : await demoArt(spec.seed, spec.w, spec.h, spec.palette);
     ctx.media[key] = await uploadMedia(payload, key, spec.alt, {
-      data: buffer,
+      data: () =>
+        spec.kind === "photo"
+          ? demoPhoto(spec.seed, spec.w, spec.h, spec.palette)
+          : demoArt(spec.seed, spec.w, spec.h, spec.palette),
       mimetype: "image/webp",
       name: `demo-${key}.webp`,
     });
@@ -160,7 +161,7 @@ async function main() {
   for (const name of data.clients) {
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     logoIds[name] = await uploadMedia(payload, `logo-${slug}`, `${name} logo`, {
-      data: demoLogo(name),
+      data: () => demoLogo(name),
       mimetype: "image/svg+xml",
       name: `logo-${slug}.svg`,
     });

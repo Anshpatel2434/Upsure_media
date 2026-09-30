@@ -21,6 +21,10 @@
   --color-coral-soft: #ffe1d8;
   --color-sun: #ffd166;
   --color-sun-soft: #fff1c9;
+  /* Pastel accents used for highlights, dots and tile hover floods. */
+  --color-mint: #bfe6e3;
+  --color-peach: #ffc9b8;
+  --color-line-soft: #d7d4cc;
 
   /* Type */
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
@@ -169,16 +173,50 @@
   display: inline;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  padding: 0 0.28em 0.08em;
+  padding: 0 0.3em 0.15em;
   border-radius: 999px;
   background-image: linear-gradient(
-    var(--marker-color, var(--color-sun)),
-    var(--marker-color, var(--color-sun))
+    var(--marker-color, var(--color-mint)),
+    var(--marker-color, var(--color-mint))
   );
   background-repeat: no-repeat;
   background-size: 0% 100%;
-  background-position: 0 0;
-  transition: background-size var(--duration-reveal) var(--ease-smooth);
+  background-position: left center;
+  transition: background-size 1.2s cubic-bezier(0.25, 1, 0.5, 1) var(--reveal-delay, 0s);
+}
+
+/* Floating pill: two nested elements drift on different axes and periods,
+   which reads as the organic two-sine motion without any JavaScript. */
+@utility bubble-x {
+  display: inline-block;
+  animation: bubble-x var(--bx-dur, 2.3s) ease-in-out var(--bx-delay, 0s) infinite alternate;
+}
+@utility bubble-y {
+  display: inline-block;
+  animation: bubble-y var(--by-dur, 3.9s) ease-in-out var(--by-delay, 0s) infinite alternate;
+}
+
+/* Soft coloured glow that pulses behind media chips (opacity only, so it
+   stays on the compositor). The element needs isolation and no overflow clip. */
+@utility glow {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    box-shadow: 0 0 12vw 0 var(--glow-color, rgb(15 139 141 / 0.55));
+    opacity: 0;
+    animation: glow-pulse 4s ease-in-out var(--glow-delay, 0s) infinite;
+    pointer-events: none;
+  }
+}
+
+/* Arrow that nudges right on a loop (services "More info"). */
+@utility nudge {
+  animation: nudge-right 1.25s ease-in-out infinite;
 }
 
 @utility no-scrollbar {
@@ -222,20 +260,38 @@
    --------------------------------------------------------------------------- */
 :where(html[data-rv-ready]) [data-rv] {
   opacity: 0;
-  transform: translate3d(var(--rv-x, 0), var(--rv-y, 28px), 0);
+  transform: translate3d(var(--rv-x, 0), var(--rv-y, 30px), 0);
   transition:
     opacity var(--duration-reveal) var(--ease-smooth),
     transform var(--duration-reveal) var(--ease-smooth);
-  transition-delay: calc(var(--i, 0) * 90ms + var(--rv-delay, 0ms));
+  transition-delay: calc(var(--i, 0) * var(--rv-step, 90ms) + var(--rv-delay, 0ms));
   will-change: opacity, transform;
 }
+/* "left" slides in from the left, "right" from the right. */
 [data-rv="left"] {
-  --rv-x: -32px;
+  --rv-x: -30px;
   --rv-y: 0;
 }
 [data-rv="right"] {
-  --rv-x: 32px;
+  --rv-x: 30px;
   --rv-y: 0;
+}
+
+/* Media chip: wipe in from the left with a slight settle. */
+:where(html[data-rv-ready]) [data-rv="chip"] {
+  --rv-y: 0;
+  opacity: 1;
+  clip-path: inset(0 100% 0 0 round var(--chip-radius, 22px));
+  transform: scale(1.04);
+  transition:
+    clip-path 1.2s var(--ease-expo),
+    transform 1.2s var(--ease-expo);
+  transition-delay: calc(var(--i, 0) * var(--rv-step, 90ms) + var(--rv-delay, 0ms));
+}
+[data-visible] [data-rv="chip"],
+[data-rv="chip"][data-visible] {
+  clip-path: inset(0 0 0 0 round var(--chip-radius, 22px));
+  transform: none;
 }
 [data-rv="fade"] {
   --rv-y: 0;
@@ -285,11 +341,43 @@
   0%,
   100% {
     transform: scale(0.8);
-    opacity: 0.7;
   }
   50% {
-    transform: scale(1.25);
+    transform: scale(1.2);
+  }
+}
+@keyframes bubble-x {
+  from {
+    transform: translateX(calc(var(--bx-amp, 0.5vw) * -1));
+  }
+  to {
+    transform: translateX(var(--bx-amp, 0.5vw));
+  }
+}
+@keyframes bubble-y {
+  from {
+    transform: translateY(calc(var(--by-amp, 1.4vw) * -1));
+  }
+  to {
+    transform: translateY(var(--by-amp, 1.4vw));
+  }
+}
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
     opacity: 1;
+  }
+}
+@keyframes nudge-right {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(10px);
   }
 }
 @keyframes drawer-in {

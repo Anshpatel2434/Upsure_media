@@ -178,7 +178,7 @@ export interface Page {
          */
         eyebrow?: string | null;
         /**
-         * Wrap words in [[double brackets]] to highlight them.
+         * Wrap words in [[double brackets]] to highlight them. On the Home hero, “|” starts a new display line, e.g. “We design|brands people|[[love.]]”.
          */
         heading: string;
         lead?: string | null;

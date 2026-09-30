@@ -4,97 +4,121 @@ import type { Media } from "@/payload-types";
 
 import { BlockImage } from "@/components/blocks/block-image";
 import type { BlockProps } from "@/components/blocks/render-blocks";
-import { Button } from "@/components/ui/button";
+import { ArrowPill } from "@/components/ui/arrow-pill";
 import { Container } from "@/components/ui/container";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Heading } from "@/components/ui/heading";
+import { Dot } from "@/components/ui/dot";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
+import { TextLink } from "@/components/ui/text-link";
 import { cn } from "@/lib/cn";
 import { renderEmphasis } from "@/lib/markers";
 import { isDoc } from "@/lib/relations";
-import { sectionIndex } from "@/lib/text";
 
 /**
- * Copy on a narrow column with images overlapping the edge at a slight tilt;
- * the second column starts lower so the two never line up.
+ * Mission-style rows: a pulsing dot and short title on the left third, the
+ * statement set large on the right two thirds, a hairline between rows. Any
+ * images follow as a staggered strip of rounded, softly glowing frames that
+ * wipe in from the left.
  */
-export function TextColumnsBlock({ block, index }: BlockProps<"textColumns">) {
+export function TextColumnsBlock({ block }: BlockProps<"textColumns">) {
   const tone = block.tone ?? "paper";
   const dark = tone === "teal-ink" || tone === "teal";
   const columns = block.columns ?? [];
   const images = (block.images ?? []).map((i) => i.image).filter((m): m is Media => isDoc(m));
-  const rotations = [-3, 4, -2];
+  const aspects = ["aspect-[4/5]", "aspect-[4/3]", "aspect-square"];
 
   return (
-    <Section tone={tone} className="overflow-hidden">
+    <Section
+      tone={tone}
+      padding="none"
+      className="overflow-hidden py-[60px] md:py-[80px] xl:py-[100px]"
+    >
       <Container>
-        <Reveal self={false} className="grid gap-10 lg:grid-cols-12">
-          {block.eyebrow && (
-            <RevealItem index={0} className="lg:col-span-12">
-              <Eyebrow index={sectionIndex(index)} tone={dark ? "paper" : "ink"}>
-                {block.eyebrow}
-              </Eyebrow>
-            </RevealItem>
-          )}
-          <div
-            className={cn(
-              "grid gap-12",
-              images.length ? "lg:col-span-7" : "lg:col-span-10 lg:col-start-2",
-              columns.length > 1 && "md:grid-cols-2",
-            )}
-          >
-            {columns.map((col, i) => (
+        {block.eyebrow && (
+          <Reveal direction="left" className="mb-[35px] md:mb-[50px]">
+            <ArrowPill tone={dark ? "dark" : "light"}>{block.eyebrow}</ArrowPill>
+          </Reveal>
+        )}
+
+        <div>
+          {columns.map((col) => (
+            <Reveal
+              key={col.id ?? col.heading}
+              self={false}
+              className={cn(
+                "grid gap-4 border-b py-[35px] first:pt-0 last:border-b-0 md:grid-cols-3 md:gap-[60px] md:py-[50px] xl:gap-[100px]",
+                dark ? "border-paper/15" : "border-line-soft",
+              )}
+            >
               <RevealItem
-                key={col.id ?? col.heading}
-                index={i + 1}
-                className={cn("flex flex-col gap-4", i === 1 && "md:mt-16")}
+                index={0}
+                direction="left"
+                className="flex items-center gap-4 self-start md:gap-5"
               >
-                <Heading as="h2" size="h2">
-                  {renderEmphasis(col.heading, { tone: dark ? "sun" : "teal" })}
-                </Heading>
-                <p className={cn("max-w-[52ch] text-lead", dark ? "text-paper/75" : "text-ink-2")}>
+                <Dot tone={dark ? "sun" : "teal"} />
+                <h2 className="text-[24px] leading-[1.25] font-semibold tracking-[-0.01em] md:text-[26px] xl:text-[33px]">
+                  {renderEmphasis(col.heading, { variant: "color", tone: dark ? "sun" : "teal" })}
+                </h2>
+              </RevealItem>
+              <RevealItem index={1} direction="right" className="flex flex-col gap-6 md:col-span-2">
+                <p
+                  className={cn(
+                    "text-[18px] leading-[1.55] font-medium md:text-[22px] xl:text-[28px]",
+                    dark ? "text-paper/90" : "text-ink",
+                  )}
+                >
                   {col.body}
                 </p>
                 {col.link?.href && col.link.label && (
-                  <Button
+                  <TextLink
                     href={col.link.href}
-                    external={Boolean(col.link.newTab) || col.link.href.startsWith("mailto:")}
-                    variant="ghost"
-                    tone={dark ? "paper" : "ink"}
-                    withArrow
-                    className="mt-2 w-fit"
+                    external={Boolean(col.link.newTab)}
+                    tone={dark ? "accent" : "teal"}
                   >
                     {col.link.label}
-                  </Button>
+                  </TextLink>
                 )}
               </RevealItem>
-            ))}
-          </div>
-          {images.length > 0 && (
-            <div className="relative lg:col-span-5">
-              <div className={cn("grid gap-5", images.length > 1 && "grid-cols-2")}>
-                {images.slice(0, 3).map((m, i) => (
-                  <RevealItem
-                    key={m.id}
-                    index={i + 3}
-                    direction="image"
-                    className={cn(i === 1 && "mt-12", i === 2 && "col-span-2 -mt-6 lg:-mr-16")}
-                    style={{ transform: `rotate(${rotations[i]}deg)` } as CSSProperties}
-                  >
-                    <BlockImage
-                      media={m}
-                      size="medium"
-                      sizes="(min-width: 1024px) 30vw, 50vw"
-                      aspect={(m.width ?? 1) > (m.height ?? 1) ? "aspect-[4/3]" : "aspect-[4/5]"}
-                      className="rounded-xl shadow-lift"
-                    />
-                  </RevealItem>
-                ))}
+            </Reveal>
+          ))}
+        </div>
+
+        {images.length > 0 && (
+          <Reveal
+            self={false}
+            className={cn(
+              "mt-[35px] grid items-start gap-[25px] md:mt-[50px] md:gap-[35px] xl:gap-[50px]",
+              images.length > 1 && "grid-cols-2",
+              images.length > 2 && "md:grid-cols-3",
+            )}
+          >
+            {images.slice(0, 3).map((m, i) => (
+              <div
+                key={m.id}
+                className={cn(
+                  "glow rounded-[22px]",
+                  i === 1 && "md:mt-[80px]",
+                  i === 2 && "col-span-2 md:col-span-1 md:mt-[30px]",
+                )}
+                style={{ "--glow-delay": `${i + 1}s` } as CSSProperties}
+              >
+                <RevealItem
+                  index={i}
+                  direction="chip"
+                  style={{ "--rv-step": "250ms", "--chip-radius": "22px" } as CSSProperties}
+                >
+                  <BlockImage
+                    media={m}
+                    size="medium"
+                    sizes="(min-width: 768px) 30vw, 50vw"
+                    aspect={aspects[i % aspects.length]}
+                    className="rounded-[22px]"
+                  />
+                </RevealItem>
               </div>
-            </div>
-          )}
-        </Reveal>
+            ))}
+          </Reveal>
+        )}
       </Container>
     </Section>
   );

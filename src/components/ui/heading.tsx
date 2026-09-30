@@ -41,8 +41,8 @@ export function Highlight({ children, tone = "teal", variant = "underline" }: Hi
       tone === "sun"
         ? "var(--color-sun)"
         : tone === "coral"
-          ? "var(--color-coral-soft)"
-          : "var(--color-teal-soft)";
+          ? "var(--color-peach)"
+          : "var(--color-mint)";
     return (
       <span className="marker" style={{ "--marker-color": color } as CSSProperties}>
         {children}
