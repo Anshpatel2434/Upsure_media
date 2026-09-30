@@ -31,11 +31,13 @@ export function ProofTickerBlock({ block }: BlockProps<"proofTicker">) {
                   i === 2 && "lg:ml-[8%]",
                 )}
               >
-                <span className="text-display font-semibold">{l.text}</span>
+                <span className="text-[9.5vw] leading-[1.05] font-semibold tracking-[-0.03em] text-balance md:text-display">
+                  {l.text}
+                </span>
                 {pills[i] && (
                   <span
                     className={cn(
-                      "rounded-pill px-4 py-2 text-body font-medium shadow-chip",
+                      "rounded-pill px-3.5 py-1.5 text-[13px] font-medium whitespace-nowrap shadow-chip md:px-4 md:py-2 md:text-body",
                       i % 2 ? "bg-sun text-ink" : "bg-teal text-white",
                     )}
                   >

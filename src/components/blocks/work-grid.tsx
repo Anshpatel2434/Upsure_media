@@ -1,6 +1,5 @@
 import type { BlockProps } from "@/components/blocks/render-blocks";
 import { SectionHeader } from "@/components/blocks/section-header";
-import { CaseStudyCard } from "@/components/cards/case-study-card";
 import { WORK_TILE_COLOURS, WorkTile } from "@/components/cards/work-tile";
 import { Button } from "@/components/ui/button";
 import { Carousel } from "@/components/ui/carousel";
@@ -62,8 +61,13 @@ export async function WorkGridBlock({ block, index }: BlockProps<"workGrid">) {
                 controls="top-right"
                 slideClassName="w-[88%] md:w-[60%] lg:w-[46%]"
               >
-                {studies.map((s) => (
-                  <CaseStudyCard key={s.id} study={s} size="wide" />
+                {studies.map((s, i) => (
+                  <WorkTile
+                    key={s.id}
+                    study={s}
+                    colour={WORK_TILE_COLOURS[i % WORK_TILE_COLOURS.length]}
+                    className="h-full"
+                  />
                 ))}
               </Carousel>
             </RevealItem>

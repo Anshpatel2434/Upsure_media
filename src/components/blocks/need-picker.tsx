@@ -72,7 +72,7 @@ export function NeedPickerBlock({ block }: BlockProps<"needPicker">) {
                   <Link
                     href={href}
                     className={cn(
-                      "group inline-flex min-h-14 items-center rounded-pill px-6 py-3 text-[15px] font-medium md:min-h-[66px] md:px-8 md:text-[17px]",
+                      "group inline-flex min-h-12 items-center rounded-pill px-5 py-2.5 text-sm font-medium md:min-h-[66px] md:px-8 md:text-[17px]",
                       "transition-[background-color,color,box-shadow] duration-500 ease-(--ease-smooth) hover:bg-(--fill) hover:text-ink",
                       dark
                         ? "bg-paper/10 text-paper"

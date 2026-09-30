@@ -127,6 +127,7 @@ export async function getAllRoutes() {
     ...store.pages.map((p) => ({ path: p.slug === "home" ? "/" : `/${p.slug}`, updatedAt: stamp })),
     ...store.services.map((s) => ({ path: `/services/${s.slug}`, updatedAt: stamp })),
     ...store.caseStudies.map((c) => ({ path: `/work/${c.slug}`, updatedAt: stamp })),
+    ...store.services.map((s) => ({ path: `/work/service/${s.slug}`, updatedAt: stamp })),
     ...store.posts.map((p) => ({ path: `/blog/${p.slug}`, updatedAt: p.publishedAt ?? stamp })),
     ...store.categories.map((c) => ({ path: `/blog/category/${c.slug}`, updatedAt: stamp })),
   ];

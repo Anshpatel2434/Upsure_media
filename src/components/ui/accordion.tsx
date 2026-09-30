@@ -38,7 +38,7 @@ export function Accordion({
         >
           <summary
             className={cn(
-              "flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left text-h3 font-medium select-none",
+              "flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left text-[17px] leading-snug font-medium select-none md:gap-6 md:py-5 md:text-h3",
               tone === "ink" ? "hover:text-teal" : "hover:text-sun",
             )}
           >

@@ -28,12 +28,12 @@ export async function LogoTickerBlock({ block }: BlockProps<"logoTicker">) {
         label="Client logos"
         duration={Math.max(40, clients.length * 3.5)}
         gap="clamp(3.5rem, 8vw, 8.5rem)"
-        className="py-10 md:py-12 xl:py-[55px]"
+        className="py-7 md:py-12 xl:py-[55px]"
       >
         {clients.map((c) => {
           const logo = imageProps(c.logo, "thumbnail");
           return (
-            <span key={c.id} className="flex h-12 shrink-0 items-center md:h-16" title={c.name}>
+            <span key={c.id} className="flex h-11 shrink-0 items-center md:h-16" title={c.name}>
               {logo ? (
                 <Image
                   src={logo.src}
@@ -41,7 +41,7 @@ export async function LogoTickerBlock({ block }: BlockProps<"logoTicker">) {
                   width={logo.width}
                   height={logo.height}
                   unoptimized={logo.src.endsWith(".svg")}
-                  className={cn("h-8 w-auto md:h-11 xl:h-12", dark && "invert")}
+                  className={cn("h-9 w-auto md:h-11 xl:h-12", dark && "invert")}
                 />
               ) : (
                 <span className="text-h3 font-semibold">{c.name}</span>

@@ -32,7 +32,7 @@ export function Bubble({
       <span className="bubble-y">
         <span
           className={cn(
-            "inline-flex min-h-11 w-max items-center rounded-pill px-5 py-2 text-sm leading-tight font-semibold tracking-normal md:min-h-[4.5vw] md:px-[2.5vw] md:text-[1.25vw] 2xl:min-h-[69px] 2xl:px-[38px] 2xl:text-lg",
+            "inline-flex min-h-8 w-max items-center rounded-pill px-3.5 py-1.5 text-[11px] leading-tight font-semibold tracking-normal md:min-h-[max(36px,4.5vw)] md:px-[max(16px,2.5vw)] md:text-[max(12px,1.25vw)] 2xl:min-h-[69px] 2xl:px-[38px] 2xl:text-lg",
             tone === "sun" && "bg-sun text-ink",
             tone === "mint" && "bg-mint text-ink",
             tone === "white" && "bg-white text-ink",

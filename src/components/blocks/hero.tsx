@@ -42,7 +42,7 @@ function Chip({
   return (
     <span
       className={cn(
-        "glow pointer-events-none block w-[25vw] rounded-[12px] md:w-[14vw] md:rounded-[1.5vw] 2xl:w-[215px] 2xl:rounded-[22px]",
+        "glow pointer-events-none w-[25vw] rounded-[12px] md:w-[14vw] md:rounded-[1.5vw] 2xl:w-[215px] 2xl:rounded-[22px]",
         className,
       )}
       style={{ "--glow-delay": `${order}s` } as CSSProperties}
@@ -144,7 +144,7 @@ function HomeHero({ block }: { block: Hero }) {
             </RevealItem>
           )}
 
-          <div className="mt-2.5 text-[13vw] leading-[1.1] font-semibold tracking-[-0.035em] text-ink md:text-[10.4vw] 2xl:text-[160px]">
+          <div className="mt-2.5 text-[15vw] leading-[1.1] font-semibold tracking-[-0.035em] text-ink md:text-[10.4vw] 2xl:text-[160px]">
             {/* Line 1 — text, chip to the right, floating pill */}
             <RevealItem direction="right" index={0} className="relative block md:inline-block">
               <span aria-hidden className="relative z-10">
@@ -159,7 +159,7 @@ function HomeHero({ block }: { block: Hero }) {
                 />
               )}
               {s1 && (
-                <span className="absolute top-[29vw] right-0 z-20 text-base md:top-[60%] md:right-auto md:left-[120%]">
+                <span className="absolute top-[35vw] right-0 z-20 text-base md:top-[60%] md:right-auto md:left-[120%]">
                   <Bubble index={0} tone={s1.tone === "coral" ? "white" : "sun"}>
                     {s1.text}
                   </Bubble>
@@ -193,7 +193,7 @@ function HomeHero({ block }: { block: Hero }) {
               </span>
               <span className="block text-base font-normal tracking-normal md:w-[42vw] md:pl-[2vw] 2xl:w-[645px] 2xl:pl-[30px]">
                 {block.lead && (
-                  <span className="block pt-5 leading-[1.6] text-ink-2 md:pt-[3vw] md:text-[1.2vw] 2xl:pt-[46px] 2xl:text-lg">
+                  <span className="block pt-5 leading-[1.6] text-ink-2 md:pt-[3vw] md:text-[max(14px,1.2vw)] 2xl:pt-[46px] 2xl:text-lg">
                     {renderEmphasis(block.lead, { variant: "strong" })}
                   </span>
                 )}
@@ -204,7 +204,7 @@ function HomeHero({ block }: { block: Hero }) {
                         media={imgs[2]}
                         order={3}
                         aspect="aspect-[10/7]"
-                        className="w-[45vw] md:w-[14vw]"
+                        className="block w-[30vw] md:w-[14vw]"
                       />
                       {/* Phones: the second pill overlaps this chip's corner. */}
                       {s2 && (
@@ -231,10 +231,12 @@ function HomeHero({ block }: { block: Hero }) {
                 </span>
               )}
               {block.showContact !== false && (
-                <ContactLine
-                  tone="ink"
-                  className="mt-8 font-normal tracking-normal md:absolute md:right-0 md:bottom-0 md:mt-0 md:justify-end"
-                />
+                <div className="hidden lg:block">
+                  <ContactLine
+                    tone="ink"
+                    className="absolute right-0 bottom-0 justify-end font-normal tracking-normal"
+                  />
+                </div>
               )}
             </RevealItem>
           </div>
@@ -296,7 +298,7 @@ function DefaultHero({ block, tone }: { block: Hero; tone: "paper" | "teal" | "t
                   })}
                 </h1>
                 {s1 && (
-                  <span className="absolute -top-5 right-0 z-20 md:-top-[2.5vw] md:-right-[18%]">
+                  <span className="mt-4 block md:absolute md:-top-[2.5vw] md:-right-[18%] md:z-20 md:mt-0">
                     <Bubble index={0} tone="sun">
                       {s1.text}
                     </Bubble>
@@ -305,9 +307,13 @@ function DefaultHero({ block, tone }: { block: Hero; tone: "paper" | "teal" | "t
               </RevealItem>
 
               {(block.lead || s2) && (
-                <RevealItem index={2} direction="left" className="mt-8 md:flex md:items-end">
+                <RevealItem
+                  index={2}
+                  direction="left"
+                  className="mt-3 md:mt-8 md:flex md:items-end"
+                >
                   {s2 && (
-                    <span className="mb-5 block shrink-0 md:mb-0 md:-ml-[15px] xl:-ml-[30px]">
+                    <span className="mb-6 block shrink-0 md:mb-0 md:-ml-[15px] xl:-ml-[30px]">
                       <Bubble index={1} tone={onDark ? "white" : "sun"}>
                         {s2.text}
                       </Bubble>

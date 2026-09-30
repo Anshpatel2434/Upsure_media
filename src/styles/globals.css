@@ -193,7 +193,7 @@
     var(--marker-color, var(--color-mint))
   );
   background-repeat: no-repeat;
-  background-size: 0% 100%;
+  background-size: 100% 100%;
   background-position: left center;
   transition: background-size 1.2s cubic-bezier(0.25, 1, 0.5, 1) var(--reveal-delay, 0s);
 }
@@ -314,8 +314,13 @@
   opacity: 1;
   transform: none;
 }
-[data-visible] .marker,
-.marker[data-visible] {
+/* Markers start empty only while reveal-on-scroll is active, so they are
+   always filled with reduced motion, in low-data mode or without JS. */
+:where(html[data-rv-ready]) .marker {
+  background-size: 0% 100%;
+}
+:where(html[data-rv-ready]) [data-visible] .marker,
+:where(html[data-rv-ready]) .marker[data-visible] {
   background-size: 100% 100%;
 }
 

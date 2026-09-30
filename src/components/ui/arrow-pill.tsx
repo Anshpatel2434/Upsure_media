@@ -21,14 +21,14 @@ export function ArrowPill({
   return (
     <Tag
       className={cn(
-        "inline-flex w-max max-w-full items-center gap-2.5 rounded-pill px-6 py-2.5 text-[13px] leading-tight font-medium",
+        "inline-flex w-max max-w-full items-center gap-2 rounded-pill px-4 py-2 text-[11px] leading-tight font-medium md:gap-2.5 md:px-6 md:py-2.5 md:text-[13px]",
         tone === "light"
           ? "bg-white text-ink shadow-[0_1px_2px_rgb(11_13_16/0.04)]"
           : "bg-paper/10 text-paper",
         className,
       )}
     >
-      <LongArrowIcon width={40} strokeWidth={1.4} className="shrink-0" />
+      <LongArrowIcon width={40} strokeWidth={1.4} className="w-7 shrink-0 md:w-10" />
       <span>{children}</span>
     </Tag>
   );

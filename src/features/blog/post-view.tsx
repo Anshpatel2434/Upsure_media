@@ -25,7 +25,7 @@ export async function PostView({ post }: { post: Post }) {
   const related = explicitRelated.length
     ? explicitRelated
     : (await getPosts({ limit: 3, category: category?.slug, exclude: post.id })).docs;
-  const bodyText = extractText(post.content);
+  const bodyText = post.content.replace(/[#>*\-]/g, " ");
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -61,9 +61,11 @@ export async function PostView({ post }: { post: Post }) {
                 <Tag tone="teal">{category.title}</Tag>
               </Link>
             )}
-            {(post.tags ?? []).map((t) => (
-              <Tag key={t.id ?? t.tag}>{t.tag}</Tag>
-            ))}
+            {(post.tags ?? [])
+              .filter((t) => t.tag.toLowerCase() !== category?.title.toLowerCase())
+              .map((t) => (
+                <Tag key={t.id ?? t.tag}>{t.tag}</Tag>
+              ))}
           </div>
           <Heading as="h1" size="h1">
             {post.title}
@@ -128,12 +130,4 @@ export async function PostView({ post }: { post: Post }) {
       )}
     </article>
   );
-}
-
-function extractText(node: unknown): string {
-  if (!node || typeof node !== "object") return "";
-  const n = node as { text?: string; children?: unknown[]; root?: unknown };
-  if (n.root) return extractText(n.root);
-  if (typeof n.text === "string") return n.text;
-  return (n.children ?? []).map(extractText).join(" ");
 }

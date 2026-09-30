@@ -1,6 +1,9 @@
 import { cn } from "@/lib/cn";
 
-/** Pulsing marker dot (15 px mobile, 25 px from tablet up). */
+/**
+ * Pulsing marker dot (15 px mobile, 25 px from tablet up). It sets no display
+ * class of its own, so callers can hide or position it without conflicts.
+ */
 export function Dot({
   tone = "ink",
   className,
@@ -12,7 +15,7 @@ export function Dot({
     <span
       aria-hidden
       className={cn(
-        "inline-block size-[15px] shrink-0 dot-pulse rounded-pill md:size-[25px]",
+        "size-[15px] shrink-0 dot-pulse rounded-pill md:size-[25px]",
         tone === "ink" && "bg-ink",
         tone === "paper" && "bg-paper",
         tone === "mint" && "bg-mint",

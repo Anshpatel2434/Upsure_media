@@ -7,15 +7,15 @@ type Variant = "underline" | "marker" | "color" | "strong";
 
 /**
  * Renders `[[emphasised]]` phrases from CMS text:
- *  - underline: teal offset underline
+ *  - underline: teal offset underline (opt-in)
  *  - marker: pastel pill that fills behind the phrase on reveal; each phrase
  *    starts 0.3 s after the previous one
- *  - color: accent-coloured text (hero headline)
+ *  - color (default): accent-coloured text
  *  - strong: bold text (hero paragraph)
  */
 export function renderEmphasis(
   source: string | null | undefined,
-  { tone = "teal", variant = "underline" }: { tone?: Tone; variant?: Variant } = {},
+  { tone = "teal", variant = "color" }: { tone?: Tone; variant?: Variant } = {},
 ): ReactNode {
   if (!source) return null;
   const parts = source.split(/(\[\[[^\]]+\]\])/g).filter(Boolean);

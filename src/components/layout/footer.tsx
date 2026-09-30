@@ -22,7 +22,7 @@ export async function Footer() {
 
   return (
     <footer className="bg-teal-ink text-paper">
-      <div className="mx-auto max-w-(--container-site) px-gutter pt-[70px] pb-10 md:pt-[100px] xl:pt-[120px]">
+      <div className="mx-auto max-w-(--container-site) px-gutter pt-16 pb-8 md:pt-[100px] md:pb-10 xl:pt-[120px]">
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-8 text-center md:gap-10">
           <p className="max-w-xl text-base leading-[1.6] text-paper/75 md:text-[17px]">
             {footer.description}
@@ -64,7 +64,7 @@ export async function Footer() {
         </div>
 
         {/* Newsletter */}
-        <div className="mx-auto mt-16 flex max-w-3xl flex-col gap-5 rounded-[22px] bg-paper/5 p-6 md:mt-20 md:flex-row md:items-center md:gap-8 md:p-8">
+        <div className="mx-auto mt-12 flex max-w-3xl flex-col gap-4 rounded-[22px] bg-paper/5 p-5 md:mt-20 md:flex-row md:items-center md:gap-8 md:p-8">
           <div className="flex flex-col gap-1.5 md:w-1/2">
             <h3 className="text-lg font-semibold">
               {footer.newsletter?.heading ?? "Subscribe to The Upshot"}
@@ -84,15 +84,15 @@ export async function Footer() {
         </div>
 
         {/* Every link, as an arrow list */}
-        <nav aria-label="Footer" className="mt-16 md:mt-24">
-          <ul className="grid grid-cols-2 gap-x-6 gap-y-3 md:grid-cols-3 lg:grid-cols-4">
+        <nav aria-label="Footer" className="mt-12 md:mt-24">
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 md:grid-cols-3 md:gap-x-6 md:gap-y-3 lg:grid-cols-4">
             {links.map((l) => (
               <li key={l.href}>
                 <Link
                   href={l.href}
                   target={l.newTab ? "_blank" : undefined}
                   rel={l.newTab ? "noopener noreferrer" : undefined}
-                  className="group inline-flex items-center gap-3 text-[17px] md:text-xl"
+                  className="group inline-flex items-center gap-2 text-[15px] leading-snug md:gap-3 md:text-xl"
                 >
                   <ArrowRightIcon
                     size={16}
@@ -108,7 +108,7 @@ export async function Footer() {
           </ul>
         </nav>
 
-        <div className="mt-16 flex flex-col gap-6 border-t border-paper/15 pt-8 md:mt-20 md:flex-row md:items-end md:justify-between">
+        <div className="mt-12 flex flex-col gap-5 border-t border-paper/15 pt-7 md:mt-20 md:flex-row md:items-end md:justify-between md:pt-8">
           <Link href="/" aria-label="Upsure home" className="w-fit">
             <Logo tone="paper" className="text-[2.25rem] md:text-[2.75rem]" />
           </Link>

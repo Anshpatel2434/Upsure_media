@@ -5,7 +5,7 @@ import type { CaseStudy, Service, Testimonial } from "@/content/types";
 import { BlockImage } from "@/components/blocks/block-image";
 import { RenderBlocks, type LayoutBlock } from "@/components/blocks/render-blocks";
 import { SectionHeader } from "@/components/blocks/section-header";
-import { CaseStudyCard } from "@/components/cards/case-study-card";
+import { WORK_TILE_COLOURS, WorkTile } from "@/components/cards/work-tile";
 import { TestimonialCard } from "@/components/cards/testimonial-card";
 import { BeforeAfter } from "@/components/ui/before-after";
 import { Button } from "@/components/ui/button";
@@ -222,9 +222,12 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
               </Button>
             </div>
             <ul className="grid gap-5 md:grid-cols-2">
-              {similar.slice(0, 2).map((s) => (
+              {similar.slice(0, 2).map((s, i) => (
                 <li key={s.id}>
-                  <CaseStudyCard study={s} />
+                  <WorkTile
+                    study={s}
+                    colour={WORK_TILE_COLOURS[(i + 1) % WORK_TILE_COLOURS.length]}
+                  />
                 </li>
               ))}
             </ul>

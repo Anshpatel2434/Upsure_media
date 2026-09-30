@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { CaseStudyCard } from "@/components/cards/case-study-card";
+import { WORK_TILE_COLOURS, WorkTile } from "@/components/cards/work-tile";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { getCaseStudies, getServices } from "@/lib/queries";
@@ -47,7 +47,11 @@ export async function WorkListing({ serviceSlug }: { serviceSlug?: string } = {}
           <ul className="grid gap-5 md:grid-cols-2">
             {studies.map((s, i) => (
               <li key={s.id}>
-                <CaseStudyCard study={s} priority={i < 2} />
+                <WorkTile
+                  study={s}
+                  colour={WORK_TILE_COLOURS[i % WORK_TILE_COLOURS.length]}
+                  priority={i < 2}
+                />
               </li>
             ))}
           </ul>
