@@ -42,7 +42,7 @@ function Chip({
   return (
     <span
       className={cn(
-        "glow pointer-events-none block w-[25vw] rounded-[12px] md:w-[14vw] xl:w-[180px] xl:rounded-[22px]",
+        "glow pointer-events-none block w-[25vw] rounded-[12px] md:w-[14vw] md:rounded-[1.5vw] 2xl:w-[215px] 2xl:rounded-[22px]",
         className,
       )}
       style={{ "--glow-delay": `${order}s` } as CSSProperties}
@@ -57,7 +57,7 @@ function Chip({
           src={img.src}
           alt=""
           fill
-          sizes="(min-width: 1280px) 180px, (min-width: 768px) 14vw, 25vw"
+          sizes="(min-width: 1536px) 215px, (min-width: 768px) 14vw, 25vw"
           priority={priority}
           placeholder={img.blurDataURL ? "blur" : "empty"}
           blurDataURL={img.blurDataURL}
@@ -85,11 +85,11 @@ async function ContactLine({ tone, className }: { tone: Tone; className?: string
   );
 }
 
-function Ctas({ block, tone }: { block: Hero; tone: Tone }) {
+function Ctas({ block, tone, className }: { block: Hero; tone: Tone; className?: string }) {
   if (!block.ctas?.length) return null;
   const [primary, ...rest] = block.ctas;
   return (
-    <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+    <div className={cn("flex flex-wrap items-center gap-x-8 gap-y-4", className)}>
       {primary && (
         <Button
           href={primary.href}
@@ -125,12 +125,14 @@ function HomeHero({ block }: { block: Hero }) {
   const imgs = images(block);
   const [s1, s2] = block.stickers ?? [];
 
+  // Sizes follow the viewport (8 vw type, 14 vw chips) and stop growing at
+  // 1536 px, so the whole hero, CTAs included, fits in the first screen.
   return (
     <Section
       tone="paper"
       grid
       padding="none"
-      className="overflow-hidden pt-6 pb-14 md:pt-10 md:pb-16"
+      className="overflow-hidden pt-6 pb-12 md:pt-8 md:pb-10"
     >
       <Container>
         <Reveal self={false} style={{ "--rv-step": "250ms" } as CSSProperties}>
@@ -142,7 +144,7 @@ function HomeHero({ block }: { block: Hero }) {
             </RevealItem>
           )}
 
-          <div className="mt-2.5 text-[13vw] leading-[1.1] font-semibold tracking-[-0.035em] text-ink md:text-[8vw] xl:text-[123px]">
+          <div className="mt-2.5 text-[13vw] leading-[1.1] font-semibold tracking-[-0.035em] text-ink md:text-[8vw] 2xl:text-[123px]">
             {/* Line 1 — text, chip to the right, floating pill */}
             <RevealItem direction="right" index={0} className="relative block md:inline-block">
               <span aria-hidden className="relative z-10">
@@ -153,11 +155,11 @@ function HomeHero({ block }: { block: Hero }) {
                   media={imgs[0]}
                   order={1}
                   priority
-                  className="hidden md:absolute md:bottom-0 md:left-[104%] md:block xl:bottom-3"
+                  className="hidden md:absolute md:bottom-[0.1em] md:left-[104%] md:block"
                 />
               )}
               {s1 && (
-                <span className="absolute top-[29vw] right-0 z-20 text-base md:top-[60%] md:right-auto md:left-[123%] xl:left-[120%]">
+                <span className="absolute top-[29vw] right-0 z-20 text-base md:top-[60%] md:right-auto md:left-[120%]">
                   <Bubble index={0} tone={s1.tone === "coral" ? "white" : "sun"}>
                     {s1.text}
                   </Bubble>
@@ -169,14 +171,14 @@ function HomeHero({ block }: { block: Hero }) {
             <RevealItem
               direction="left"
               index={1}
-              className="relative block md:pl-[19vw] xl:pl-[285px]"
+              className="relative block md:pl-[19vw] 2xl:pl-[292px]"
             >
               {imgs[1] && (
                 <Chip
                   media={imgs[1]}
                   order={2}
                   priority
-                  className="mr-[2vw] inline-block align-middle md:absolute md:bottom-0 md:left-[3%] md:mr-0 xl:bottom-3 xl:left-[5%]"
+                  className="mr-[2vw] inline-block align-middle md:absolute md:bottom-[0.1em] md:left-[2.7vw] md:mr-0 2xl:left-[41px]"
                 />
               )}
               <span aria-hidden className="relative z-10">
@@ -184,41 +186,48 @@ function HomeHero({ block }: { block: Hero }) {
               </span>
             </RevealItem>
 
-            {/* Line 3 — text, then paragraph + chip; second pill below */}
+            {/* Line 3 — text, then a column with the intro, third chip and CTAs */}
             <RevealItem direction="right" index={2} className="relative block md:flex">
               <span aria-hidden className="relative z-10 shrink-0">
                 {renderEmphasis(l3, { variant: "color" })}
               </span>
-              <span className="block md:w-[42vw] md:pl-[2vw] xl:w-[42%] xl:pl-[30px]">
+              <span className="block text-base font-normal tracking-normal md:w-[42vw] md:pl-[2vw] 2xl:w-[645px] 2xl:pl-[30px]">
                 {block.lead && (
-                  <span className="block pt-5 text-base leading-[1.6] font-normal tracking-normal text-ink-2 md:pt-[3vw] md:text-[1.2vw] xl:pt-[44px] xl:text-base">
+                  <span className="block pt-5 leading-[1.6] text-ink-2 md:pt-[3vw] md:text-[1.2vw] 2xl:pt-[46px] 2xl:text-lg">
                     {renderEmphasis(block.lead, { variant: "strong" })}
                   </span>
                 )}
-                {imgs[2] && (
-                  <span className="block pt-5 md:pt-[2vw] xl:pt-[34px]">
-                    <Chip media={imgs[2]} order={3} aspect="aspect-[10/7]" className="w-[45vw]" />
-                  </span>
-                )}
+                <span className="flex flex-col gap-8 pt-5 md:flex-row md:items-end md:gap-[2.5vw] md:pt-[2vw] 2xl:gap-10 2xl:pt-[30px]">
+                  {imgs[2] && (
+                    <Chip
+                      media={imgs[2]}
+                      order={3}
+                      aspect="aspect-[10/7]"
+                      className="w-[45vw] md:w-[14vw]"
+                    />
+                  )}
+                  <Ctas
+                    block={block}
+                    tone="ink"
+                    className="md:flex-col md:items-start md:gap-y-5"
+                  />
+                </span>
               </span>
               {s2 && (
-                <span className="absolute right-0 bottom-[12vw] z-20 text-base md:top-[10.8vw] md:right-auto md:bottom-auto md:-left-[30px] xl:top-[166px]">
+                <span className="absolute right-0 bottom-[12vw] z-20 text-base md:top-[10.8vw] md:right-auto md:bottom-auto md:-left-[30px] 2xl:top-[166px]">
                   <Bubble index={1} tone="sun">
                     {s2.text}
                   </Bubble>
                 </span>
               )}
+              {block.showContact !== false && (
+                <ContactLine
+                  tone="ink"
+                  className="mt-8 font-normal tracking-normal md:absolute md:right-0 md:bottom-0 md:mt-0 md:justify-end"
+                />
+              )}
             </RevealItem>
           </div>
-
-          <RevealItem
-            index={3}
-            direction="fade"
-            className="mt-10 flex flex-col gap-6 md:mt-8 md:flex-row md:items-end md:justify-between"
-          >
-            <Ctas block={block} tone="ink" />
-            {block.showContact !== false && <ContactLine tone="ink" className="md:justify-end" />}
-          </RevealItem>
         </Reveal>
       </Container>
     </Section>
@@ -228,9 +237,9 @@ function HomeHero({ block }: { block: Hero }) {
 /** Headline size scales down with length so long CMS headings stay balanced. */
 function defaultHeadingSize(text: string) {
   const len = plainText(text).length;
-  if (len <= 24) return "text-[12vw] md:text-[7.5vw] xl:text-[115px]";
-  if (len <= 50) return "text-[9vw] md:text-[5.2vw] xl:text-[80px]";
-  return "text-[7.5vw] md:text-[3.6vw] xl:text-[54px]";
+  if (len <= 24) return "text-[12vw] md:text-[8vw] 2xl:text-[123px]";
+  if (len <= 50) return "text-[9vw] md:text-[5.2vw] 2xl:text-[80px]";
+  return "text-[7.5vw] md:text-[3.6vw] 2xl:text-[55px]";
 }
 
 /**

@@ -59,7 +59,7 @@
 
   /* Layout */
   --spacing-gutter: clamp(1rem, 4vw, 2.5rem);
-  --spacing-section: clamp(4.5rem, 11vw, 9rem);
+  --spacing-section: clamp(3.5rem, 7vw, 6.25rem);
   --container-site: 84rem;
 
   /* Motion */

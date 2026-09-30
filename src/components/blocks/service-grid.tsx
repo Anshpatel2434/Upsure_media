@@ -55,9 +55,9 @@ export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid
   const smooth = "duration-500 ease-(--ease-smooth)";
 
   return (
-    <Section tone={tone} padding="none" className="py-[60px] md:py-[80px] xl:py-[100px]">
+    <Section tone={tone} padding="none" className="py-14 md:py-[70px] xl:py-20">
       <Container>
-        <Reveal direction="left" className="mb-[35px] md:mb-[50px]">
+        <Reveal direction="left" className="mb-6 md:mb-10">
           <ArrowPill as="h2" tone={dark ? "dark" : "light"}>
             {block.eyebrow ?? block.heading ?? "Our services"}
           </ArrowPill>
@@ -75,32 +75,40 @@ export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid
                 as="li"
                 key={s.id}
                 className={cn(
-                  "overflow-hidden border-b py-[35px] first:pt-0 last:border-b-0 md:py-[50px]",
+                  "overflow-hidden border-b py-6 first:pt-0 last:border-b-0 md:py-8 xl:py-[34px]",
                   dark ? "border-paper/15" : "border-line-soft",
                 )}
               >
-                <Link href={`/services/${s.slug}`} className="group relative block">
+                <Link
+                  href={`/services/${s.slug}`}
+                  className="group relative flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-10"
+                >
                   {thumb && (
                     <span
                       aria-hidden
-                      className={cn(
-                        "absolute top-0 left-0 hidden aspect-[5/4] w-[250px] -translate-x-[280px] overflow-hidden rounded-[22px] opacity-0 xl:block",
-                        "transition-[transform,opacity]",
-                        smooth,
-                        "group-hover:translate-x-0 group-hover:opacity-100",
-                      )}
+                      className="absolute inset-y-0 left-0 hidden items-center lg:flex"
                     >
-                      <Image src={thumb.src} alt="" fill sizes="250px" className="object-cover" />
+                      <span
+                        className={cn(
+                          "relative block aspect-[4/3] w-[130px] -translate-x-[160px] overflow-hidden rounded-[16px] opacity-0",
+                          "transition-[transform,opacity]",
+                          smooth,
+                          "group-hover:translate-x-0 group-hover:opacity-100",
+                        )}
+                      >
+                        <Image src={thumb.src} alt="" fill sizes="130px" className="object-cover" />
+                      </span>
                     </span>
                   )}
 
                   <span
                     className={cn(
-                      "block transition-transform xl:group-hover:translate-x-[280px]",
+                      "grid min-w-0 flex-1 gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-center lg:gap-10 lg:pr-[160px]",
+                      "transition-transform lg:group-hover:translate-x-[160px]",
                       smooth,
                     )}
                   >
-                    <span className="block text-[32px] leading-[1.1] font-bold tracking-[-0.025em] md:text-[42px] lg:max-w-[calc(100%-260px)] xl:max-w-[calc(100%-560px)] xl:text-[53px]">
+                    <span className="relative block pr-14 text-[28px] leading-[1.1] font-bold tracking-[-0.025em] md:text-[34px] lg:pr-0 xl:text-[40px]">
                       {s.title}
                       <span
                         aria-hidden
@@ -109,12 +117,20 @@ export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid
                           dark ? "bg-sun" : "bg-teal",
                         )}
                       />
+                      <LongArrowIcon
+                        width={44}
+                        strokeWidth={1.4}
+                        className={cn(
+                          "absolute top-[0.35em] right-0 lg:hidden",
+                          dark ? "text-sun" : "text-teal",
+                        )}
+                      />
                     </span>
 
-                    <span className="mt-4 grid md:mt-5 lg:pr-[440px] xl:pr-[550px]">
+                    <span className="grid">
                       <span
                         className={cn(
-                          "text-[18px] leading-[1.5] md:text-[24px] xl:text-[33px]",
+                          "text-base leading-[1.55] md:text-[17px] xl:text-[19px]",
                           "transition-opacity [grid-area:1/1]",
                           smooth,
                           "lg:group-hover:opacity-0",
@@ -126,11 +142,11 @@ export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid
                       {subs.length > 0 && (
                         <span
                           className={cn(
-                            "mt-4 flex flex-wrap gap-x-5 gap-y-1 text-[15px] leading-[1.6] lg:mt-0 lg:self-center lg:text-[20px] lg:opacity-0 xl:text-[22px]",
-                            "[grid-row:2] transition-opacity lg:[grid-area:1/1]",
+                            "hidden flex-wrap gap-x-4 gap-y-1 leading-[1.6] lg:flex lg:self-center lg:text-base lg:opacity-0",
+                            "transition-opacity [grid-area:1/1]",
                             smooth,
                             "lg:group-hover:opacity-100 lg:group-hover:delay-150",
-                            dark ? "text-paper/70" : "text-muted lg:text-ink",
+                            dark ? "text-paper/70" : "text-ink",
                           )}
                         >
                           {subs.map((label) => (
@@ -149,7 +165,7 @@ export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid
 
                   <span
                     className={cn(
-                      "mt-6 flex items-center gap-4 text-[15px] font-bold lg:absolute lg:top-[0.35em] lg:right-0 lg:mt-0 xl:top-3",
+                      "hidden shrink-0 items-center gap-4 text-[15px] font-bold lg:flex",
                       dark ? "text-sun" : "text-teal",
                     )}
                   >
@@ -162,7 +178,7 @@ export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid
                       More info<span className="sr-only"> about {s.title}</span>
                     </span>
                     <LongArrowIcon
-                      width={120}
+                      width={90}
                       strokeWidth={1.4}
                       className="shrink-0 lg:group-hover:nudge"
                     />

@@ -7,7 +7,7 @@ import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { getFaqs } from "@/lib/cms/queries";
 
-/** Right-aligned heading, full-width hairline list with circle controls. */
+/** Heading in a sticky left column beside a hairline list with circle controls. */
 export async function FaqBlock({ block, index }: BlockProps<"faq">) {
   const faqs = await getFaqs(
     block.scope === "custom" ? { ids: block.items } : { scope: block.scope ?? "services" },
@@ -45,27 +45,30 @@ export async function FaqBlock({ block, index }: BlockProps<"faq">) {
               />
             </RevealItem>
           )}
-          <div className={block.image ? "lg:col-span-9" : "lg:col-span-12"}>
-            <SectionHeader
-              index={index}
-              eyebrow={block.eyebrow}
-              heading={block.heading}
+          <SectionHeader
+            index={index}
+            eyebrow={block.eyebrow}
+            heading={block.heading}
+            tone={dark ? "paper" : "ink"}
+            className={
+              block.image ? "lg:col-span-9" : "lg:sticky lg:top-28 lg:col-span-4 lg:self-start"
+            }
+          />
+          <RevealItem
+            index={3}
+            direction="fade"
+            className={block.image ? "lg:col-span-9 lg:col-start-4" : "lg:col-span-8"}
+          >
+            <Accordion
+              name={`faq-${index}`}
               tone={dark ? "paper" : "ink"}
-              align="right"
-              className="mb-10"
+              items={faqs.map((f) => ({
+                id: String(f.id),
+                title: f.question,
+                content: <p>{f.answer}</p>,
+              }))}
             />
-            <RevealItem index={3} direction="fade">
-              <Accordion
-                name={`faq-${index}`}
-                tone={dark ? "paper" : "ink"}
-                items={faqs.map((f) => ({
-                  id: String(f.id),
-                  title: f.question,
-                  content: <p>{f.answer}</p>,
-                }))}
-              />
-            </RevealItem>
-          </div>
+          </RevealItem>
         </Reveal>
       </Container>
     </Section>
