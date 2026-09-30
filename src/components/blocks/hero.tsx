@@ -125,8 +125,8 @@ function HomeHero({ block }: { block: Hero }) {
   const imgs = images(block);
   const [s1, s2] = block.stickers ?? [];
 
-  // Sizes follow the viewport (8 vw type, 14 vw chips) and stop growing at
-  // 1536 px, so the whole hero, CTAs included, fits in the first screen.
+  // Sizes follow the viewport (10.4 vw type, 14 vw chips) and stop growing at
+  // 1536 px, so the three lines span the full width like the reference.
   return (
     <Section
       tone="paper"
@@ -144,7 +144,7 @@ function HomeHero({ block }: { block: Hero }) {
             </RevealItem>
           )}
 
-          <div className="mt-2.5 text-[13vw] leading-[1.1] font-semibold tracking-[-0.035em] text-ink md:text-[8vw] 2xl:text-[123px]">
+          <div className="mt-2.5 text-[13vw] leading-[1.1] font-semibold tracking-[-0.035em] text-ink md:text-[10.4vw] 2xl:text-[160px]">
             {/* Line 1 — text, chip to the right, floating pill */}
             <RevealItem direction="right" index={0} className="relative block md:inline-block">
               <span aria-hidden className="relative z-10">
@@ -199,12 +199,22 @@ function HomeHero({ block }: { block: Hero }) {
                 )}
                 <span className="flex flex-col gap-8 pt-5 md:flex-row md:items-end md:gap-[2.5vw] md:pt-[2vw] 2xl:gap-10 2xl:pt-[30px]">
                   {imgs[2] && (
-                    <Chip
-                      media={imgs[2]}
-                      order={3}
-                      aspect="aspect-[10/7]"
-                      className="w-[45vw] md:w-[14vw]"
-                    />
+                    <span className="relative w-fit">
+                      <Chip
+                        media={imgs[2]}
+                        order={3}
+                        aspect="aspect-[10/7]"
+                        className="w-[45vw] md:w-[14vw]"
+                      />
+                      {/* Phones: the second pill overlaps this chip's corner. */}
+                      {s2 && (
+                        <span className="absolute top-[58%] left-[62%] z-20 text-base md:hidden">
+                          <Bubble index={1} tone="sun">
+                            {s2.text}
+                          </Bubble>
+                        </span>
+                      )}
+                    </span>
                   )}
                   <Ctas
                     block={block}
@@ -214,7 +224,7 @@ function HomeHero({ block }: { block: Hero }) {
                 </span>
               </span>
               {s2 && (
-                <span className="absolute right-0 bottom-[12vw] z-20 text-base md:top-[10.8vw] md:right-auto md:bottom-auto md:-left-[30px] 2xl:top-[166px]">
+                <span className="absolute top-[14vw] -left-[30px] z-20 hidden text-base md:block 2xl:top-[215px]">
                   <Bubble index={1} tone="sun">
                     {s2.text}
                   </Bubble>

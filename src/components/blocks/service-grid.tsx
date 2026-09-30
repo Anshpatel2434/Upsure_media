@@ -103,7 +103,7 @@ export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid
 
                   <span
                     className={cn(
-                      "grid min-w-0 flex-1 gap-3 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-center lg:gap-10 lg:pr-[160px]",
+                      "grid min-w-0 flex-1 gap-3 lg:grid-cols-[minmax(0,5fr)_minmax(0,8fr)] lg:items-center lg:gap-10 lg:pr-[160px]",
                       "transition-transform lg:group-hover:translate-x-[160px]",
                       smooth,
                     )}

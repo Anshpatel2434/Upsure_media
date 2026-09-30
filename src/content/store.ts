@@ -7,6 +7,7 @@
  */
 
 import * as data from "./data";
+import logoManifest from "./logo-manifest.json";
 import manifest from "./media-manifest.json";
 import type {
   Author,
@@ -70,7 +71,7 @@ const clients: Client[] = data.clients.map((name, i) => {
       url: `/images/logos/${slug}.svg`,
       filename: `${slug}.svg`,
       mimeType: "image/svg+xml",
-      width: 240,
+      width: (logoManifest as Record<string, { width: number }>)[slug]?.width ?? 240,
       height: 80,
     },
   };

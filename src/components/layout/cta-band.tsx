@@ -4,7 +4,7 @@ import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { getGlobals } from "@/lib/queries";
 
-/** Global "Ready to move forward?" band: giant two lines, button hanging off the line end. */
+/** Global "Ready to move forward?" band: two full-width display lines (the second indented, in sun) and the call to action. */
 export async function CtaBand() {
   const { ctaBand } = await getGlobals();
   return (
@@ -27,13 +27,12 @@ export async function CtaBand() {
             </RevealItem>
           )}
           <RevealItem index={1}>
-            <h2 className="max-w-5xl text-display">
-              {ctaBand.heading}
+            <h2 className="text-[12vw] leading-[1.05] font-semibold tracking-[-0.035em] md:text-[8vw] 2xl:text-[123px]">
+              <span className="block">{ctaBand.heading}</span>
               {ctaBand.subheading && (
-                <>
-                  <br />
-                  <span className="text-sun">{ctaBand.subheading}</span>
-                </>
+                <span className="block text-sun md:pl-[19vw] 2xl:pl-[292px]">
+                  {ctaBand.subheading}
+                </span>
               )}
             </h2>
           </RevealItem>

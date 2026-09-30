@@ -61,6 +61,7 @@ export async function BlogCarouselBlock({ block }: BlockProps<"blogCarousel">) {
                     title={p.title}
                     image={p.cover}
                     meta={[formatDate(p.publishedAt), cat?.title].filter(Boolean).join(" · ")}
+                    metaPlacement="top"
                     action="Read article"
                     excerpt={p.excerpt}
                     colour={TILE_COLOURS[i % TILE_COLOURS.length]}

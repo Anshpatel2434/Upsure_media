@@ -1,0 +1,82 @@
+{
+  "allen": {
+    "width": 149,
+    "height": 80
+  },
+  "axis-max-life": {
+    "width": 343,
+    "height": 80
+  },
+  "bni": {
+    "width": 87,
+    "height": 80
+  },
+  "cashify": {
+    "width": 170,
+    "height": 80
+  },
+  "decathlon": {
+    "width": 226,
+    "height": 80
+  },
+  "gheeyonnaise": {
+    "width": 345,
+    "height": 80
+  },
+  "hyundai": {
+    "width": 188,
+    "height": 80
+  },
+  "jio-bp": {
+    "width": 174,
+    "height": 80
+  },
+  "khetibank": {
+    "width": 215,
+    "height": 80
+  },
+  "lenskart": {
+    "width": 202,
+    "height": 80
+  },
+  "pw-vidyapeeth": {
+    "width": 374,
+    "height": 80
+  },
+  "r-b": {
+    "width": 137,
+    "height": 80
+  },
+  "realme": {
+    "width": 174,
+    "height": 80
+  },
+  "reliance-fashion": {
+    "width": 375,
+    "height": 80
+  },
+  "samsung": {
+    "width": 177,
+    "height": 80
+  },
+  "titan": {
+    "width": 149,
+    "height": 80
+  },
+  "unicorn": {
+    "width": 188,
+    "height": 80
+  },
+  "vivo": {
+    "width": 116,
+    "height": 80
+  },
+  "waaree": {
+    "width": 147,
+    "height": 80
+  },
+  "wrogn": {
+    "width": 129,
+    "height": 80
+  }
+}

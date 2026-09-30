@@ -31,6 +31,7 @@ export function MediaTile({
   title,
   image,
   meta,
+  metaPlacement = "inline",
   action,
   excerpt,
   pills = [],
@@ -45,6 +46,8 @@ export function MediaTile({
   title: string;
   image: Media | number | null | undefined;
   meta?: ReactNode;
+  /** `top` pins the meta line (e.g. a blog date) to the tile's top-left corner. */
+  metaPlacement?: "inline" | "top";
   action: string;
   excerpt?: string | null;
   pills?: TilePill[];
@@ -58,7 +61,7 @@ export function MediaTile({
   return (
     <article
       className={cn(
-        "group relative isolate min-h-[280px] overflow-hidden rounded-[22px] bg-[#15302f] text-paper md:min-h-[340px] xl:min-h-[380px]",
+        "group relative isolate min-h-[280px] overflow-hidden rounded-[22px] bg-[#15302f] text-paper md:min-h-[400px] xl:min-h-[450px]",
         "transition-[background-color,color] duration-500 ease-(--ease-smooth) md:hover:bg-(--tile-colour) md:hover:text-ink",
         className,
       )}
@@ -85,10 +88,17 @@ export function MediaTile({
         className="absolute inset-0 z-[2] bg-linear-to-t from-black via-black/30 via-60% to-transparent transition-opacity duration-500 ease-(--ease-smooth) md:group-hover:opacity-0"
       />
       <Link href={href} aria-label={label} className="absolute inset-0 z-[3] rounded-[22px]" />
+      {meta && metaPlacement === "top" && (
+        <p className="pointer-events-none absolute top-[25px] left-[25px] z-[4] text-[13px] font-medium transition-[text-shadow] duration-500 [text-shadow:0_0_10px_rgb(0_0_0/0.5)] md:top-[30px] md:left-[30px] md:text-sm md:group-hover:[text-shadow:0_0_10px_rgb(0_0_0/0)] xl:top-[35px] xl:left-[35px]">
+          {meta}
+        </p>
+      )}
 
       <div className="pointer-events-none relative z-[4] flex h-full min-h-[inherit] flex-col justify-end gap-[25px] p-[25px] md:gap-4 md:p-[30px] xl:p-[35px]">
         <div className="flex flex-col items-start gap-2">
-          {meta && <p className="text-xs opacity-80 md:text-[13px]">{meta}</p>}
+          {meta && metaPlacement === "inline" && (
+            <p className="text-xs opacity-80 md:text-[13px]">{meta}</p>
+          )}
           <h3 className="text-[22px] leading-tight font-medium text-balance md:text-[24px] xl:text-[26px]">
             {title}
           </h3>

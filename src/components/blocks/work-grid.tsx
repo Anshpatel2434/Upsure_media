@@ -85,10 +85,10 @@ export async function WorkGridBlock({ block, index }: BlockProps<"workGrid">) {
   }));
 
   return (
-    <Section tone="paper" padding="none" className="py-3 md:py-5">
-      <Container>
-        <div className="rounded-[22px] bg-teal-ink px-[25px] py-[50px] text-paper md:rounded-[40px] md:px-[50px] md:py-[60px] xl:px-[70px] xl:py-[70px]">
-          <div className="grid gap-[25px] md:grid-cols-2 md:gap-x-[50px] md:gap-y-0 xl:gap-x-[70px]">
+    <Section tone="paper" padding="none">
+      <div className="mx-auto max-w-(--container-site)">
+        <div className="rounded-[22px] bg-teal-ink px-gutter py-[50px] text-paper md:rounded-[40px] md:py-[80px] xl:py-[100px]">
+          <div className="grid gap-[25px] md:grid-cols-2 md:gap-x-[60px] md:gap-y-0 xl:gap-x-[100px]">
             {/* Right column (first in reading order: heading, then the lead tiles). */}
             <div className="flex flex-col gap-[25px] md:order-2 md:gap-[30px] xl:gap-[40px]">
               <Reveal self={false} className="flex flex-col gap-4 md:gap-5">
@@ -151,7 +151,7 @@ export async function WorkGridBlock({ block, index }: BlockProps<"workGrid">) {
             </div>
           </div>
         </div>
-      </Container>
+      </div>
     </Section>
   );
 }

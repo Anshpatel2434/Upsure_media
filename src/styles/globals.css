@@ -58,9 +58,11 @@
   --radius-pill: 999px;
 
   /* Layout */
-  --spacing-gutter: clamp(1rem, 4vw, 2.5rem);
+  /* Full-bleed like the reference: fixed side padding (25 / 50 / 70 px, see
+     the media queries below) and only a very wide cap for ultra-wide screens. */
+  --spacing-gutter: 25px;
   --spacing-section: clamp(3.5rem, 7vw, 6.25rem);
-  --container-site: 84rem;
+  --container-site: 120rem;
 
   /* Motion */
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -75,6 +77,17 @@
   --shadow-card: 0 1px 2px rgb(11 13 16 / 0.03), 0 12px 32px -16px rgb(11 13 16 / 0.16);
   --shadow-lift: 0 2px 6px rgb(11 13 16 / 0.05), 0 28px 56px -20px rgb(11 30 33 / 0.28);
   --shadow-chip: 0 6px 18px -8px rgb(11 13 16 / 0.35);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --spacing-gutter: 50px;
+  }
+}
+@media (min-width: 1240px) {
+  :root {
+    --spacing-gutter: 70px;
+  }
 }
 
 /* ---------------------------------------------------------------------------
