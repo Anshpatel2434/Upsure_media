@@ -57,6 +57,12 @@ const forms = Object.fromEntries(
   Object.entries(data.forms).map(([key, form]) => [key, { id: nextId(), key, ...form } as Form]),
 ) as Record<keyof typeof data.forms, Form>;
 
+const logoSize = (slug: string) =>
+  (logoManifest as Record<string, { width: number; height: number }>)[slug] ?? {
+    width: 320,
+    height: 160,
+  };
+
 /* Clients, categories, author, team --------------------------------------------- */
 const clients: Client[] = data.clients.map((name, i) => {
   const slug = slugify(name);
@@ -68,11 +74,11 @@ const clients: Client[] = data.clients.map((name, i) => {
     logo: {
       id: nextId(),
       alt: `${name} logo`,
-      url: `/images/logos/${slug}.webp`,
+      url: `/images/clients/${slug}.webp`,
       filename: `${slug}.webp`,
       mimeType: "image/webp",
-      width: (logoManifest as Record<string, { width: number }>)[slug]?.width ?? 160,
-      height: 80,
+      width: logoSize(slug).width,
+      height: logoSize(slug).height,
     },
   };
 });
