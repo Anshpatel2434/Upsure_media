@@ -20,12 +20,13 @@ export type Ctx = {
 };
 
 /* ----------------------------------------------------------------------------
-   Images: key → alt text. Files live in public/images/demo/<key>.webp
+   Images: key → alt text. Real photos from upsuremedia.com live in
+   public/images/site/<key>.webp; the remaining demo images in public/images/demo/
    ---------------------------------------------------------------------------- */
 export const media: Record<string, string> = {
-  "hero-1": "Designer sketching brand marks at a desk",
-  "hero-2": "Team reviewing a campaign wall",
-  "hero-3": "Founder presenting a brand strategy on a whiteboard",
+  "hero-1": "Styled food shoot on a checked tablecloth",
+  "hero-2": "Product shot of a bottle on a shelf",
+  "hero-3": "Designer sketching on a tablet",
   "team-table": "Upsure team collaborating at a table",
   "team-couch": "Upsure team member taking notes on a couch",
   "team-review": "Two Upsure designers reviewing work",
@@ -35,14 +36,14 @@ export const media: Record<string, string> = {
     "Three team members in a strategy discussion around a table with a laptop and notes",
   "approach-illo": "Abstract artwork for the discovery phase",
   "studio-dog": "A small dog wearing a blue bandana sitting in front of a bookshelf",
-  "about-1": "Upsure team member working at a laptop",
+  "about-1": "Upsure team member taking notes",
   "about-2": "Upsure designer at a desk",
   "about-3": "The Upsure studio",
-  "culture-hero": "Upsure team laughing together in the studio",
+  "culture-hero": "Two Upsure team members planning on a whiteboard",
   "og-default": "Upsure – We design brands people love",
   "service-brand": "Branding service artwork",
-  "service-design": "Design services artwork",
-  "service-growth": "Growth services artwork",
+  "service-design": "Two designers reviewing brand stationery",
+  "service-growth": "Team member reviewing work over coffee",
   "service-social": "Social media services artwork",
   "service-ai": "AI-first services artwork",
   "service-consulting": "Consulting and advisory artwork",
@@ -52,10 +53,16 @@ export const media: Record<string, string> = {
   "work-4": "Decathlon landing page on a laptop",
   before: "Website before the redesign",
   after: "Website after the redesign",
-  "post-1": "Marketing dashboard on a screen",
-  "post-6": "Strategy map drawn on a whiteboard",
-  "post-7": "Editorial team planning content",
-  "post-8": "Compass on a map",
+  "post-ai-in-the-growth-engine-2026":
+    "A dark, orderly tech workstation with monitor, tablet, and keyboard",
+  "post-custom-ai-workflows-busywork-audit":
+    "A top-down view of a busy desk: laptop, handwritten notes, phone, and coffee",
+  "post-customers-want-answers-not-chatbots":
+    "A phone resting on a café table next to two cups of coffee",
+  "post-we-design-brands-people-love":
+    "An open book of logo designs on a desk with pencils and a phone",
+  "post-inside-upsure-what-we-actually-do":
+    "A laptop with a design tool open beside a sketchbook of wireframes",
   "avatar-akash": "Akash",
   "person-1": "Vrinda",
   "person-2": "Aarav",
@@ -64,7 +71,7 @@ export const media: Record<string, string> = {
 };
 
 /* ----------------------------------------------------------------------------
-   Clients (real names from the live logo wall; logos are placeholder wordmarks)
+   Clients (real names and logos from the live logo wall)
    ---------------------------------------------------------------------------- */
 export const clients = [
   "Allen",
@@ -432,9 +439,6 @@ export const categories = [
   { slug: "ai", title: "AI" },
   { slug: "brand", title: "Brand" },
   { slug: "agency", title: "Agency" },
-  { slug: "content", title: "Content" },
-  { slug: "strategy", title: "Strategy" },
-  { slug: "growth", title: "Growth" },
 ];
 
 export const posts = [
@@ -444,7 +448,7 @@ export const posts = [
     category: "ai",
     tags: ["AI", "Growth", "Marketing", "Performance"],
     publishedAt: "2026-06-24",
-    cover: "post-1",
+    cover: "post-ai-in-the-growth-engine-2026",
     excerpt:
       "Past the hype and the LinkedIn hot takes, a quiet truth: AI has made some marketing tasks 10x faster and left others completely untouched. A field report from inside the campaigns.",
     content: `
@@ -472,102 +476,181 @@ The "set it and forget it" AI blog machine produces exactly what you'd expect: c
 
 No model chooses your positioning. No model tells you which audience to walk away from, or gives you the nerve to look different from your category when every best practice says blend in. The decisions that make or break growth are exactly as human as they were five years ago — there are just fewer excuses now for spending your human hours on anything else.
 
-AI didn't change what good marketing is. It changed how much of your week you get to spend doing it.
+> AI didn't change what good marketing is. It changed how much of your week you get to spend doing it.
 
 If your growth engine still runs entirely on manual effort — or you've bolted on AI tools nobody actually uses — we build these systems end to end: strategy, creative, performance, and the intelligent plumbing underneath. Let's talk.
 `.trim(),
   },
   {
-    slug: "why-brand-strategy-comes-before-design",
-    title: "Why brand strategy must come before design",
+    slug: "custom-ai-workflows-busywork-audit",
+    title: "The busywork audit: how custom AI workflows give teams their week back",
+    category: "ai",
+    tags: ["AI", "Automation", "Workflows", "Operations"],
+    publishedAt: "2026-05-27",
+    cover: "post-custom-ai-workflows-busywork-audit",
+    excerpt:
+      "Every business runs on invisible, repetitive screen-work nobody signed up for. We find it, automate it, and hand the hours back. Here's our playbook — including where automation is a terrible idea.",
+    content: `
+Here's an exercise we run with every client, and you can do it right now: list the tasks your team does every single week that (a) happen on a screen, (b) follow roughly the same steps each time, and (c) nobody would miss doing.
+
+Copying leads from forms into the CRM. Assembling the Monday report from four dashboards. Renaming and filing creative assets. Summarising call notes. Chasing invoice approvals. Reformatting the same content for five platforms. Sound familiar? That list is your busywork inventory — and it's almost always bigger and more expensive than anyone expects.
+
+## Busywork is a tax on your best people
+
+The cruel joke of busywork is that it usually lands on your most capable people, because they're the ones trusted to get it right. Your senior marketer builds the weekly report. Your best ops person reconciles the spreadsheets. Hours of judgment-capable brainpower spent on tasks that require none.
+
+When we audit a team's week, we routinely find 8–15 hours per person of automatable work. Across a ten-person team, that's more than a full-time employee's worth of hours — currently being spent on copy-paste.
+
+## What a custom workflow actually looks like
+
+Forget the sci-fi version. A custom AI workflow is usually a chain of small, boring, reliable steps: watch for a trigger (new form entry, new file, incoming email), read and understand the content, transform it (summarise, extract, categorise, draft), then push the result where it belongs (CRM, Slack, spreadsheet, inbox) — with a human checkpoint wherever judgment matters.
+
+Some real examples from our projects: a lead-routing flow that reads enquiries, scores intent, drafts a personalised reply, and files everything in the CRM before the founder has finished breakfast. A reporting pipeline that pulls from ad platforms and analytics, writes the narrative summary, and posts it to Slack every Monday at 9. A content engine that turns one long-form piece into platform-native drafts for five channels, each awaiting a human yes.
+
+## The part nobody tells you: where automation is a bad idea
+
+We turn down automation requests regularly, and it's worth explaining why. Don't automate a process that's still changing weekly — you'll automate the wrong thing, twice. Don't automate judgment calls with real consequences (pricing exceptions, sensitive customer replies) beyond a draft-for-review. And don't automate a broken process; automation makes processes faster, including bad ones. Fix first, then automate.
+
+## How we run it
+
+Every engagement starts with the audit: we map the week, find the busywork, and rank it by hours saved versus build effort. Then we ship the top of the list in small pieces — a working automation every week or two, not a six-month platform project. Your team learns to trust each piece before the next one arrives, and by the end they're spotting automation candidates themselves. That's the real win: not the workflows we build, but the team that starts thinking in workflows.
+
+> The goal isn't replacing people. It's returning their hours to work that actually needs a human — the thinking, the taste, the relationships.
+
+Want to know what your busywork inventory looks like? Send us a message — the audit conversation is free, and it's usually eye-opening.
+`.trim(),
+  },
+  {
+    slug: "customers-want-answers-not-chatbots",
+    title: "Your customers don't want a chatbot. They want answers.",
+    category: "ai",
+    tags: ["AI", "Chatbots", "Customer Experience"],
+    publishedAt: "2026-04-22",
+    cover: "post-customers-want-answers-not-chatbots",
+    excerpt:
+      "Everyone's had a rage-inducing chatbot experience. It doesn't have to be that way. How we design AI assistants that resolve queries, sound like your brand, and know when to hand over to a human.",
+    content: `
+You know the feeling. You have one simple question. The little chat bubble pops up, chirpy and useless: "Hi! I'm Sparky! 😊 How can I help?" Twelve messages later, Sparky has linked you to three irrelevant FAQ pages, asked you to rephrase twice, and you're now typing AGENT AGENT AGENT like you're casting a spell.
+
+That experience is so common that "chatbot" has become a dirty word. Which is a shame — because the technology has quietly gotten very, very good. The bad experiences aren't a technology problem anymore. They're a design problem.
+
+## What changed
+
+Old chatbots were decision trees wearing a trench coat: rigid scripts that shattered the moment you phrased something unexpectedly. Modern AI assistants actually read — your help docs, your policies, your product catalogue, your tone of voice — and generate answers grounded in that knowledge. Ask in Hindi, in slang, or in a rambling three-part question; a well-built assistant handles it.
+
+## How we build them differently
+
+### 1. Grounded in your actual knowledge
+
+We connect the assistant to your real sources — help centre, policy docs, order systems, product data — so it answers from facts, not vibes. When it doesn't know, it says so and routes to a human. An assistant that admits uncertainty builds more trust than one that confidently makes things up.
+
+### 2. Written in your brand voice
+
+This is the step everyone skips, and it's our favourite one. Your assistant is often the highest-volume conversation your brand has — thousands of exchanges a month. We treat it like a brand touchpoint: tone, vocabulary, personality, even how it apologises. A D2C snack brand and an insurance company should not sound like the same robot.
+
+### 3. Designed to hand over, not hold hostage
+
+The goal is resolution, not containment. We design clear escalation paths — to WhatsApp, email, or a live agent — with full conversation context passed along so customers never repeat themselves. The metric we optimise is "did the customer get what they needed?", not "did we avoid a support ticket?"
+
+### 4. Measured like a growth channel
+
+Resolution rate, deflection quality, CSAT, conversion assists — we instrument all of it. One client discovered their assistant was quietly answering pre-purchase sizing questions at 2am and nudging conversions up. That insight reshaped their whole product page.
+
+## Beyond support: where assistants earn their keep
+
+Support is the obvious use case, but it's rarely the most valuable one. Lead qualification that asks smart questions before your sales team wakes up. Internal assistants that answer "where's the latest brand deck?" so your ops team stops playing librarian. Onboarding guides that walk new customers through setup step by step. Anywhere a knowledgeable human answers repetitive questions, an assistant can take the first shift.
+
+> The best chatbot compliment isn't "wow, great AI." It's the customer not noticing anything except how fast they got their answer.
+
+If your current chat widget is generating more rage than resolutions — or you don't have one and keep answering the same twenty questions by email — that's exactly the kind of project we love. Get in touch and we'll show you what a good one feels like.
+`.trim(),
+  },
+  {
+    slug: "we-design-brands-people-love",
+    title: '"We design brands people love" — here\'s what that actually means',
     category: "brand",
-    tags: ["Brand", "Strategy", "Insights"],
-    publishedAt: "2026-01-20",
-    cover: "post-6",
+    tags: ["Brand", "Philosophy", "Agency"],
+    publishedAt: "2026-03-18",
+    cover: "post-we-design-brands-people-love",
     excerpt:
-      "A beautiful identity built on a fuzzy strategy is an expensive way to stay confused. Why we always answer the hard questions before we open the design tools.",
+      "Love is a strong word for a company. We use it anyway — because 'brands people tolerate' doesn't compound. A look at the philosophy behind everything we ship.",
     content: `
-Every few months a founder asks for "just a logo". We understand the instinct — a logo is tangible, quick, and feels like progress. But a logo is the answer to a question, and if the question has not been asked, the answer is decoration.
+It's the first thing you see on our website: we design brands people love. It sounds like a tagline — and it is — but it's also a filter we run every single deliverable through. Here's what it means in practice.
 
-## Strategy is a set of decisions
+## Tolerated brands leak. Loved brands compound.
 
-Who is this for, and who is it not for? What do we stand for that a competitor would not say? What should someone feel in the first three seconds, and what should they believe after three months? These are business decisions, and they are the brief for every visual choice that follows.
+Think about the brands you personally love. You forgive their mistakes. You tell friends about them unprompted. You don't comparison-shop every purchase. That behaviour — trust, advocacy, retention — is worth more than any single campaign, because it compounds quietly in the background while your competitors pay full price for every customer, every time.
 
-## Design without strategy is expensive to fix
+A tolerated brand has to win every transaction on price or convenience. A loved brand starts every transaction two steps ahead. That gap is the entire economic argument for investing in brand.
 
-You can tell when strategy was skipped: the identity looks like the category, the messaging changes with every campaign, and the team argues about taste because there is no shared intent to argue from. Fixing it means starting again — this time with the questions.
+## Love is earned in the details
 
-## Strategy without design is invisible
+Nobody falls in love with a logo. They fall in love with the hundred small moments around it: the confirmation email that made them smile, the packaging that felt considered, the support reply that solved the problem in one message, the Instagram post that felt like it was written by a person and not a committee.
 
-The reverse is also true. A sharp positioning document that never becomes a system people can use is a deck that gathers dust. Strategy has to be made visible, and that is where design earns its keep.
+That's why we don't stop at identity systems. We follow the brand into the touchpoints — content, campaigns, product moments, even the chatbot (yes, a chatbot can be on-brand; most are just built by people who never read the brand guidelines).
 
-## The order we work in
+## People first — on both sides of the work
 
-Four to six weeks of strategy: audit, interviews, positioning, narrative, architecture. Then identity, with the strategy in the room for every review. It is slower for the first month and faster for every year after.
+Since 2019 we've built the studio around one belief: great work comes from people who feel empowered, not managed. An honest, inclusive culture where designers challenge strategists and everyone challenges the brief. It's more fun like that — and the fun shows up in the work.
+
+The same principle points outward. We put your customers first in every decision, because they're the ones who decide whether your brand gets loved or tolerated. Not us, not you, not an awards jury.
+
+## Craft plus systems — the unglamorous secret
+
+Here's the part agencies don't usually say out loud: love at scale requires systems. Consistency is what turns a good impression into a trusted relationship, and consistency doesn't come from inspiration — it comes from templates, guidelines, automation, and increasingly from AI that keeps quality high when humans are busy.
+
+We pair an eye for craft with intelligent systems on purpose. The craft creates the moments people love; the systems make sure those moments happen every time, on every channel, at any volume.
+
+> Beauty gets attention. Consistency earns trust. You need both, and they're built with completely different tools.
+
+That's the philosophy. If it sounds like how you want your brand built, we should talk.
 `.trim(),
   },
   {
-    slug: "content-engines-that-compound",
-    title: "Content engines that actually compound over time",
-    category: "content",
-    tags: ["Content", "SEO", "Insights"],
-    publishedAt: "2025-12-10",
-    cover: "post-7",
+    slug: "inside-upsure-what-we-actually-do",
+    title: "Inside Upsure: what we actually do all day",
+    category: "agency",
+    tags: ["Agency", "Services", "Strategy"],
+    publishedAt: "2026-02-12",
+    cover: "post-inside-upsure-what-we-actually-do",
     excerpt:
-      "Most content programmes are treadmills: publish, spike, forget. Here is how we build engines where every piece makes the next one more valuable.",
+      "Strategy decks that gather dust. Rebrands that change nothing. We built Upsure to be the opposite of that. Here's an honest tour of what we do — and what we refuse to do.",
     content: `
-A treadmill content programme looks busy and goes nowhere. Each post gets a small spike, then disappears. The team is exhausted and the graph is flat. An engine is different: pieces link, rank, get reused, and keep bringing people in long after they were published.
+Ask ten agencies what they do and you'll get ten versions of the same sentence: "we build brands that connect." Cool. Connect to what? For how much? And who's actually doing the work — the senior person from the pitch, or three interns and a shared Notion doc?
 
-## Build around questions people keep asking
+We started Upsure because we were tired of that sentence. So here's the honest version of what we do all day, written the way we'd explain it to a friend over chai.
 
-We start with the questions customers ask in sales calls, support tickets and search. Those questions do not expire, and content that answers them properly keeps working for years.
+## Brand strategy: deciding what you are before deciding what you look like
 
-## Design pieces to be reused
+Most branding problems are actually deciding problems. The founder thinks the product is for everyone (it isn't). The team describes the company six different ways (pick one). The website says "innovative solutions" (it means nothing).
 
-One deep guide becomes a newsletter, a short video, five social posts and a sales enablement one-pager. Reuse is not laziness; it is the mechanism by which one week of work compounds into a quarter of distribution.
+Our strategy work is about making those decisions on purpose: who you're for, what you stand against, why anyone should care, and how you say it in a sentence a customer would actually repeat. Audits, positioning, messaging, naming — all of it exists to answer one question: what makes you the obvious choice?
 
-## Connect everything
+## Creative & identity: the part people see
 
-Internal links, topic clusters, consistent naming. Search engines and readers both reward structure. A new post that plugs into an existing cluster ranks faster than a brilliant orphan.
+Once the thinking is sharp, we make it visible. Identity systems, campaign concepts, content series, social — designed to be beautiful, yes, but more importantly designed to ship. A gorgeous brand book that your team can't apply in Canva on a Tuesday afternoon is a very expensive PDF.
 
-## Measure the curve, not the spike
+Everything we build comes with the systems to use it: templates, guidelines, and design ops that keep quality high when we're not in the room.
 
-Launch-day traffic is vanity. The number that matters is how much a piece is still delivering three, six and twelve months later — and whether the total keeps rising as the library grows.
+## Growth marketing: the compounding machine
 
-Content engines are slower to start and impossible to stop. That is the trade we recommend making.
-`.trim(),
-  },
-  {
-    slug: "hidden-cost-of-bad-positioning",
-    title: "The hidden cost of bad positioning",
-    category: "strategy",
-    tags: ["Strategy", "Positioning", "Insights"],
-    publishedAt: "2025-11-05",
-    cover: "post-8",
-    excerpt:
-      "Weak positioning does not show up as a line item. It shows up everywhere else — in ad costs, sales cycles, churn and hiring. How to spot it and what it is costing you.",
-    content: `
-Bad positioning never appears on the P&L. There is no line called "nobody understands what we do". Instead the cost is spread across every other number until it looks like the normal cost of doing business.
+Brand gets people to trust you. Growth gets them to find you. We run the whole engine — performance media, SEO and content, CRO and landing pages, lifecycle and retention — as one connected system, not four disconnected line items with four different reports.
 
-## It shows up in acquisition
+The goal is compounding: every month's work should make next month's work more effective. If your acquisition costs are flat while your volume grows, the machine is working.
 
-When the promise is fuzzy, ads have to work harder. Click-through rates fall, cost per lead rises, and the team compensates with more budget and louder creative. Sharper positioning is the cheapest performance lever most companies never pull.
+## Applied AI: the newest tool in the box (and the most misunderstood)
 
-## It shows up in the sales cycle
+Here's where we're different from most agencies our size: we build with AI, not just about it. Custom chatbots that actually resolve customer queries instead of frustrating them. Workflow automations that take a 6-hour reporting task down to 6 minutes. Content pipelines where AI drafts and humans direct. Audits that show your team exactly where intelligent systems will pay off first — and where they're a waste of money.
 
-Prospects who cannot place you in a category take longer to decide and compare you to the wrong alternatives. Every extra call is positioning work being done manually, one deal at a time.
+And no, this isn't just for marketing. We've automated operations handoffs, internal knowledge bases, lead qualification, and customer support flows. If your team does it repeatedly on a screen, there's a good chance we can make it faster.
 
-## It shows up in churn
+## What we refuse to do
 
-Customers who bought for the wrong reasons leave. If the promise attracted the wrong people, retention will not fix it. Positioning is a filter as much as a magnet.
+No junior relay races — the people in the pitch are the people doing the work. No bloated retainers — we scope tightly and you always know what you're paying for. No 3-month discovery phases — momentum is a feature. And no hype — if AI (or anything else) won't move your numbers, we'll be the first to tell you.
 
-## It shows up in hiring
+> Our only metric of success is the asymmetric growth of our partners. 98% of our clients stay past their first engagement — that number is the whole pitch.
 
-Candidates join a story. When the story is vague, the best people choose a clearer one somewhere else.
-
-## Spotting it
-
-Ask five people in the company what you do and for whom. If you get five answers, you have found the cost. Fixing it is a few weeks of hard decisions — considerably cheaper than another year of paying for it everywhere else.
+Curious what this looks like for your brand? Tell us where you're stuck — the contact form takes two minutes, and we reply within a business day.
 `.trim(),
   },
 ];
@@ -1555,7 +1638,7 @@ We use your contact details solely to respond to your enquiry and, where a conve
 
 ## 3. Form processing
 
-Contact form submissions are stored securely in our website's content system and emailed to our inbox. Your submission is used only for delivery of your message to us.
+Form submissions are emailed to our inbox through Resend, an email delivery service, and screened for spam by Cloudflare Turnstile. They are not stored on this website, and are used only to deliver your message to us.
 
 ## 4. Analytics and cookies
 

@@ -1,82 +1,82 @@
 {
   "allen": {
-    "width": 149,
+    "width": 80,
     "height": 80
   },
   "axis-max-life": {
-    "width": 343,
+    "width": 293,
     "height": 80
   },
   "bni": {
-    "width": 87,
+    "width": 80,
     "height": 80
   },
   "cashify": {
-    "width": 170,
+    "width": 80,
     "height": 80
   },
   "decathlon": {
-    "width": 226,
+    "width": 533,
     "height": 80
   },
   "gheeyonnaise": {
-    "width": 345,
+    "width": 170,
     "height": 80
   },
   "hyundai": {
-    "width": 188,
+    "width": 130,
     "height": 80
   },
   "jio-bp": {
-    "width": 174,
+    "width": 134,
     "height": 80
   },
   "khetibank": {
-    "width": 215,
+    "width": 64,
     "height": 80
   },
   "lenskart": {
-    "width": 202,
+    "width": 191,
     "height": 80
   },
   "pw-vidyapeeth": {
-    "width": 374,
+    "width": 77,
     "height": 80
   },
   "r-b": {
-    "width": 137,
+    "width": 80,
     "height": 80
   },
   "realme": {
-    "width": 174,
+    "width": 80,
     "height": 80
   },
   "reliance-fashion": {
-    "width": 375,
+    "width": 80,
     "height": 80
   },
   "samsung": {
-    "width": 177,
+    "width": 144,
     "height": 80
   },
   "titan": {
-    "width": 149,
+    "width": 80,
     "height": 80
   },
   "unicorn": {
-    "width": 188,
+    "width": 80,
     "height": 80
   },
   "vivo": {
-    "width": 116,
+    "width": 80,
     "height": 80
   },
   "waaree": {
-    "width": 147,
+    "width": 290,
     "height": 80
   },
   "wrogn": {
-    "width": 129,
+    "width": 80,
     "height": 80
   }
 }

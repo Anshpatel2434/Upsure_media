@@ -68,10 +68,10 @@ const clients: Client[] = data.clients.map((name, i) => {
     logo: {
       id: nextId(),
       alt: `${name} logo`,
-      url: `/images/logos/${slug}.svg`,
-      filename: `${slug}.svg`,
-      mimeType: "image/svg+xml",
-      width: (logoManifest as Record<string, { width: number }>)[slug]?.width ?? 240,
+      url: `/images/logos/${slug}.webp`,
+      filename: `${slug}.webp`,
+      mimeType: "image/webp",
+      width: (logoManifest as Record<string, { width: number }>)[slug]?.width ?? 160,
       height: 80,
     },
   };

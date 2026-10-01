@@ -23,13 +23,12 @@ companies and people.
 | Founding year sticker | About hero `stickers` | Removed; comment shows where to add it. |
 | Registration numbers | `siteSettings.registrationNumbers` | Empty. |
 | Contact email | `CONTACT_EMAIL` at the top of `data.ts` | `upsureai@gmail.com` (real, from the live site). Change once a domain inbox exists. Also set `EMAIL_TO` / `EMAIL_FROM` in the environment. |
-| Client logos | `public/images/logos/*.svg` | Text wordmarks in a generic font, not the brands' real logos. Use real SVGs with permission. |
-| Photography | `public/images/demo/*.webp` | Demo images. Add real photos and update `src/content/media-manifest.json`. |
-| Blog post bodies | `posts` | Some bodies come from the live site, others were written as placeholders. Check each against doc 01 before publishing under Upsure's name. |
+| Remaining demo photography | `public/images/demo/*.webp` | Team portraits (`person-*`), case-study covers (`work-*`), before/after, the consulting card and the social share image. Everything else now uses the live site's photos (`public/images/site/`). |
 | Per-service page sections and extra FAQs | `services`, `faqs` | Card and accordion copy is real; the rest is placeholder. |
 
 ## Already real
 
 Hero and section copy, services list, the headline stats (100+ brands, 250+
-projects, 98% retention), client names, and Akash's testimonial come from the
-live site (see `01-current-site-content-inventory.md`).
+projects, 98% retention), client names and logos, Akash's testimonial, the
+five blog posts (imported from the live Sanity dataset) and most photography
+come from the live site (see `01-current-site-content-inventory.md`).
