@@ -25,6 +25,13 @@ export const metadata: Metadata = {
   },
   description:
     "We design brands people love. Upsure is a creative agency rooted in strategy, craft, and AI-driven growth.",
+  // Fallback link preview for routes without their own (search, 404). Content
+  // pages override this with their own card in lib/seo.ts.
+  openGraph: {
+    siteName: "Upsure",
+    locale: "en_IN",
+    images: [{ url: "/og/index.png", width: 1200, height: 630, type: "image/png" }],
+  },
 };
 
 export const viewport: Viewport = {

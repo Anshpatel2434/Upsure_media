@@ -1119,6 +1119,10 @@ export const pages = (ctx: Ctx) => [
   },
   {
     slug: "services",
+    meta: {
+      description:
+        "Ideas that build brands. Senior strategy, creative and growth for companies that want outcomes, not hours.",
+    },
     title: "Services",
     layout: [
       {
@@ -1316,13 +1320,17 @@ export const pages = (ctx: Ctx) => [
   },
   {
     slug: "work",
+    meta: {
+      description:
+        "Selected work for brands like Lenskart, Hyundai, Samsung and Decathlon: brand, design, social and growth from one senior team.",
+    },
     title: "Work",
     layout: [
       {
         blockType: "hero",
         variant: "editorial",
         eyebrow: "Work",
-        heading: "Work that [[moved the numbers]]",
+        heading: "Work for brands people [[love]]",
         lead: "Brand, content and growth work for household names and the challengers determined to sit beside them.",
         stickers: [
           { text: "Full-service", tone: "sun" },
@@ -1334,6 +1342,10 @@ export const pages = (ctx: Ctx) => [
   },
   {
     slug: "about",
+    meta: {
+      description:
+        "We're a creative agency shaped by the brands we build for, and the people we build with. Based in Ahmedabad, working worldwide.",
+    },
     title: "About",
     layout: [
       {
@@ -1412,6 +1424,10 @@ export const pages = (ctx: Ctx) => [
   },
   {
     slug: "culture",
+    meta: {
+      description:
+        "How we work at Upsure: a tight-knit team of strategists, designers and growth experts, obsessed with doing excellent work.",
+    },
     title: "Culture",
     layout: [
       {
@@ -1493,6 +1509,7 @@ export const pages = (ctx: Ctx) => [
   },
   {
     slug: "testimonials",
+    meta: { description: "What the brands we work with say about working with Upsure." },
     title: "Testimonials",
     layout: [
       {
@@ -1527,6 +1544,7 @@ export const pages = (ctx: Ctx) => [
   },
   {
     slug: "blog",
+    meta: { description: "Sharp takes on brand, growth and applied AI from the Upsure team." },
     title: "Blog",
     layout: [
       {
@@ -1540,6 +1558,10 @@ export const pages = (ctx: Ctx) => [
   },
   {
     slug: "contact",
+    meta: {
+      description:
+        "We'd love to hear about your brand. Send us a message and we'll reply within one business day.",
+    },
     title: "Contact",
     showCtaBand: false,
     layout: [
@@ -1618,6 +1640,10 @@ export const pages = (ctx: Ctx) => [
   },
   {
     slug: "start-a-project",
+    meta: {
+      description:
+        "Tell us what you need in three quick steps, and we'll come back with a scoped plan within one business day.",
+    },
     title: "Start a project",
     showCtaBand: false,
     layout: [
@@ -1632,6 +1658,7 @@ export const pages = (ctx: Ctx) => [
   },
   {
     slug: "terms",
+    meta: { description: "The terms that apply when you use the Upsure website." },
     title: "Terms & Conditions",
     showCtaBand: false,
     layout: [
@@ -1680,6 +1707,7 @@ Questions about these terms? Email us at ${CONTACT_EMAIL} and we'll get back to 
   },
   {
     slug: "privacy",
+    meta: { description: "How Upsure handles the details you share through this website." },
     title: "Privacy Policy",
     showCtaBand: false,
     layout: [

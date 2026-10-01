@@ -33,7 +33,6 @@ export async function resolveRoute(segments: string[]): Promise<RouteResult> {
       metadata: buildMetadata({
         title: service.meta?.title ?? service.title,
         description: service.meta?.description ?? service.blurb,
-        image: service.meta?.image ?? service.heroImage,
         path,
       }),
     };
@@ -61,7 +60,6 @@ export async function resolveRoute(segments: string[]): Promise<RouteResult> {
       metadata: buildMetadata({
         title: study.meta?.title ?? `${study.title} case study`,
         description: study.meta?.description ?? study.summary,
-        image: study.meta?.image ?? study.cover,
         path,
         type: "article",
         publishedTime: study.publishedAt,
@@ -109,7 +107,6 @@ export async function resolveRoute(segments: string[]): Promise<RouteResult> {
       metadata: buildMetadata({
         title: post.meta?.title ?? post.title,
         description: post.meta?.description ?? post.excerpt,
-        image: post.meta?.image ?? post.cover,
         path,
         type: "article",
         publishedTime: post.publishedAt,
@@ -164,11 +161,11 @@ async function withPage(
       {
         title: page.meta?.title ?? (slug === "home" ? settings.defaultTitle : page.title),
         description: page.meta?.description,
-        image: page.meta?.image,
         path: slug === "home" ? "/" : path,
+        cardPath: slug === "home" ? "/" : `/${slug}`,
         absolute: slug === "home",
       },
-      { description: settings.defaultDescription, image: settings.defaultImage },
+      { description: settings.defaultDescription },
     ),
   };
 }
