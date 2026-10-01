@@ -2,10 +2,11 @@
 
 import { z } from "zod";
 
-import { sendEmail } from "@/lib/email";
+import type { DeliverableState } from "@/features/forms/deliver";
+import { notify } from "@/lib/email";
 import { checkSpam } from "@/lib/spam";
 
-export type NewsletterState = { status: "idle" | "success" | "error"; message?: string };
+export type NewsletterState = DeliverableState;
 
 const schema = z.object({
   email: z.string().trim().email("Enter a valid email address"),
@@ -30,12 +31,21 @@ export async function subscribe(
   const spam = await checkSpam(formData, "newsletter", 3);
   if (spam) return { status: "error", message: spam };
 
-  const sent = await sendEmail({
+  const email = parsed.data.email.toLowerCase();
+  const notification = {
     subject: "New newsletter subscriber",
-    text: `Email: ${parsed.data.email.toLowerCase()}
-Source: ${parsed.data.source ?? "website"}`,
-  });
-  return sent
-    ? { status: "success", message: "You're on the list. Sharp takes, once a month." }
-    : { status: "error", message: "Something went wrong. Please try again." };
+    fields: [
+      ["Email", email],
+      ["Source", parsed.data.source || "website"],
+    ] as [string, string][],
+    replyTo: email,
+  };
+  const delivery = await notify(notification);
+  if (delivery === "failed") {
+    return { status: "error", message: "Something went wrong. Please try again." };
+  }
+  const message = "You're on the list. Sharp takes, once a month.";
+  return delivery === "browser"
+    ? { status: "deliver", message, deliver: notification }
+    : { status: "success", message };
 }

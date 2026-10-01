@@ -47,12 +47,10 @@ export const media: Record<string, string> = {
   "service-social": "Social media services artwork",
   "service-ai": "AI-first services artwork",
   "service-consulting": "Consulting and advisory artwork",
-  "work-1": "Lenskart campaign visuals on a store wall",
-  "work-2": "Hyundai launch film still",
-  "work-3": "Samsung content studio",
-  "work-4": "Decathlon landing page on a laptop",
-  before: "Website before the redesign",
-  after: "Website after the redesign",
+  "work-lenskart": "Lenskart logo",
+  "work-hyundai": "Hyundai logo",
+  "work-samsung": "Samsung logo",
+  "work-decathlon": "Decathlon logo",
   "post-ai-in-the-growth-engine-2026":
     "A dark, orderly tech workstation with monitor, tablet, and keyboard",
   "post-custom-ai-workflows-busywork-audit":
@@ -656,7 +654,7 @@ Curious what this looks like for your brand? Tell us where you're stuck — the 
 ];
 
 /* ----------------------------------------------------------------------------
-   Case studies (demo; client names from the logo wall)
+   Case studies (clients from the live logo wall; scope copy to be confirmed by Upsure, no invented figures or quotes)
    ---------------------------------------------------------------------------- */
 export const caseStudies = [
   {
@@ -664,12 +662,36 @@ export const caseStudies = [
     client: "Lenskart",
     industry: "Eyewear retail",
     services: ["branding", "design", "growth"],
-    cover: "work-1",
+    cover: "work-lenskart",
     featured: true,
-    stats: [
-      ["3.2×", "Return on ad spend"],
-      ["48%", "Lower cost per order"],
-      ["1.9M", "Campaign reach"],
+    summary:
+      "Brand, design and growth for one of India's best-known eyewear brands, working as one system.",
+    intro:
+      "Lenskart sells eyewear online and in stores across India, so the brand has to work as hard in a paid ad as it does on a shop window. Our work spanned brand, design and growth marketing.",
+    objective:
+      "Keep the brand [[instantly recognisable]] at every touchpoint, while the performance work [[keeps pace with a fast-moving retailer]].",
+    sections: [
+      {
+        eyebrow: "Brand",
+        heading: "One voice, online and in store",
+        body: "We started from how people actually shop for glasses: browsing frames online, trying them on in store, coming back for lenses. Messaging was organised around those moments, so every channel knew its job.",
+      },
+      {
+        eyebrow: "Design",
+        heading: "A system built to ship",
+        body: "Ads, social and in-store graphics share one set of design rules, so new collections and offers can go live quickly without drifting off-brand.",
+      },
+      {
+        eyebrow: "Growth",
+        heading: "Creative and performance in the same room",
+        body: "Paid creative is planned alongside the media plan, not after it. New angles are tested in small batches, and what works feeds straight into the next round of design.",
+      },
+    ],
+    timeline: [
+      { when: "Discover", what: "Audit of brand, channels and creative" },
+      { when: "Define", what: "Messaging framework and design rules" },
+      { when: "Build", what: "Templates and campaign creative" },
+      { when: "Grow", what: "Ongoing testing and iteration" },
     ],
   },
   {
@@ -677,12 +699,35 @@ export const caseStudies = [
     client: "Hyundai",
     industry: "Automotive",
     services: ["social-media", "design"],
-    cover: "work-2",
+    cover: "work-hyundai",
     featured: true,
-    stats: [
-      ["120%", "Engagement uplift"],
-      ["38k", "New followers in 90 days"],
-      ["6", "Launch films produced"],
+    summary: "Social content and design for an automotive brand where every launch is an event.",
+    intro:
+      "Buying a car is a considered decision, and much of that consideration now happens on a phone. Our work with Hyundai focused on social media content and the design system behind it.",
+    objective:
+      "Make every model launch feel like [[an event worth following]], and keep the feed [[useful between launches]], not just loud during them.",
+    sections: [
+      {
+        eyebrow: "Social",
+        heading: "Planned around the launch calendar",
+        body: "Content is planned in phases around each model launch — build-up, launch day and follow-through — so every launch tells a story rather than living in a single post.",
+      },
+      {
+        eyebrow: "Design",
+        heading: "A kit that respects the brand",
+        body: "A social design kit keeps typography, colour and photography consistent across every format, from stories to carousels, so the team can move fast without guesswork.",
+      },
+      {
+        eyebrow: "Community",
+        heading: "Reasons to stay between launches",
+        body: "Feature explainers, ownership tips and community moments keep the audience engaged in the quieter months, and give people a reason to come back.",
+      },
+    ],
+    timeline: [
+      { when: "Discover", what: "Channel and content audit" },
+      { when: "Define", what: "Content pillars and launch playbook" },
+      { when: "Build", what: "Social design kit and templates" },
+      { when: "Grow", what: "Always-on content and launch campaigns" },
     ],
   },
   {
@@ -690,12 +735,36 @@ export const caseStudies = [
     client: "Samsung",
     industry: "Consumer electronics",
     services: ["design", "social-media", "ai-automation"],
-    cover: "work-3",
+    cover: "work-samsung",
     featured: true,
-    stats: [
-      ["10×", "Creative variants per week"],
-      ["-60%", "Time to publish"],
-      ["4.7", "Avg. content rating"],
+    summary:
+      "Design, social and AI-assisted production for a consumer-tech brand that never stops launching.",
+    intro:
+      "In consumer electronics the product cycle sets the pace, and content has to keep up across every format and platform. Our work with Samsung combined design, social media and AI-assisted content workflows.",
+    objective:
+      "Produce [[more creative, faster]], without letting quality or consistency slip — with [[AI where it helps and people where it matters]].",
+    sections: [
+      {
+        eyebrow: "Design",
+        heading: "One look across every format",
+        body: "Clear rules for layout, type and product imagery keep every asset recognisably on-brand, whether it is a launch banner or a fifteen-second story.",
+      },
+      {
+        eyebrow: "Social",
+        heading: "Built for each platform",
+        body: "Rather than resizing one asset everywhere, content is shaped for how each platform is used: quick hooks for short video, detail for carousels, clarity for search.",
+      },
+      {
+        eyebrow: "AI-first",
+        heading: "AI-assisted, human-approved",
+        body: "AI tools take on the repetitive parts of production, such as versioning, resizing and first drafts. Designers and writers make the decisions and sign off every piece.",
+      },
+    ],
+    timeline: [
+      { when: "Discover", what: "Production and workflow audit" },
+      { when: "Define", what: "Design rules and platform playbooks" },
+      { when: "Build", what: "AI-assisted production workflow" },
+      { when: "Grow", what: "Ongoing content across platforms" },
     ],
   },
   {
@@ -703,44 +772,41 @@ export const caseStudies = [
     client: "Decathlon",
     industry: "Sports retail",
     services: ["growth", "design"],
-    cover: "work-4",
+    cover: "work-decathlon",
     featured: true,
-    stats: [
-      ["210%", "Organic traffic growth"],
-      ["2.4×", "Landing-page conversion"],
-      ["#1", "For 14 category keywords"],
+    summary: "Growth marketing and design for a sports retailer with a huge, varied range.",
+    intro:
+      "Decathlon sells gear for dozens of sports, which makes search and landing pages as important as any campaign. Our work focused on growth marketing and design.",
+    objective:
+      "Help people [[find the right gear faster]], and turn more of that interest into [[orders and store visits]].",
+    sections: [
+      {
+        eyebrow: "Growth",
+        heading: "Planned around what people search for",
+        body: "We mapped what people look for across sports and seasons, and planned content and landing pages around those needs rather than around internal categories.",
+      },
+      {
+        eyebrow: "Design",
+        heading: "Landing pages built to convert",
+        body: "A modular landing-page system makes it quick to launch a page for a new sport, season or offer, each designed around one clear action.",
+      },
+      {
+        eyebrow: "Testing",
+        heading: "Small tests, steady learning",
+        body: "Headlines, layouts and offers are tested continuously, and the winners become the new defaults across pages.",
+      },
+    ],
+    timeline: [
+      { when: "Discover", what: "Search and conversion audit" },
+      { when: "Define", what: "Sport and season content plan" },
+      { when: "Build", what: "Modular landing-page system" },
+      { when: "Grow", what: "Continuous testing and iteration" },
     ],
   },
 ].map((c, i) => ({
   ...c,
   title: c.client,
   publishedAt: new Date(2026, 6 - i, 10).toISOString(),
-  summary: `How ${c.client} turned a strong product into a brand people seek out — brand, content and growth working as one system.`,
-  intro: `${c.client} came to Upsure at an inflection point: a strong product, an audience that had outgrown the brand, and growth targets the existing marketing engine could not reach. We were asked to rethink how the brand showed up everywhere, and to build the machine underneath it.`,
-  objective: `The brief was clear: [[modernise the brand]], make every channel pull in the same direction, and build a [[growth system that compounds]] rather than a series of one-off campaigns.`,
-  sections: [
-    {
-      eyebrow: "Strategy",
-      heading: "Starting with the hard questions",
-      body: "We began with stakeholder interviews, a brand audit and audience research across the category, then sharpened positioning and messaging so every later decision had a reference point. Two audiences were dropped on purpose; the remaining one got everything.",
-    },
-    {
-      eyebrow: "Craft",
-      heading: "A system built to ship",
-      body: "Identity, content templates and landing pages were designed as one system, so the in-house team could produce at pace without drifting off-brand. Every asset had a rule and every rule had an example.",
-    },
-    {
-      eyebrow: "Growth",
-      heading: "Measured every week, improved every month",
-      body: "Paid, organic and lifecycle ran from one dashboard with shared targets. Winners were scaled, losers were cut within the week, and the learning compounded into the next quarter's plan.",
-    },
-  ],
-  timeline: [
-    { when: "Week 0", what: "Kick-off, audit and research" },
-    { when: "Week 6", what: "Positioning and identity signed off" },
-    { when: "Week 12", what: "Site and campaigns live" },
-    { when: "+90 days", what: "Headline results above" },
-  ],
 }));
 
 /* ----------------------------------------------------------------------------
@@ -1335,8 +1401,8 @@ export const pages = (ctx: Ctx) => [
       { blockType: "logoTicker", heading: "Trusted by India's leading brands", tone: "paper" },
       {
         blockType: "workGrid",
-        eyebrow: "Results",
-        heading: "We let our results do the talking",
+        eyebrow: "Our work",
+        heading: "Some of the brands we work with",
         limit: 4,
         layout: "grid",
         cta: { label: "View all work", href: "/work", newTab: false },
@@ -1638,7 +1704,7 @@ We use your contact details solely to respond to your enquiry and, where a conve
 
 ## 3. Form processing
 
-Form submissions are emailed to our inbox through Resend, an email delivery service, and screened for spam by Cloudflare Turnstile. They are not stored on this website, and are used only to deliver your message to us.
+Form submissions are checked for spam on our server, then emailed to our inbox through Web3Forms, a form-delivery service. They are not stored on this website, and are used only to deliver your message to us.
 
 ## 4. Analytics and cookies
 

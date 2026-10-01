@@ -4,10 +4,12 @@ import { useActionState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Turnstile } from "@/components/ui/turnstile";
+import { withBrowserDelivery } from "@/features/forms/deliver";
 import { cn } from "@/lib/cn";
 
 import { subscribe, type NewsletterState } from "@/features/newsletter/action";
 
+const subscribeWithDelivery = withBrowserDelivery(subscribe);
 const initial: NewsletterState = { status: "idle" };
 
 export function NewsletterForm({
@@ -23,7 +25,7 @@ export function NewsletterForm({
   tone?: "ink" | "paper";
   className?: string;
 }) {
-  const [state, action, pending] = useActionState(subscribe, initial);
+  const [state, action, pending] = useActionState(subscribeWithDelivery, initial);
   const paper = tone === "paper";
 
   if (state.status === "success") {

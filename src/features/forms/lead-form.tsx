@@ -8,8 +8,10 @@ import { Button } from "@/components/ui/button";
 import { InputField, SelectField, TextareaField } from "@/components/ui/field";
 import { Turnstile } from "@/components/ui/turnstile";
 import { submitForm, type FormState } from "@/features/forms/action";
+import { withBrowserDelivery } from "@/features/forms/deliver";
 import { cn } from "@/lib/cn";
 
+const submitFormWithDelivery = withBrowserDelivery(submitForm);
 const initial: FormState = { status: "idle" };
 
 type Props = {
@@ -25,7 +27,7 @@ type Props = {
  * <form> posting to a server action, so it works before hydration too.
  */
 export function LeadForm({ form, tone = "ink", defaults = {}, className }: Props) {
-  const [state, action, pending] = useActionState(submitForm, initial);
+  const [state, action, pending] = useActionState(submitFormWithDelivery, initial);
 
   if (state.status === "success") {
     return (

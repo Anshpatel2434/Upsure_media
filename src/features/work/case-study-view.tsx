@@ -16,6 +16,7 @@ import { LazyVideo } from "@/components/ui/lazy-video";
 import { Section } from "@/components/ui/section";
 import { Tag } from "@/components/ui/tag";
 import { LeadForm } from "@/features/forms/lead-form";
+import { cn } from "@/lib/cn";
 import { getCaseStudies, getForm } from "@/lib/queries";
 import { imageProps, isVideo, mediaUrl } from "@/lib/media";
 import { renderHighlights } from "@/lib/text";
@@ -130,21 +131,29 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
       {/* Before / after + timeline */}
       {(before && after) || (study.timeline?.length ?? 0) > 0 ? (
         <Section tone="white">
-          <Container className="grid gap-12 lg:grid-cols-[3fr_2fr]">
-            {before && after ? (
+          <Container className={cn("grid gap-12", before && after && "lg:grid-cols-[3fr_2fr]")}>
+            {before && after && (
               <BeforeAfter before={before} after={after} caption={study.beforeAfter?.caption} />
-            ) : (
-              <div />
             )}
             {(study.timeline?.length ?? 0) > 0 && (
               <div className="flex flex-col gap-6">
                 <SectionHeader eyebrow="Timeline" heading="How it unfolded" size="h3" />
-                <ol className="relative flex flex-col gap-6 border-l-2 border-line pl-6">
+                {/* Beside a before/after it is a vertical list; on its own, a row of steps. */}
+                <ol
+                  className={cn(
+                    "relative flex flex-col gap-6 border-l-2 border-line pl-6",
+                    !(before && after) &&
+                      "lg:grid lg:grid-cols-4 lg:gap-8 lg:border-t-2 lg:border-l-0 lg:pt-6 lg:pl-0",
+                  )}
+                >
                   {study.timeline!.map((t) => (
                     <li key={t.id ?? t.when} className="relative">
                       <span
                         aria-hidden
-                        className="absolute top-1.5 -left-[1.9rem] size-3 rounded-pill bg-teal ring-4 ring-white"
+                        className={cn(
+                          "absolute top-1.5 -left-[1.9rem] size-3 rounded-pill bg-teal ring-4 ring-white",
+                          !(before && after) && "lg:-top-[1.95rem] lg:left-0",
+                        )}
                       />
                       <p className="text-small font-semibold tracking-(--text-eyebrow--letter-spacing) text-teal uppercase">
                         {t.when}
@@ -200,7 +209,7 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
             )}
             {callbackForm && (
               <div className="rounded-xl border border-paper/15 bg-paper/5 p-6 md:p-8">
-                <h2 className="text-h3">Want results like these?</h2>
+                <h2 className="text-h3">Want work like this?</h2>
                 <p className="mt-2 mb-6 text-paper/70">
                   Leave your number and a senior team member will call you back.
                 </p>

@@ -132,19 +132,14 @@ const testimonials: Testimonial[] = data.testimonials.map(({ key: _key, ...rest 
 
 /* Case studies --------------------------------------------------------------------- */
 const caseStudies: CaseStudy[] = data.caseStudies.map(
-  ({ services: slugs, cover, stats, ...rest }, i) =>
+  // No stats, before/after or testimonial until Upsure supplies real ones for
+  // each client; the case-study page hides those sections when they are empty.
+  ({ services: slugs, cover, ...rest }) =>
     ({
       id: nextId(),
       ...rest,
       services: slugs.map((slug) => serviceBySlug[slug]).filter(Boolean),
       cover: media[cover],
-      stats: stats.map(([value, label]) => ({ value, label })),
-      beforeAfter: {
-        before: media.before,
-        after: media.after,
-        caption: "Homepage, before and after the relaunch",
-      },
-      testimonial: testimonials[(i + 1) % testimonials.length],
     }) as CaseStudy,
 );
 

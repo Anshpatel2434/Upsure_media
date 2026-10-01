@@ -3,14 +3,12 @@
 import { z } from "zod";
 
 import { store } from "@/content/store";
-import { sendEmail } from "@/lib/email";
+import { notify } from "@/lib/email";
 import { checkSpam } from "@/lib/spam";
 
-export type FormState = {
-  status: "idle" | "success" | "error";
-  message?: string;
-  errors?: Record<string, string>;
-};
+import type { DeliverableState } from "./deliver";
+
+export type FormState = DeliverableState & { errors?: Record<string, string> };
 
 /**
  * Generic submit for every site form. Validates the fields against the form
@@ -68,17 +66,18 @@ export async function submitForm(_prev: FormState, formData: FormData): Promise<
     const field = form.fields?.find((f) => "name" in f && f.name === name);
     return (field && "label" in field && field.label) || name;
   };
-  const sent = await sendEmail({
+  const notification = {
     subject: `New ${form.title.toLowerCase()} from the website`,
-    text: fields.map(([name, value]) => `${labelOf(name)}: ${String(value)}`).join("\n"),
+    fields: fields.map(([name, value]) => [labelOf(name), String(value)] as [string, string]),
     replyTo: typeof parsed.data.email === "string" ? parsed.data.email : undefined,
-  });
-  if (!sent) {
+  };
+  const delivery = await notify(notification);
+  if (delivery === "failed") {
     return { status: "error", message: "Something went wrong. Please email us instead." };
   }
 
-  return {
-    status: "success",
-    message: form.confirmationMessage ?? "Thanks — we'll be in touch within one business day.",
-  };
+  const message = form.confirmationMessage ?? "Thanks — we'll be in touch within one business day.";
+  return delivery === "browser"
+    ? { status: "deliver", message, deliver: notification }
+    : { status: "success", message };
 }
