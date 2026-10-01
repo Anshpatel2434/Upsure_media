@@ -1,3 +1,5 @@
+import { CONTACT_EMAIL } from "@/content/data";
+
 /**
  * Sends a plain-text notification email through Resend's HTTP API. Nothing is
  * stored on our side. Without RESEND_API_KEY (local development) the message
@@ -13,10 +15,16 @@ export async function sendEmail({
   replyTo?: string;
 }): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
-  const to = process.env.EMAIL_TO ?? "upsureai@gmail.com";
+  const to = process.env.EMAIL_TO || CONTACT_EMAIL;
   const from = process.env.EMAIL_FROM ?? "Upsure website <onboarding@resend.dev>";
 
   if (!key) {
+    // In production a missing key would silently drop leads, so fail visibly:
+    // the form shows its error and asks the visitor to email instead.
+    if (process.env.NODE_ENV === "production") {
+      console.error(`RESEND_API_KEY is not set; "${subject}" was not delivered.`);
+      return false;
+    }
     console.warn(`\n[email → ${to}] ${subject}\n${text}\n`);
     return true;
   }

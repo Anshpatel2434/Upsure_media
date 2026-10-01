@@ -45,6 +45,14 @@ actions in `src/features`. Submissions are validated and emailed to `EMAIL_TO` t
 Resend when `RESEND_API_KEY` is set; without it they are printed to the server console.
 Nothing is stored.
 
+Every form is protected by a honeypot, a per-IP rate limit and, when both Turnstile keys are
+set, Cloudflare Turnstile. Set `TRUSTED_IP_HEADER` to your host's real-IP header, and
+`UPSTASH_REDIS_REST_URL` / `_TOKEN` to share the rate limit across server instances (see
+`.env.example`).
+
+Demo and unconfirmed content still to replace before launch is listed in
+[`docs/08-content-to-replace.md`](docs/08-content-to-replace.md).
+
 ## Scripts
 
 | Script                 | What it does                                     |

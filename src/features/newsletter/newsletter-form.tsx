@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Turnstile } from "@/components/ui/turnstile";
 import { cn } from "@/lib/cn";
 
 import { subscribe, type NewsletterState } from "@/features/newsletter/action";
@@ -66,6 +67,7 @@ export function NewsletterForm({
           {pending ? "Sending…" : buttonLabel}
         </Button>
       </div>
+      <Turnstile theme={paper ? "dark" : "light"} appearance="interaction-only" resetKey={state} />
       {state.status === "error" && (
         <p role="alert" className="text-small text-coral">
           {state.message}

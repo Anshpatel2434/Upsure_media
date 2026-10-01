@@ -9,6 +9,9 @@
 
 import type { Form, Media, Service } from "./types";
 
+/** Public contact address, used in copy, mailto links and as the default form inbox. */
+export const CONTACT_EMAIL = "upsureai@gmail.com";
+
 /** Resolved documents handed to `pages()` so layouts can embed them. */
 export type Ctx = {
   media: Record<string, Media>;
@@ -321,8 +324,7 @@ export const faqs = [
   {
     key: "get-started",
     question: "How do we get started?",
-    answer:
-      "Fill in the contact form or email us at upsureai@gmail.com. We'll schedule a free 30-minute discovery call to learn about your goals, then come back with a scoped proposal.",
+    answer: `Fill in the contact form or email us at ${CONTACT_EMAIL}. We'll schedule a free 30-minute discovery call to learn about your goals, then come back with a scoped proposal.`,
     scope: ["services", "contact"],
     order: 5,
   },
@@ -779,11 +781,13 @@ export const forms = {
 export const siteSettings = {
   name: "Upsure",
   tagline: "We design brands people love",
-  email: "upsureai@gmail.com",
-  phone: "+91 98250 00000",
-  phoneHref: "+919825000000",
-  addressLine1: "3rd Floor, Iscon Emporio",
-  addressLine2: "Satellite Road, Ahmedabad 380015",
+  email: CONTACT_EMAIL,
+  // Phone and street address are hidden site-wide while empty. Fill in the
+  // real ones (phoneHref is digits only, e.g. "+919876543210").
+  phone: "",
+  phoneHref: "",
+  addressLine1: "",
+  addressLine2: "",
   city: "Ahmedabad, India",
   hours: "Mon – Fri, 10:00 – 18:00 IST",
   socials: [{ platform: "Instagram", url: "https://www.instagram.com/upsure_media/" }],
@@ -792,7 +796,7 @@ export const siteSettings = {
     { value: 250, suffix: "+", label: "Projects delivered across brand & growth" },
     { value: 98, suffix: "%", label: "Client retention, year over year" },
   ],
-  badges: [{ text: "Est. 2019" }, { text: "Based in Ahmedabad" }],
+  badges: [{ text: "Based in Ahmedabad" }],
   defaultTitle: "Upsure – Creative & growth agency in Ahmedabad",
   defaultDescription:
     "We design brands people love. Upsure is a creative agency rooted in strategy, craft, and AI-driven growth — helping ambitious brands cut through the noise.",
@@ -1191,7 +1195,7 @@ export const pages = (ctx: Ctx) => [
         lead: "We're a creative agency shaped by the [[brands we build for]], and the [[people we build with]]. We design brands people love.",
         stickers: [
           { text: "Proudly from Ahmedabad", tone: "sun" },
-          { text: "Est. 2019", tone: "teal" },
+          // Add { text: "Est. <year>", tone: "teal" } once the founding year is confirmed.
         ],
         images: [{ image: ctx.media["about-1"] }],
         showContact: true,
@@ -1320,7 +1324,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always curious to meet sharp strategists, designers, and growth marketers. Even when nothing's posted, introduce yourself — drop us a line by email.",
             link: {
               label: "Introduce yourself",
-              href: "mailto:upsureai@gmail.com?subject=Joining%20Upsure",
+              href: `mailto:${CONTACT_EMAIL}?subject=Joining%20Upsure`,
               newTab: false,
             },
           },
@@ -1329,7 +1333,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always expanding our network of collaborators for projects that need more than one team. If you share our values and way of working, we'd love to hear from you.",
             link: {
               label: "Become a collaborator",
-              href: "mailto:upsureai@gmail.com?subject=Collaboration",
+              href: `mailto:${CONTACT_EMAIL}?subject=Collaboration`,
               newTab: false,
             },
           },
@@ -1403,8 +1407,7 @@ export const pages = (ctx: Ctx) => [
         blockType: "leadForm",
         eyebrow: "Say hello",
         heading: "Tell us about your brand",
-        intro:
-          "Fill in the form and we'll get back to you within one business day. Prefer email? Reach us at upsureai@gmail.com.",
+        intro: `Fill in the form and we'll get back to you within one business day. Prefer email? Reach us at ${CONTACT_EMAIL}.`,
         form: ctx.forms.contact,
         layout: "split",
         tone: "paper",
@@ -1446,7 +1449,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always curious to meet sharp strategists, designers, and growth marketers. Even when nothing's posted, introduce yourself — drop us a line by email.",
             link: {
               label: "Introduce yourself",
-              href: "mailto:upsureai@gmail.com?subject=Joining%20Upsure",
+              href: `mailto:${CONTACT_EMAIL}?subject=Joining%20Upsure`,
               newTab: false,
             },
           },
@@ -1455,7 +1458,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always expanding our network of collaborators for projects that need more than one team. If you share our values and way of working, we'd love to hear from you.",
             link: {
               label: "Become a collaborator",
-              href: "mailto:upsureai@gmail.com?subject=Collaboration",
+              href: `mailto:${CONTACT_EMAIL}?subject=Collaboration`,
               newTab: false,
             },
           },
@@ -1520,7 +1523,7 @@ To the fullest extent permitted by law, Upsure is not liable for any indirect or
 
 ## 7. Contact
 
-Questions about these terms? Email us at upsureai@gmail.com and we'll get back to you within one business day.
+Questions about these terms? Email us at ${CONTACT_EMAIL} and we'll get back to you within one business day.
 `.trim(),
         tone: "paper",
       },
@@ -1568,7 +1571,7 @@ You can request access to, correction of, or deletion of the personal informatio
 
 ## 7. Contact
 
-For any privacy question or request, email upsureai@gmail.com. We reply within one business day.
+For any privacy question or request, email ${CONTACT_EMAIL}. We reply within one business day.
 `.trim(),
         tone: "paper",
       },

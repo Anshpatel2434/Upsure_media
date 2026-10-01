@@ -925,6 +925,8 @@ export interface Service {
 
 export interface Form {
   id: number;
+  /** Key in `data.forms`; submissions are matched on this, not the id. */
+  key: string;
   title: string;
   fields?:
     | (

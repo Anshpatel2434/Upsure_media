@@ -3,6 +3,7 @@
 import { z } from "zod";
 
 import { sendEmail } from "@/lib/email";
+import { checkSpam } from "@/lib/spam";
 
 export type NewsletterState = { status: "idle" | "success" | "error"; message?: string };
 
@@ -25,6 +26,9 @@ export async function subscribe(
     };
   }
   if (parsed.data.website) return { status: "success", message: "You're on the list." }; // silently drop bots
+
+  const spam = await checkSpam(formData, "newsletter", 3);
+  if (spam) return { status: "error", message: spam };
 
   const sent = await sendEmail({
     subject: "New newsletter subscriber",

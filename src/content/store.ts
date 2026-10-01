@@ -54,7 +54,7 @@ const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-
 
 /* Forms ---------------------------------------------------------------------- */
 const forms = Object.fromEntries(
-  Object.entries(data.forms).map(([key, form]) => [key, { id: nextId(), ...form } as Form]),
+  Object.entries(data.forms).map(([key, form]) => [key, { id: nextId(), key, ...form } as Form]),
 ) as Record<keyof typeof data.forms, Form>;
 
 /* Clients, categories, author, team --------------------------------------------- */

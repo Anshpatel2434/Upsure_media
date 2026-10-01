@@ -8,6 +8,7 @@ import type { Form } from "@/content/types";
 import { Button } from "@/components/ui/button";
 import { InputField, SelectField, TextareaField } from "@/components/ui/field";
 import { CheckIcon } from "@/components/ui/icons";
+import { Turnstile } from "@/components/ui/turnstile";
 import { submitForm, type FormState } from "@/features/forms/action";
 import { cn } from "@/lib/cn";
 
@@ -50,7 +51,7 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
 
   return (
     <form action={action} className="flex flex-col gap-8" noValidate>
-      <input type="hidden" name="__form" value={form.id} />
+      <input type="hidden" name="__form" value={form.key} />
       <input type="hidden" name="needs" value={needsValue} />
       <input
         type="text"
@@ -173,6 +174,8 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
           className="sm:col-span-2"
           rows={4}
         />
+        {/* Mounted on the last step only, so the widget renders while visible. */}
+        {step === 2 && <Turnstile resetKey={state} className="sm:col-span-2" />}
       </fieldset>
 
       <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">

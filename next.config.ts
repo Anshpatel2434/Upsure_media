@@ -1,3 +1,5 @@
+import { fileURLToPath } from "node:url";
+
 import type { NextConfig } from "next";
 
 const securityHeaders = [
@@ -13,6 +15,8 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Pin the workspace root so a lockfile in a parent folder is never picked up.
+  turbopack: { root: fileURLToPath(new URL(".", import.meta.url)) },
   experimental: {
     // Tailwind CSS is ~10 KB; inlining removes a render-blocking round trip on slow networks.
     inlineCss: true,

@@ -1,12 +1,12 @@
 "use client";
 
-import Script from "next/script";
 import { useActionState } from "react";
 
 import type { Form } from "@/content/types";
 
 import { Button } from "@/components/ui/button";
 import { InputField, SelectField, TextareaField } from "@/components/ui/field";
+import { Turnstile } from "@/components/ui/turnstile";
 import { submitForm, type FormState } from "@/features/forms/action";
 import { cn } from "@/lib/cn";
 
@@ -26,7 +26,6 @@ type Props = {
  */
 export function LeadForm({ form, tone = "ink", defaults = {}, className }: Props) {
   const [state, action, pending] = useActionState(submitForm, initial);
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   if (state.status === "success") {
     return (
@@ -46,7 +45,7 @@ export function LeadForm({ form, tone = "ink", defaults = {}, className }: Props
 
   return (
     <form action={action} className={cn("grid gap-5 sm:grid-cols-2", className)} noValidate>
-      <input type="hidden" name="__form" value={form.id} />
+      <input type="hidden" name="__form" value={form.key} />
       <input
         type="text"
         name="website"
@@ -130,20 +129,11 @@ export function LeadForm({ form, tone = "ink", defaults = {}, className }: Props
         }
       })}
 
-      {siteKey && (
-        <>
-          <Script
-            src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-            strategy="lazyOnload"
-          />
-          <div
-            className="cf-turnstile sm:col-span-2"
-            data-sitekey={siteKey}
-            data-size="flexible"
-            data-theme={tone === "ink" ? "light" : "dark"}
-          />
-        </>
-      )}
+      <Turnstile
+        theme={tone === "ink" ? "light" : "dark"}
+        resetKey={state}
+        className="sm:col-span-2"
+      />
 
       <div className="flex flex-col gap-3 sm:col-span-2">
         <Button type="submit" size="lg" tone={tone} disabled={pending} withArrow className="w-fit">
