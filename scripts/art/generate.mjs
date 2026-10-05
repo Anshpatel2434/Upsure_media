@@ -5,10 +5,14 @@
  *   node scripts/art/generate.mjs            all images
  *   node scripts/art/generate.mjs svc-pr     only the keys given
  *
+ * Files are named <key>-<hash>.webp so a changed image gets a new URL; the
+ * optimised copies are cached by browsers for 30 days under the old one.
+ *
  * Alt text lives with each image in `ART` and is copied into the media map in
  * src/content/data.ts by hand (it is content, so it stays editable there).
  */
-import { readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -72,12 +76,14 @@ export const ART = {
 async function render(key) {
   const [width, height, markup] = ART[key]();
   const buffer = Buffer.from(markup);
-  await sharp(buffer, { density: 96 })
-    .webp({ quality: 86 })
-    .toFile(path.join(outDir, `${key}.webp`));
+  const webp = await sharp(buffer, { density: 96 }).webp({ quality: 86 }).toBuffer();
+  const name = `${key}-${createHash("sha1").update(webp).digest("hex").slice(0, 8)}.webp`;
+  const stale = new RegExp(`^${key}(-[0-9a-f]{8})?\\.webp$`);
+  for (const f of await readdir(outDir)) if (stale.test(f)) await rm(path.join(outDir, f));
+  await writeFile(path.join(outDir, name), webp);
   const blur = await sharp(buffer).resize(16).webp({ quality: 40 }).toBuffer();
   return {
-    file: `/images/demo/${key}.webp`,
+    file: `/images/demo/${name}`,
     width,
     height,
     blur: `data:image/webp;base64,${blur.toString("base64")}`,

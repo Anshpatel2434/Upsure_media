@@ -23,10 +23,13 @@ import { isDoc } from "@/lib/relations";
 
 export async function CaseStudyView({ study }: { study: CaseStudy }) {
   const services = (study.services ?? []).filter((s): s is Service => isDoc(s));
-  const [similar, callbackForm] = await Promise.all([
-    getCaseStudies({ service: services[0]?.id, exclude: study.id, limit: 4 }),
+  const [related, others, callbackForm] = await Promise.all([
+    getCaseStudies({ service: services[0]?.id, exclude: study.id, limit: 2 }),
+    getCaseStudies({ exclude: study.id, limit: 3 }),
     getForm("callback"),
   ]);
+  // Same-service work first, topped up with the latest so the row is never half empty.
+  const similar = [...related, ...others.filter((c) => !related.some((r) => r.id === c.id))];
   const testimonial = isDoc(study.testimonial) ? (study.testimonial as Testimonial) : null;
   const before = imageProps(study.beforeAfter?.before, "large");
   const after = imageProps(study.beforeAfter?.after, "large");
@@ -206,19 +209,29 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
 
       {/* Testimonial + call back */}
       {(testimonial || callbackForm) && (
-        <Section tone="paper">
-          <Container className="grid gap-10 lg:grid-cols-2">
+        <Section tone="teal-ink">
+          <Container className="grid gap-10 lg:grid-cols-2 lg:items-center">
             {testimonial ? (
               <TestimonialCard testimonial={testimonial} tone="paper" size="lg" />
             ) : (
-              <div />
+              <div className="flex flex-col gap-4">
+                <h2 className="text-h2 text-balance">Want results like these?</h2>
+                <p className="max-w-[46ch] text-lead text-paper/70">
+                  Leave your number and a senior team member will call you back to talk through your
+                  brand and goals.
+                </p>
+              </div>
             )}
             {callbackForm && (
               <div className="rounded-xl border border-paper/15 bg-paper/5 p-6 md:p-8">
-                <h2 className="text-h3">Want results like these?</h2>
-                <p className="mt-2 mb-6 text-paper/70">
-                  Leave your number and a senior team member will call you back.
-                </p>
+                {testimonial && (
+                  <>
+                    <h2 className="text-h3">Want results like these?</h2>
+                    <p className="mt-2 mb-6 text-paper/70">
+                      Leave your number and a senior team member will call you back.
+                    </p>
+                  </>
+                )}
                 <LeadForm form={callbackForm} tone="paper" />
               </div>
             )}
