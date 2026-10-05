@@ -16,7 +16,8 @@ import { CheckIcon } from "@/components/ui/icons";
 import { Section } from "@/components/ui/section";
 import { Tag } from "@/components/ui/tag";
 import { LeadForm } from "@/features/forms/lead-form";
-import { getCaseStudies, getFaqs, getTestimonials } from "@/lib/queries";
+import { TextLink } from "@/components/ui/text-link";
+import { getCaseStudies, getFaqs, getServices, getTestimonials } from "@/lib/queries";
 import { renderHighlights } from "@/lib/text";
 import { isDoc } from "@/lib/relations";
 
@@ -27,11 +28,21 @@ import { isDoc } from "@/lib/relations";
  */
 export async function ServiceView({ service }: { service: Service }) {
   const form = isDoc(service.form) ? (service.form as Form) : null;
-  const [work, testimonials, faqs] = await Promise.all([
+  const [work, testimonials, faqs, allServices] = await Promise.all([
     getCaseStudies({ ids: service.relatedWork, service: service.id, limit: 4 }),
     getTestimonials({ service: service.id }),
     getFaqs({ service: service.id }),
+    getServices(),
   ]);
+  // 2–3 related services: same menu group first, then the next ones in menu order.
+  const others = allServices.filter((s) => s.id !== service.id);
+  const related = [
+    ...others.filter((s) => s.group === service.group),
+    ...others.filter((s) => s.group !== service.group && (s.order ?? 0) > (service.order ?? 0)),
+    ...others,
+  ]
+    .filter((s, i, all) => all.indexOf(s) === i)
+    .slice(0, 3);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -67,6 +78,16 @@ export async function ServiceView({ service }: { service: Service }) {
               </ul>
             )}
             {service.lead && <p className="max-w-2xl text-lead text-ink-2">{service.lead}</p>}
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Button
+                href={`/start-a-project?need=${encodeURIComponent(service.title)}`}
+                size="lg"
+                withArrow
+              >
+                Book a free strategy call
+              </Button>
+              <TextLink href={`/work/service/${service.slug}`}>See our work</TextLink>
+            </div>
             {service.heroImage && (
               <BlockImage
                 media={service.heroImage}
@@ -185,6 +206,24 @@ export async function ServiceView({ service }: { service: Service }) {
             {testimonials.slice(0, 2).map((t) => (
               <TestimonialCard key={t.id} testimonial={t} tone="ink" />
             ))}
+          </Container>
+        </Section>
+      )}
+
+      {/* Related services */}
+      {related.length > 0 && (
+        <Section tone="paper" padding="tight">
+          <Container className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <h2 className="text-h3 font-semibold">Related services</h2>
+            <ul className="flex flex-wrap gap-x-8 gap-y-3">
+              {related.map((r) => (
+                <li key={r.id}>
+                  <TextLink href={`/services/${r.slug}`} tone="teal" arrowWidth={34}>
+                    {r.title}
+                  </TextLink>
+                </li>
+              ))}
+            </ul>
           </Container>
         </Section>
       )}

@@ -7,6 +7,7 @@ import type { BlockProps } from "@/components/blocks/render-blocks";
 import { ArrowPill } from "@/components/ui/arrow-pill";
 import { Bubble } from "@/components/ui/bubble";
 import { Button } from "@/components/ui/button";
+import { SocialIcon } from "@/components/ui/icons";
 import { Container } from "@/components/ui/container";
 import { Reveal, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
@@ -89,7 +90,14 @@ async function ContactLine({
         <span className={tone === "ink" ? "text-ink-2" : "text-paper/75"}>{settings.city}</span>
       )}
       {(compact ? [] : (settings.socials ?? [])).map((s) => (
-        <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer" className={link}>
+        <a
+          key={s.url}
+          href={s.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(link, "inline-flex items-center gap-1.5")}
+        >
+          <SocialIcon platform={s.platform} size={16} />
           {s.platform}
         </a>
       ))}

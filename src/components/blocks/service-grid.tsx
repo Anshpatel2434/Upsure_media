@@ -19,13 +19,25 @@ import { imageProps } from "@/lib/media";
  * left and pushes the text across, the promise cross-fades into the list of
  * sub-services, and the long arrow on the right picks up a "More info" label
  * and starts to nudge. Touch screens get the sub-services and link inline.
- * `layout: "cards"` keeps the image-tile grid for pages that want it.
+ * `layout: "cards"` shows service cards (artwork, description, bullets);
+ * `grouped` puts either layout under the menu group labels.
  */
 export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid">) {
   const services = await getServices(block.services);
   if (!services.length) return null;
   const tone = block.tone ?? "paper";
   const dark = tone === "teal-ink" || tone === "teal";
+
+  // `grouped` splits the services under the menu group labels, in menu order.
+  const sets = block.grouped
+    ? services.reduce<{ label: string | null; items: typeof services }[]>((acc, svc) => {
+        const label = svc.group ?? null;
+        const found = acc.find((g) => g.label === label);
+        if (found) found.items.push(svc);
+        else acc.push({ label, items: [svc] });
+        return acc;
+      }, [])
+    : [{ label: null, items: services }];
 
   if (block.layout === "cards") {
     return (
@@ -39,13 +51,27 @@ export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid
               intro={block.intro}
               tone={dark ? "paper" : "ink"}
             />
-            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {services.map((s, i) => (
-                <RevealItem as="li" key={s.id} index={i + 2}>
-                  <ServiceCard service={s} priority={i < 3 && index === 1} />
-                </RevealItem>
-              ))}
-            </ul>
+            {sets.map((set) => (
+              <div key={set.label ?? "all"} className="flex flex-col gap-5">
+                {set.label && (
+                  <h3
+                    className={cn(
+                      "text-[15px] font-semibold md:text-[17px]",
+                      dark ? "text-sun" : "text-teal",
+                    )}
+                  >
+                    {set.label}
+                  </h3>
+                )}
+                <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {set.items.map((s, i) => (
+                    <RevealItem as="li" key={s.id} index={i + 2}>
+                      <ServiceCard service={s} />
+                    </RevealItem>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </Reveal>
         </Container>
       </Section>
@@ -53,16 +79,6 @@ export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid
   }
 
   const smooth = "duration-500 ease-(--ease-smooth)";
-  // `grouped` splits the rows under the menu group labels, in menu order.
-  const sets = block.grouped
-    ? services.reduce<{ label: string | null; items: typeof services }[]>((acc, svc) => {
-        const label = svc.group ?? null;
-        const found = acc.find((g) => g.label === label);
-        if (found) found.items.push(svc);
-        else acc.push({ label, items: [svc] });
-        return acc;
-      }, [])
-    : [{ label: null, items: services }];
 
   return (
     <Section tone={tone} padding="none" className="py-14 md:py-[70px] xl:py-20">

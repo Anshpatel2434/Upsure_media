@@ -118,3 +118,32 @@ export function LongArrowIcon({
     </svg>
   );
 }
+
+export function InstagramIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <path d="M17.5 6.5h.01" />
+    </svg>
+  );
+}
+
+export function LinkedInIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <rect x="3" y="3" width="18" height="18" rx="4" />
+      <path d="M8 10.5V16" />
+      <path d="M8 7.5h.01" />
+      <path d="M11.5 16v-3.25a2.25 2.25 0 0 1 4.5 0V16" />
+      <path d="M11.5 10.5V16" />
+    </svg>
+  );
+}
+
+/** Icon for a social platform name from Site Settings (Instagram, LinkedIn). */
+export function SocialIcon({ platform, ...props }: IconProps & { platform: string }) {
+  if (platform === "LinkedIn") return <LinkedInIcon {...props} />;
+  if (platform === "Instagram") return <InstagramIcon {...props} />;
+  return <ArrowUpRightIcon {...props} />;
+}

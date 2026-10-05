@@ -12,6 +12,7 @@ import {
   ChevronRightIcon,
   CloseIcon,
   MenuIcon,
+  SocialIcon,
 } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
 
@@ -294,10 +295,10 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
                     href={l.href}
                     target={l.newTab ? "_blank" : undefined}
                     rel={l.newTab ? "noopener noreferrer" : undefined}
-                    className="inline-flex items-center gap-1 hover:text-paper"
+                    className="inline-flex items-center gap-1.5 hover:text-paper"
                   >
+                    <SocialIcon platform={l.label} size={16} />
                     {l.label}
-                    {l.newTab && <ArrowUpRightIcon size={14} />}
                   </a>
                 </li>
               ))}

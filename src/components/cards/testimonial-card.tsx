@@ -1,9 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import type { Testimonial } from "@/content/types";
 
 import { cn } from "@/lib/cn";
 import { imageProps } from "@/lib/media";
+import { isDoc } from "@/lib/relations";
 
 /**
  * Quote with an accent bar on the left (teal on light, sun on dark). Boxed
@@ -73,7 +75,16 @@ export function TestimonialCard({
           </span>
         )}
         <span className="flex flex-col">
-          <span className="font-semibold">{testimonial.name}</span>
+          {outcome && isDoc(testimonial.service) ? (
+            <Link
+              href={`/services/${testimonial.service.slug}`}
+              className="font-semibold underline-offset-4 hover:underline"
+            >
+              {testimonial.name}
+            </Link>
+          ) : (
+            <span className="font-semibold">{testimonial.name}</span>
+          )}
           {meta && (
             <span className={cn("text-small", dark ? "text-paper/60" : "text-muted")}>{meta}</span>
           )}

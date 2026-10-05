@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Logo } from "@/components/layout/logo";
 import { LowDataToggle } from "@/components/layout/low-data-toggle";
-import { ArrowRightIcon, ArrowUpRightIcon } from "@/components/ui/icons";
+import { ArrowRightIcon, ArrowUpRightIcon, SocialIcon } from "@/components/ui/icons";
 import { NewsletterForm } from "@/features/newsletter/newsletter-form";
 import { getGlobals } from "@/lib/queries";
 
@@ -100,10 +100,14 @@ export async function Footer() {
                       rel={l.newTab ? "noopener noreferrer" : undefined}
                       className="group inline-flex items-center gap-2 text-[15px] leading-snug"
                     >
-                      <ArrowRightIcon
-                        size={14}
-                        className="shrink-0 text-sun transition-transform duration-300 ease-(--ease-smooth) group-hover:translate-x-1"
-                      />
+                      {col.heading === "Social" ? (
+                        <SocialIcon platform={l.label} size={18} className="shrink-0 text-sun" />
+                      ) : (
+                        <ArrowRightIcon
+                          size={14}
+                          className="shrink-0 text-sun transition-transform duration-300 ease-(--ease-smooth) group-hover:translate-x-1"
+                        />
+                      )}
                       <span className="transition-colors duration-(--duration-base) group-hover:text-sun">
                         {l.label}
                       </span>

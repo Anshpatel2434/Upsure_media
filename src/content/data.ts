@@ -20,39 +20,52 @@ export type Ctx = {
    Images: key → alt text. Files live in public/images/demo/<key>.webp
    ---------------------------------------------------------------------------- */
 export const media: Record<string, string> = {
-  "hero-1": "Designer sketching brand marks at a desk",
-  "hero-2": "Team reviewing a campaign wall",
-  "hero-3": "Strategist presenting a brand plan on a whiteboard",
-  "team-table": "Upsure Media team collaborating at a table",
-  "team-couch": "Upsure Media team member taking notes on a couch",
-  "team-review": "Two Upsure Media designers reviewing work",
-  "team-present": "Upsure Media team presenting work",
-  "studio-plant": "A team member standing in the studio next to a plant and a colourful artwork",
+  "hero-1": "Social media reel on a phone with rising reach, by Upsure Media",
+  "hero-2": "Quick commerce product listings with 10-minute delivery, by Upsure Media",
+  "hero-3": "Ad dashboard showing ROAS rising to 3.4×, by Upsure Media",
+  "svc-brand-consulting": "Quarterly growth plan with targets, from Upsure Media brand consulting",
+  "svc-branding": "Brand identity board with logo, colours, type and packaging, by Upsure Media",
+  "svc-personal-branding":
+    "Founder LinkedIn post, podcast and profile growth, by Upsure Media personal branding",
+  "svc-pr": "Press clipping and featured article layout for PR by Upsure Media",
+  "svc-social": "Instagram reel and profile grid for social media marketing by Upsure Media",
+  "svc-influencer":
+    "Creator profiles and campaign sales tracking for influencer marketing by Upsure Media",
+  "svc-performance":
+    "Meta, Google and YouTube ads dashboard with ROAS, CAC and leads, by Upsure Media",
+  "svc-ecommerce":
+    "Quick commerce app and marketplace listing for e-commerce growth by Upsure Media",
+  "svc-seo": "Search results with an AI Overview answer, for SEO, AEO and GEO by Upsure Media",
+  "svc-ai": "AI support chatbot and lead automation flow built by Upsure Media",
+  "work-1": "Eyewear campaign creative for feed, story and store, by Upsure Media",
+  "work-2": "Automotive launch reels and social content, by Upsure Media",
+  "work-3": "Consumer tech creative variants produced with AI, by Upsure Media",
+  "work-4": "Sports retail catalogue ads and ROAS growth, by Upsure Media",
+  before: "Website before the redesign: cluttered grey layout",
+  after: "Website after the redesign: clear headline, product and reviews",
+  "post-1": "Growth dashboard with AI-saved hours and creative variants",
+  "post-6": "Brand positioning map against competitors",
+  "post-7": "Weekly content calendar with reels, carousels and blogs",
+  "post-8": "Compass on a dark map, for brand positioning",
+  "post-qc": "Quick commerce app and city-by-city launch map for Gujarat and Mumbai",
+  "post-geo": "AI answer naming a brand in response to a founder's question",
   "services-hero":
-    "Three team members in a strategy discussion around a table with a laptop and notes",
-  "approach-illo": "Abstract artwork for the discovery phase",
-  "studio-dog": "A small dog wearing a blue bandana sitting in front of a bookshelf",
-  "about-1": "Upsure Media team member working at a laptop",
-  "about-2": "Upsure Media designer at a desk",
-  "about-3": "The Upsure Media studio",
-  "culture-hero": "Upsure Media team laughing together in the studio",
-  "og-default": "Upsure Media – We grow brands people love",
-  "service-brand": "Branding and design artwork by Upsure Media",
-  "service-design": "E-commerce and quick commerce artwork by Upsure Media",
-  "service-growth": "Performance marketing artwork by Upsure Media",
-  "service-social": "Social media marketing artwork by Upsure Media",
-  "service-ai": "AI solutions artwork by Upsure Media",
-  "service-consulting": "Brand consulting artwork by Upsure Media",
-  "work-1": "Lenskart campaign creative by Upsure Media",
-  "work-2": "Hyundai launch social content by Upsure Media",
-  "work-3": "Samsung social and AI-assisted creative by Upsure Media",
-  "work-4": "Decathlon performance marketing creative by Upsure Media",
-  before: "Website before the redesign",
-  after: "Website after the redesign",
-  "post-1": "Marketing dashboard showing search and AI visibility",
-  "post-6": "Strategy map drawn on a whiteboard",
-  "post-7": "Editorial team planning content",
-  "post-8": "Compass on a map",
+    "Upsure Media's ten services in three groups: build the brand, grow demand, sell and scale",
+  "approach-illo": "Brand audit checklist under a magnifying glass",
+  "one-team": "One plan connecting brand, content, media, PR and AI",
+  "faq-chat": "Questions and answers about working with Upsure Media",
+  "ind-d2c":
+    "D2C storefront, product packs and one plan across website, marketplaces and quick commerce",
+  "ind-b2b": "B2B company profile, founder post and lead funnel",
+  "about-1": "Upsure Media strategy workshop board with the team",
+  "about-2": "Upsure Media in-house content shoot for reels",
+  "about-3": "Upsure Media creative review of two packaging options",
+  "team-table": "Upsure Media content calendar planning",
+  "team-couch": "Upsure Media monthly report presentation",
+  "team-review": "Upsure Media in-house reel production",
+  "team-present": "Upsure Media team presenting monthly results",
+  "culture-hero": "Upsure Media values: no egos, curiosity first, craft and outcomes",
+  "og-default": "Upsure Media – D2C & B2B Brand and Growth Agency in Ahmedabad",
   "person-1": "Vrinda, Strategy at Upsure Media",
   "person-2": "Aarav, Creative at Upsure Media",
   "person-3": "Kabir, Performance at Upsure Media",
@@ -107,8 +120,8 @@ export const services = [
       "Fractional CMO",
       "End-to-end growth partnership",
     ],
-    cardImage: "service-consulting",
-    heroImage: "service-consulting",
+    cardImage: "svc-brand-consulting",
+    heroImage: "svc-brand-consulting",
     eyebrow: "Brand consulting",
     heading: "Brand consulting for founders who want to [[grow faster]]",
     lead: "Senior advice on positioning, go-to-market and growth for D2C and B2B brands. Use us as a fractional CMO, or as the team that plans and runs your growth end to end.",
@@ -150,8 +163,8 @@ export const services = [
       "Brand guidelines",
       "Campaign & ad creatives",
     ],
-    cardImage: "service-brand",
-    heroImage: "service-brand",
+    cardImage: "svc-branding",
+    heroImage: "svc-branding",
     eyebrow: "Branding & design",
     heading: "Branding and design that [[sells]]",
     lead: "Brand strategy, naming, logo, packaging and campaign creative for D2C and B2B brands. Built to stand out on a shelf, a marketplace listing and a 3-second scroll.",
@@ -194,8 +207,8 @@ export const services = [
       "Video & podcast production",
       "Speaking & media opportunities",
     ],
-    cardImage: "person-1",
-    heroImage: "person-1",
+    cardImage: "svc-personal-branding",
+    heroImage: "svc-personal-branding",
     eyebrow: "Personal branding",
     heading: "Personal branding for [[founders and leaders]]",
     lead: "We turn founders, CEOs and experts into voices people trust and follow, on LinkedIn, Instagram, YouTube and podcasts.",
@@ -236,8 +249,8 @@ export const services = [
       "Launch PR",
       "Reputation management",
     ],
-    cardImage: "team-present",
-    heroImage: "team-present",
+    cardImage: "svc-pr",
+    heroImage: "svc-pr",
     eyebrow: "PR & media",
     heading: "PR that builds [[trust]]",
     lead: "Press coverage, founder features and launch PR for D2C and B2B brands, in national, regional and trade media.",
@@ -279,8 +292,8 @@ export const services = [
       "Community management",
       "Monthly reporting",
     ],
-    cardImage: "service-social",
-    heroImage: "service-social",
+    cardImage: "svc-social",
+    heroImage: "svc-social",
     eyebrow: "Social media marketing",
     heading: "Social media marketing that turns followers into [[customers]]",
     lead: "Strategy, reels, content calendars and community management for D2C and B2B brands on Instagram, YouTube, LinkedIn and Facebook.",
@@ -322,8 +335,8 @@ export const services = [
       "Hyperlocal Gujarat creators",
       "Sales tracking",
     ],
-    cardImage: "about-2",
-    heroImage: "about-2",
+    cardImage: "svc-influencer",
+    heroImage: "svc-influencer",
     eyebrow: "Influencer marketing",
     heading: "Influencer marketing that drives [[sales]]",
     lead: "Creator campaigns for D2C and B2B brands, from nano creators and hyperlocal pages to celebrities.",
@@ -365,8 +378,8 @@ export const services = [
       "Retargeting",
       "Attribution & reporting",
     ],
-    cardImage: "service-growth",
-    heroImage: "service-growth",
+    cardImage: "svc-performance",
+    heroImage: "svc-performance",
     eyebrow: "Performance marketing",
     heading: "Performance marketing for [[D2C and B2B brands]]",
     lead: "Meta, Google and YouTube ads managed for ROAS, CAC and qualified leads. Creative and media planned together, tested every week.",
@@ -407,8 +420,8 @@ export const services = [
       "D2C website & Shopify",
       "Ratings & reviews",
     ],
-    cardImage: "service-design",
-    heroImage: "service-design",
+    cardImage: "svc-ecommerce",
+    heroImage: "svc-ecommerce",
     eyebrow: "E-commerce & quick commerce",
     heading: "E-commerce and quick commerce growth for [[D2C brands]]",
     lead: "Launch and grow on Amazon, Flipkart, Myntra, Nykaa, Blinkit, Zepto, Swiggy Instamart and your own Shopify store, with one team managing listings, ads and operations.",
@@ -468,8 +481,8 @@ export const services = [
       "Generative engine optimisation",
       "AI visibility tracking",
     ],
-    cardImage: "post-1",
-    heroImage: "post-1",
+    cardImage: "svc-seo",
+    heroImage: "svc-seo",
     eyebrow: "SEO, AEO & GEO",
     heading: "SEO, AEO and GEO: get found on Google and in [[AI answers]]",
     lead: "Rank on Google, appear in answer boxes, and get recommended by ChatGPT, Gemini, Perplexity and Google AI Overviews.",
@@ -535,8 +548,8 @@ export const services = [
       "AI content workflows",
       "AI audits & team training",
     ],
-    cardImage: "service-ai",
-    heroImage: "service-ai",
+    cardImage: "svc-ai",
+    heroImage: "svc-ai",
     eyebrow: "AI solutions",
     heading: "AI solutions that save time and grow [[sales]]",
     lead: "AI chatbots, WhatsApp assistants, marketing automation and AI content workflows for D2C and B2B brands, built around the tools you already use.",
@@ -881,6 +894,18 @@ export const categories = [
   { slug: "growth", title: "Growth" },
 ];
 
+/** Services linked from Insights posts, by topic (2–3 internal links per page). */
+export const CATEGORY_SERVICES: Record<string, string[]> = {
+  "quick-commerce": ["ecommerce-quick-commerce", "performance-marketing", "branding"],
+  "ai-search": ["seo-aeo-geo", "pr", "ai-solutions"],
+  ai: ["ai-solutions", "seo-aeo-geo", "performance-marketing"],
+  brand: ["branding", "brand-consulting", "personal-branding"],
+  content: ["social-media", "influencer-marketing", "personal-branding"],
+  strategy: ["brand-consulting", "branding", "performance-marketing"],
+  growth: ["performance-marketing", "ecommerce-quick-commerce", "seo-aeo-geo"],
+  agency: ["brand-consulting", "social-media", "performance-marketing"],
+};
+
 /* First Insights posts from section 9.5. Each answers its question in the
    first two lines, because that is what search engines and AI tools quote. */
 const newPosts = [
@@ -890,11 +915,11 @@ const newPosts = [
     category: "quick-commerce",
     tags: ["Quick commerce", "D2C", "Blinkit", "Zepto", "Instamart"],
     publishedAt: "2026-10-02",
-    cover: "work-4",
+    cover: "post-qc",
     excerpt:
       "Get your catalogue, pricing and documents ready, apply through each platform's seller process, then launch city by city. Here is the order we follow with D2C brands.",
     content: `
-To launch a D2C brand on Blinkit, Zepto and Instamart, get your catalogue, pricing and compliance documents ready, apply through each platform's seller process, and launch one or two cities first. Win availability and ratings there, then expand city by city.
+To launch a D2C brand on Blinkit, Zepto and Instamart, get your catalogue, pricing and compliance documents ready, apply through each platform's seller process, and launch one or two cities first. Win availability and ratings there, then expand city by city. This is the order we follow from Ahmedabad with D2C brands across India.
 
 Quick commerce rewards brands that are always in stock and easy to pick in a two-second scroll. Most launches that struggle skip one of the steps below.
 
@@ -931,11 +956,11 @@ If you want a team to handle onboarding, listings, thumbnail creatives, ads and 
     category: "ai-search",
     tags: ["GEO", "AEO", "SEO", "ChatGPT", "AI search"],
     publishedAt: "2026-09-28",
-    cover: "post-1",
+    cover: "post-geo",
     excerpt:
       "GEO is generative engine optimisation: making your brand visible and accurately described inside AI answers. Here is how it works and where to start.",
     content: `
-GEO (generative engine optimisation) is the work of making your brand visible and accurately described in AI tools such as ChatGPT, Gemini and Perplexity. You get mentioned by being clearly described on your own site, cited by sources those tools trust, and useful on the questions your customers ask.
+GEO (generative engine optimisation) is the work of making your brand visible and accurately described in AI tools such as ChatGPT, Gemini and Perplexity. You get mentioned by being clearly described on your own site, cited by sources those tools trust, and useful on the questions your customers ask. Here is how we approach it at Upsure Media in Ahmedabad.
 
 More customers now ask an AI tool "which agency should I hire" or "which brand is best for" before they ever open Google. If your brand is missing from that answer, you lose the shortlist.
 
@@ -1176,7 +1201,7 @@ export const caseStudies = [
   segment: c.segment as "D2C" | "B2B",
   title: c.client,
   publishedAt: new Date(2026, 6 - i, 10).toISOString(),
-  intro: `${c.client} came to Upsure Media at an inflection point: a strong product, an audience that had outgrown the brand, and growth targets the existing marketing engine could not reach. We were asked to rethink how the brand showed up everywhere, and to build the machine underneath it.`,
+  intro: `${c.client} came to Upsure Media, the brand and growth agency in Ahmedabad, at an inflection point: a strong product, an audience that had outgrown the brand, and growth targets the existing marketing engine could not reach. We were asked to rethink how the brand showed up everywhere, and to build the machine underneath it.`,
   objective: `The brief was clear: [[modernise the brand]], make every channel pull in the same direction, and build a [[growth system that compounds]] rather than a series of one-off campaigns.`,
   sections: [
     {
@@ -1494,8 +1519,6 @@ const needs = (ctx: Ctx) => [
   ).map(([label, slug]) => ({ label, service: ctx.services[slug], group: "B2B companies" })),
 ];
 
-const capabilityItems = services.flatMap((s) => s.subServices).map((label) => ({ label }));
-
 export const pages = (ctx: Ctx) => [
   {
     slug: "home",
@@ -1607,24 +1630,18 @@ export const pages = (ctx: Ctx) => [
       },
       {
         blockType: "statement",
+        eyebrow: "What we do",
         text: "Most agencies sell you hours. We sell you [[outcomes]], for names like Samsung, Hyundai, Lenskart and Decathlon, and for the ambitious challengers determined to join them.",
         tone: "paper",
       },
       {
         blockType: "serviceGrid",
-        eyebrow: "What we do",
+        eyebrow: "Capabilities",
         heading: "Ten services, [[one team]]",
         intro: "Grouped the way brands grow: build the brand, grow demand, then sell and scale.",
-        layout: "accordion",
+        layout: "cards",
         grouped: true,
         tone: "white",
-      },
-      {
-        blockType: "capabilities",
-        eyebrow: "Capabilities",
-        heading: "Capabilities",
-        items: capabilityItems,
-        tone: "paper",
       },
       {
         blockType: "needPicker",
@@ -1702,7 +1719,7 @@ export const pages = (ctx: Ctx) => [
         blockType: "featureList",
         eyebrow: "Why Upsure",
         heading: "Why Upsure",
-        image: ctx.media["studio-plant"],
+        image: ctx.media["one-team"],
         items: [
           {
             title: "Senior people on every account",
@@ -1730,7 +1747,7 @@ export const pages = (ctx: Ctx) => [
         eyebrow: "FAQ",
         heading: "Good questions",
         scope: "services",
-        image: ctx.media["studio-dog"],
+        image: ctx.media["faq-chat"],
         tone: "paper",
       },
     ],
@@ -1756,7 +1773,7 @@ export const pages = (ctx: Ctx) => [
           { text: "One team, one plan", tone: "teal" },
         ],
         ctas: [{ label: "Get a free D2C growth audit", href: "/start-a-project" }],
-        images: [{ image: ctx.media["work-4"] }],
+        images: [{ image: ctx.media["ind-d2c"] }],
         showContact: true,
       },
       {
@@ -1820,6 +1837,40 @@ export const pages = (ctx: Ctx) => [
         tone: "paper-2",
       },
       {
+        blockType: "textColumns",
+        eyebrow: "Services D2C brands use most",
+        columns: [
+          {
+            heading: services.find((s) => s.slug === "branding")!.title,
+            body: services.find((s) => s.slug === "branding")!.blurb,
+            link: {
+              label: `Explore ${services.find((s) => s.slug === "branding")!.title}`,
+              href: "/services/branding",
+              newTab: false,
+            },
+          },
+          {
+            heading: services.find((s) => s.slug === "performance-marketing")!.title,
+            body: services.find((s) => s.slug === "performance-marketing")!.blurb,
+            link: {
+              label: `Explore ${services.find((s) => s.slug === "performance-marketing")!.title}`,
+              href: "/services/performance-marketing",
+              newTab: false,
+            },
+          },
+          {
+            heading: services.find((s) => s.slug === "ecommerce-quick-commerce")!.title,
+            body: services.find((s) => s.slug === "ecommerce-quick-commerce")!.blurb,
+            link: {
+              label: `Explore ${services.find((s) => s.slug === "ecommerce-quick-commerce")!.title}`,
+              href: "/services/ecommerce-quick-commerce",
+              newTab: false,
+            },
+          },
+        ],
+        tone: "white",
+      },
+      {
         blockType: "workGrid",
         eyebrow: "Work",
         heading: "D2C work",
@@ -1860,7 +1911,7 @@ export const pages = (ctx: Ctx) => [
           { text: "Qualified leads", tone: "teal" },
         ],
         ctas: [{ label: "Book a free B2B growth call", href: "/start-a-project" }],
-        images: [{ image: ctx.media["team-present"] }],
+        images: [{ image: ctx.media["ind-b2b"] }],
         showContact: true,
       },
       {
@@ -1921,6 +1972,40 @@ export const pages = (ctx: Ctx) => [
           "Search and AI visibility",
         ].map((label) => ({ label })),
         tone: "paper-2",
+      },
+      {
+        blockType: "textColumns",
+        eyebrow: "Services B2B companies use most",
+        columns: [
+          {
+            heading: services.find((s) => s.slug === "personal-branding")!.title,
+            body: services.find((s) => s.slug === "personal-branding")!.blurb,
+            link: {
+              label: `Explore ${services.find((s) => s.slug === "personal-branding")!.title}`,
+              href: "/services/personal-branding",
+              newTab: false,
+            },
+          },
+          {
+            heading: services.find((s) => s.slug === "pr")!.title,
+            body: services.find((s) => s.slug === "pr")!.blurb,
+            link: {
+              label: `Explore ${services.find((s) => s.slug === "pr")!.title}`,
+              href: "/services/pr",
+              newTab: false,
+            },
+          },
+          {
+            heading: services.find((s) => s.slug === "seo-aeo-geo")!.title,
+            body: services.find((s) => s.slug === "seo-aeo-geo")!.blurb,
+            link: {
+              label: `Explore ${services.find((s) => s.slug === "seo-aeo-geo")!.title}`,
+              href: "/services/seo-aeo-geo",
+              newTab: false,
+            },
+          },
+        ],
+        tone: "white",
       },
       {
         blockType: "cta",
@@ -1986,10 +2071,12 @@ export const pages = (ctx: Ctx) => [
           {
             heading: "What we do",
             body: "We are a team of strategists, designers, content creators, performance marketers and AI specialists under one roof. Brands come to us to launch, to grow sales, or to be taken seriously in their category. We plan brand, content, media and technology together, and measure the work by what it changes for the business.",
+            link: { label: "Explore our services", href: "/services", newTab: false },
           },
           {
             heading: "Who we work with",
             body: "D2C brands selling on their own websites, marketplaces and quick commerce apps, and B2B companies that need credibility, visibility and qualified leads. Clients include Lenskart, Hyundai, Samsung and Decathlon.",
+            link: { label: "How we grow D2C brands", href: "/industries/d2c", newTab: false },
           },
         ],
         images: ["team-table", "team-couch", "team-review"].map((k) => ({ image: ctx.media[k] })),
@@ -2086,7 +2173,7 @@ export const pages = (ctx: Ctx) => [
         variant: "editorial",
         eyebrow: "Culture",
         heading: "Everyone has [[skin in the game]]",
-        lead: "Upsure Media is built on one founding principle: deliver the best work, with the best people, for brands we believe in.",
+        lead: "Upsure Media is a brand and growth team in Ahmedabad, built on one founding principle: deliver the best work, with the best people, for brands we believe in.",
         stickers: [
           { text: "No egos. Just experts.", tone: "sun" },
           { text: "Commercially focused", tone: "teal" },
@@ -2212,7 +2299,7 @@ export const pages = (ctx: Ctx) => [
         variant: "editorial",
         eyebrow: "Insights",
         heading: "Field notes on [[D2C growth]], quick commerce, AI search and brand building",
-        lead: "What we are seeing across D2C and B2B brands, written by the Upsure Media team.",
+        lead: "What we are seeing across D2C and B2B brands, written by the Upsure Media team in Ahmedabad.",
       },
     ],
   },
@@ -2384,6 +2471,8 @@ Questions about these terms? Email us at collab@upsuremedia.com and we'll get ba
         blockType: "richText",
         width: "narrow",
         content: `
+This policy explains how Upsure Media, a brand and growth agency in Ahmedabad, Gujarat, India, handles the information you share through this website.
+
 ## 1. What we collect
 
 When you contact us through the form on this site, we collect the details you provide: your name, work email, company, brand type, the service and budget you choose, your website link, and your message. We don't require an account, and we don't ask for anything we don't need to reply to you.
