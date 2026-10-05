@@ -9,6 +9,8 @@ export type FaderQuote = {
   quote: string;
   name: string;
   detail?: string | null;
+  /** False for a service outcome (no quotation marks, no person). */
+  quoted?: boolean;
 };
 
 function Arrow({ dir }: { dir: "prev" | "next" }) {
@@ -72,7 +74,7 @@ export function QuoteFader({
                   dark ? "text-paper" : "text-ink",
                 )}
               >
-                “{t.quote}”
+                {t.quoted === false ? t.quote : `“${t.quote}”`}
               </blockquote>
               <figcaption
                 className={cn(

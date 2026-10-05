@@ -12,11 +12,14 @@ import { getForm, getServices } from "@/lib/queries";
 export async function BriefBuilder() {
   const [services, form] = await Promise.all([getServices(), getForm("brief")]);
 
-  const needs = services.map((s) => ({
-    label: s.title,
-    slug: s.slug,
-    tags: (s.tags ?? []).map((t) => t.label),
-  }));
+  const needs = [
+    ...services.map((s) => ({
+      label: s.title,
+      slug: s.slug,
+      tags: (s.tags ?? []).map((t) => t.label),
+    })),
+    { label: "Not sure yet, help me decide", slug: "not-sure", tags: [] },
+  ];
 
   return (
     <Section tone="white" padding="tight">

@@ -39,7 +39,20 @@ export async function resolveRoute(segments: string[]): Promise<RouteResult> {
     };
   }
 
+  // ---- Industries (page-builder pages at /industries/<slug>) ----------------
+  if (head === "industries" && second && !third) {
+    return withPage(`industries/${second}`, path, (page) => <RenderBlocks blocks={page.layout} />);
+  }
+
   // ---- Work --------------------------------------------------------------
+  if (head === "work" && second === "industry" && (third === "d2c" || third === "b2b")) {
+    return withPage("work", path, (page) => (
+      <>
+        <RenderBlocks blocks={page.layout} />
+        <WorkListing segment={third === "d2c" ? "D2C" : "B2B"} />
+      </>
+    ));
+  }
   if (head === "work" && second === "service" && third) {
     return withPage("work", path, (page) => (
       <>

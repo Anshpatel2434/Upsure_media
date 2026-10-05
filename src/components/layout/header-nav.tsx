@@ -15,7 +15,12 @@ import {
 } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
 
-export type NavChild = { label: string; href: string; description?: string | null };
+export type NavChild = {
+  label: string;
+  href: string;
+  description?: string | null;
+  group?: string | null;
+};
 export type NavItem = { label: string; href: string; children?: NavChild[] | null };
 export type NavLink = { label: string; href: string; newTab?: boolean | null };
 
@@ -23,7 +28,7 @@ type Props = {
   items: NavItem[];
   cta: { label: string; href: string };
   secondary: NavLink[];
-  contact: { email: string; phone?: string | null; phoneHref?: string | null };
+  contact: { email: string; location?: string | null };
 };
 
 const isActive = (pathname: string, href: string) =>
@@ -66,7 +71,10 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
     };
   }, [open]);
 
-  const expanded = items.some((i) => i.label === open && i.children?.length);
+  const openItem = items.find((i) => i.label === open && i.children?.length);
+  const expanded = Boolean(openItem);
+  // Grouped menus (Services) open taller, with one column per group.
+  const tall = Boolean(openItem?.children?.some((c) => c.group));
 
   return (
     <>
@@ -82,7 +90,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
           <Link
             href="/"
             className="rounded-sm lg:flex lg:h-[76px] lg:items-center"
-            aria-label="Upsure home"
+            aria-label="Upsure Media home"
           >
             <Logo />
           </Link>
@@ -92,7 +100,8 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
               href={cta.href}
               className="inline-flex h-11 items-center rounded-pill bg-sun px-5 text-[13px] font-semibold text-ink transition-colors duration-(--duration-base) hover:bg-ink hover:text-paper"
             >
-              {cta.label}
+              <span className="sm:hidden">Book a call</span>
+              <span className="hidden sm:inline">{cta.label}</span>
             </Link>
             <button
               type="button"
@@ -118,15 +127,16 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
             aria-label="Primary"
             onMouseLeave={() => setOpen(null)}
             className={cn(
-              "pointer-events-auto relative w-[66%] overflow-hidden rounded-[38px] bg-white/70 p-[15px] backdrop-blur-[9px] xl:w-[64%]",
+              "pointer-events-auto relative w-[80%] overflow-hidden rounded-[38px] bg-white/70 p-[15px] backdrop-blur-[9px] xl:w-[66%]",
               "transition-[height,box-shadow] duration-(--duration-base) ease-(--ease-smooth)",
-              expanded ? "h-[152px] shadow-[0_0_25px_rgb(0_0_0/0.06)]" : "h-[76px]",
+              expanded ? "shadow-[0_0_25px_rgb(0_0_0/0.06)]" : "",
+              tall ? "h-[262px]" : expanded ? "h-[152px]" : "h-[76px]",
             )}
           >
             <span
               aria-hidden
               className={cn(
-                "absolute inset-x-0 top-[76px] h-[76px] rounded-b-[38px] bg-[rgb(235_235_235/0.5)] transition-opacity duration-(--duration-base) ease-(--ease-smooth)",
+                "absolute inset-x-0 top-[76px] bottom-0 rounded-b-[38px] bg-[rgb(235_235_235/0.5)] transition-opacity duration-(--duration-base) ease-(--ease-smooth)",
                 expanded ? "opacity-100" : "opacity-0",
               )}
             />
@@ -176,40 +186,20 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
                     </Link>
 
                     {hasChildren && (
-                      <ul
+                      <SubMenu
                         id={menuId}
-                        aria-label={`${item.label} pages`}
-                        className={cn(
-                          "absolute inset-x-0 top-[61px] no-scrollbar flex h-[91px] items-center gap-x-6 overflow-x-auto px-[28px] pt-[15px]",
-                          "transition-[opacity,visibility] duration-150 ease-(--ease-smooth)",
-                          isOpen ? "visible opacity-100" : "invisible opacity-0",
-                        )}
-                      >
-                        {item.children!.map((child) => (
-                          <li key={child.href} className="shrink-0">
-                            <Link
-                              href={child.href}
-                              tabIndex={isOpen ? 0 : -1}
-                              className="group/sub flex items-center gap-2 text-[13px] font-medium whitespace-nowrap text-ink hover:text-black"
-                            >
-                              <ArrowRightIcon
-                                size={13}
-                                aria-hidden
-                                className="shrink-0 transition-transform duration-300 ease-(--ease-smooth) group-hover/sub:translate-x-1"
-                              />
-                              {child.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
+                        label={item.label}
+                        items={item.children!}
+                        open={isOpen}
+                      />
                     )}
                   </li>
                 );
               })}
-              <li className="flex-1" onMouseEnter={() => setOpen(null)}>
+              <li className="flex-none" onMouseEnter={() => setOpen(null)}>
                 <Link
                   href={cta.href}
-                  className="flex h-[46px] items-center justify-center rounded-[33px] bg-sun px-3 text-[13px] font-semibold whitespace-nowrap text-ink transition-colors duration-(--duration-base) ease-(--ease-smooth) hover:bg-ink hover:text-paper"
+                  className="flex h-[46px] items-center justify-center rounded-[33px] bg-sun px-5 text-[13px] font-semibold whitespace-nowrap text-ink transition-colors duration-(--duration-base) ease-(--ease-smooth) hover:bg-ink hover:text-paper"
                 >
                   {cta.label}
                 </Link>
@@ -226,7 +216,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
         aria-label="Navigation menu"
       >
         <div className="flex h-22 items-center justify-between px-gutter">
-          <Link href="/" aria-label="Upsure home" onClick={() => dialog.current?.close()}>
+          <Link href="/" aria-label="Upsure Media home" onClick={() => dialog.current?.close()}>
             <Logo tone="paper" />
           </Link>
           <button
@@ -254,8 +244,13 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
                           All {item.label.toLowerCase()}
                         </Link>
                       </li>
-                      {item.children.map((child) => (
+                      {item.children.map((child, ci) => (
                         <li key={child.href}>
+                          {child.group && child.group !== item.children![ci - 1]?.group && (
+                            <p className="mt-3 mb-1 text-[11px] font-semibold tracking-[0.08em] text-paper/50 uppercase">
+                              {child.group}
+                            </p>
+                          )}
                           <Link href={child.href} className="block py-2 text-lead text-paper/85">
                             {child.label}
                           </Link>
@@ -291,14 +286,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
             >
               {contact.email}
             </a>
-            {contact.phone && contact.phoneHref && (
-              <a
-                href={`tel:${contact.phoneHref}`}
-                className="text-lead underline-offset-4 hover:underline"
-              >
-                {contact.phone}
-              </a>
-            )}
+            {contact.location && <p className="text-paper/70">{contact.location}</p>}
             <ul className="mt-2 flex flex-wrap gap-4 text-small text-paper/70">
               {secondary.map((l) => (
                 <li key={l.href}>
@@ -318,5 +306,94 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
         </nav>
       </dialog>
     </>
+  );
+}
+
+/**
+ * Desktop dropdown inside the nav pill. Flat menus show one row of links;
+ * menus whose links carry a `group` show one column per group with a label.
+ */
+function SubMenu({
+  id,
+  label,
+  items,
+  open,
+}: {
+  id: string;
+  label: string;
+  items: NavChild[];
+  open: boolean;
+}) {
+  const groups = items.reduce<{ label: string | null; items: NavChild[] }[]>((acc, item) => {
+    const g = item.group ?? null;
+    const found = acc.find((x) => x.label === g);
+    if (found) found.items.push(item);
+    else acc.push({ label: g, items: [item] });
+    return acc;
+  }, []);
+  const grouped = groups.some((g) => g.label);
+  const link = (child: NavChild) => (
+    <Link
+      href={child.href}
+      tabIndex={open ? 0 : -1}
+      className="group/sub flex items-center gap-2 text-[13px] font-medium whitespace-nowrap text-ink hover:text-black"
+    >
+      <ArrowRightIcon
+        size={13}
+        aria-hidden
+        className="shrink-0 transition-transform duration-300 ease-(--ease-smooth) group-hover/sub:translate-x-1"
+      />
+      {child.label}
+    </Link>
+  );
+  const visibility = cn(
+    "transition-[opacity,visibility] duration-150 ease-(--ease-smooth)",
+    open ? "visible opacity-100" : "invisible opacity-0",
+  );
+
+  if (grouped) {
+    return (
+      <div
+        id={id}
+        role="group"
+        aria-label={`${label} pages`}
+        className={cn(
+          "absolute inset-x-0 top-[76px] grid grid-cols-3 gap-6 px-[30px] pt-6",
+          visibility,
+        )}
+      >
+        {groups.map((g) => (
+          <div key={g.label ?? "other"} className="flex flex-col gap-2.5">
+            {g.label && (
+              <p className="text-[11px] font-semibold tracking-[0.08em] text-muted uppercase">
+                {g.label}
+              </p>
+            )}
+            <ul className="flex flex-col gap-2.5">
+              {g.items.map((child) => (
+                <li key={child.href}>{link(child)}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <ul
+      id={id}
+      aria-label={`${label} pages`}
+      className={cn(
+        "absolute inset-x-0 top-[61px] no-scrollbar flex h-[91px] items-center gap-x-6 overflow-x-auto px-[28px] pt-[15px]",
+        visibility,
+      )}
+    >
+      {items.map((child) => (
+        <li key={child.href} className="shrink-0">
+          {link(child)}
+        </li>
+      ))}
+    </ul>
   );
 }

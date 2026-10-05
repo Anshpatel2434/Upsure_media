@@ -14,7 +14,7 @@ type MetaInput = {
   type?: "website" | "article";
   publishedTime?: string | null;
   noIndex?: boolean;
-  /** Use the title as-is instead of the "%s – Upsure" template (home page). */
+  /** Use the title as-is instead of the "%s | Upsure Media" template. */
   absolute?: boolean;
 };
 
@@ -32,8 +32,10 @@ export function buildMetadata(
       : undefined;
   const url = `${getSiteUrl()}${meta.path === "/" ? "" : meta.path}`;
 
+  // Titles written in full (they already name the brand) skip the template.
+  const absolute = meta.absolute || title.includes(SITE_NAME);
   return {
-    title: meta.absolute ? { absolute: title } : title,
+    title: absolute ? { absolute: title } : title,
     description,
     alternates: { canonical: url },
     robots: meta.noIndex ? { index: false, follow: false } : undefined,

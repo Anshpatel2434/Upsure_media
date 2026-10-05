@@ -85,7 +85,8 @@ export async function WorkGridBlock({ block, index }: BlockProps<"workGrid">) {
     id: String(q.id),
     quote: q.quote,
     name: q.role ? `${q.name}, ${q.role}` : q.name,
-    detail: q.company,
+    detail: q.company || null,
+    quoted: !q.outcome,
   }));
 
   return (

@@ -13,8 +13,8 @@ export async function sendEmail({
   replyTo?: string;
 }): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
-  const to = process.env.EMAIL_TO ?? "upsureai@gmail.com";
-  const from = process.env.EMAIL_FROM ?? "Upsure website <onboarding@resend.dev>";
+  const to = process.env.EMAIL_TO ?? "collab@upsuremedia.com";
+  const from = process.env.EMAIL_FROM ?? "Upsure Media website <onboarding@resend.dev>";
 
   if (!key) {
     console.warn(`\n[email → ${to}] ${subject}\n${text}\n`);

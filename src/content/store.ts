@@ -80,7 +80,11 @@ const clients: Client[] = data.clients.map((name, i) => {
 const categories: Category[] = data.categories.map((c) => ({ id: nextId(), ...c }));
 const categoryBySlug = Object.fromEntries(categories.map((c) => [c.slug, c]));
 
-const author: Author = { id: nextId(), name: "Team Upsure", role: "Strategy, creative & growth" };
+const author: Author = {
+  id: nextId(),
+  name: "Upsure Media",
+  role: "Brand and growth agency, Ahmedabad",
+};
 
 const team: TeamMember[] = data.team.map(({ key: _key, photo, ...rest }) => ({
   id: nextId(),
@@ -126,7 +130,7 @@ const testimonials: Testimonial[] = data.testimonials.map(({ key: _key, ...rest 
 
 /* Case studies --------------------------------------------------------------------- */
 const caseStudies: CaseStudy[] = data.caseStudies.map(
-  ({ services: slugs, cover, stats, ...rest }, i) =>
+  ({ services: slugs, cover, stats, ...rest }) =>
     ({
       id: nextId(),
       ...rest,
@@ -138,7 +142,6 @@ const caseStudies: CaseStudy[] = data.caseStudies.map(
         after: media.after,
         caption: "Homepage, before and after the relaunch",
       },
-      testimonial: testimonials[(i + 1) % testimonials.length],
     }) as CaseStudy,
 );
 

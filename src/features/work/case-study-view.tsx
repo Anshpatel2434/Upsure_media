@@ -44,6 +44,21 @@ export async function CaseStudyView({ study }: { study: CaseStudy }) {
               Work
             </Link>
           </Eyebrow>
+          <p className="text-small text-ink-2 md:text-body">
+            {[
+              study.client,
+              study.industry
+                ? `${study.industry}${study.segment ? ` (${study.segment})` : ""}`
+                : study.segment,
+              services.map((s) => s.title).join(", "),
+              study.duration,
+              study.stats?.[0]
+                ? `${study.stats[0].value} ${study.stats[0].label.toLowerCase()}`
+                : null,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </p>
           <Heading as="h1" size="display">
             {study.title}
           </Heading>

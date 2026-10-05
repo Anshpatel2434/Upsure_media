@@ -20,11 +20,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Upsure – Creative & growth agency in Ahmedabad",
-    template: "%s – Upsure",
+    default: "Upsure Media – D2C & B2B Brand and Growth Agency in Ahmedabad, India",
+    template: "%s | Upsure Media",
   },
   description:
-    "We design brands people love. Upsure is a creative agency rooted in strategy, craft, and AI-driven growth.",
+    "Full-service agency for D2C and B2B brands: branding, social, influencer, performance, e-commerce, quick commerce, PR, SEO/AEO/GEO and AI.",
 };
 
 export const viewport: Viewport = {

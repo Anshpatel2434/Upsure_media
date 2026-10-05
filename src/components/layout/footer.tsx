@@ -8,17 +8,14 @@ import { getGlobals } from "@/lib/queries";
 
 /**
  * Centred footer in the reference's order: a short description, a big "Get in
- * touch" with contact details and the main CTA, the newsletter, then every
- * link as an arrow list, and finally the logo with the legal line.
+ * touch" with location and email and the main CTA, the newsletter, then the
+ * link columns (Services, Industries, Company, Legal, Social), and finally the
+ * logo with the legal line. No phone, street address or hours, by design.
  */
 export async function Footer() {
   const { footer, settings } = await getGlobals();
   const year = new Date().getFullYear();
-  const links = [
-    ...(footer.columns ?? []).flatMap((c) => c.links ?? []),
-    ...(settings.socials ?? []).map((s) => ({ label: s.platform, href: s.url, newTab: true })),
-  ].filter((l, i, all) => all.findIndex((x) => x.href === l.href) === i);
-  const address = [settings.addressLine1, settings.addressLine2].filter(Boolean).join(", ");
+  const columns = (footer.columns ?? []).filter((c) => (c.links ?? []).length > 0);
 
   return (
     <footer className="bg-teal-ink text-paper">
@@ -37,22 +34,14 @@ export async function Footer() {
             >
               {settings.email}
             </a>
-            {settings.phone && settings.phoneHref && (
-              <a
-                href={`tel:${settings.phoneHref}`}
-                className="underline-offset-4 hover:text-sun hover:underline"
-              >
-                {settings.phone}
-              </a>
-            )}
-            {address && <span className="text-paper/75">{address}</span>}
+            <span className="text-paper/75">{settings.city}</span>
           </address>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/start-a-project"
               className="inline-flex h-12 items-center rounded-pill bg-sun px-7 text-[15px] font-semibold text-ink transition-colors duration-(--duration-base) ease-(--ease-smooth) hover:bg-paper"
             >
-              Start a project
+              Book a free strategy call
             </Link>
             <Link
               href="/contact"
@@ -83,39 +72,56 @@ export async function Footer() {
           </div>
         </div>
 
-        {/* Every link, as an arrow list */}
-        <nav aria-label="Footer" className="mt-12 md:mt-24">
-          <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 md:grid-cols-3 md:gap-x-6 md:gap-y-3 lg:grid-cols-4">
-            {links.map((l) => (
-              <li key={l.href}>
-                <Link
-                  href={l.href}
-                  target={l.newTab ? "_blank" : undefined}
-                  rel={l.newTab ? "noopener noreferrer" : undefined}
-                  className="group inline-flex items-center gap-2 text-[15px] leading-snug md:gap-3 md:text-xl"
-                >
-                  <ArrowRightIcon
-                    size={16}
-                    className="shrink-0 text-sun transition-transform duration-300 ease-(--ease-smooth) group-hover:translate-x-1"
-                  />
-                  <span className="transition-colors duration-(--duration-base) group-hover:text-sun">
-                    {l.label}
-                  </span>
-                  {l.newTab && <ArrowUpRightIcon size={14} className="text-paper/50" />}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        {/* Link columns */}
+        <nav
+          aria-label="Footer"
+          className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 md:mt-24 md:grid-cols-3 lg:grid-cols-[2fr_repeat(4,1fr)]"
+        >
+          {columns.map((col) => (
+            <div
+              key={col.heading}
+              className={col.heading === "Services" ? "col-span-2 md:col-span-1" : undefined}
+            >
+              <h3 className="mb-4 text-[11px] font-semibold tracking-[0.12em] text-paper/50 uppercase">
+                {col.heading}
+              </h3>
+              <ul
+                className={
+                  col.heading === "Services"
+                    ? "grid grid-cols-2 gap-x-4 gap-y-2.5 md:grid-cols-1 xl:grid-cols-2"
+                    : "flex flex-col gap-2.5"
+                }
+              >
+                {(col.links ?? []).map((l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      target={l.newTab ? "_blank" : undefined}
+                      rel={l.newTab ? "noopener noreferrer" : undefined}
+                      className="group inline-flex items-center gap-2 text-[15px] leading-snug"
+                    >
+                      <ArrowRightIcon
+                        size={14}
+                        className="shrink-0 text-sun transition-transform duration-300 ease-(--ease-smooth) group-hover:translate-x-1"
+                      />
+                      <span className="transition-colors duration-(--duration-base) group-hover:text-sun">
+                        {l.label}
+                      </span>
+                      {l.newTab && <ArrowUpRightIcon size={13} className="text-paper/50" />}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </nav>
 
         <div className="mt-12 flex flex-col gap-5 border-t border-paper/15 pt-7 md:mt-20 md:flex-row md:items-end md:justify-between md:pt-8">
-          <Link href="/" aria-label="Upsure home" className="w-fit">
+          <Link href="/" aria-label="Upsure Media home" className="w-fit">
             <Logo tone="paper" className="text-[2.25rem] md:text-[2.75rem]" />
           </Link>
           <div className="flex flex-col gap-2 text-small text-paper/60 md:items-end">
-            <p>
-              {settings.city} · {settings.hours}
-            </p>
+            <p>{settings.city}</p>
             <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
               <li>
                 © {year} {footer.copyright ?? settings.name}

@@ -23,6 +23,23 @@ const nextConfig: NextConfig = {
     imageSizes: [48, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
+  // Old service URLs (copy update, section 1).
+  async redirects() {
+    return [
+      ["/services/consulting", "/services/brand-consulting"],
+      ["/services/design", "/services/branding"],
+      ["/services/growth", "/services/performance-marketing"],
+      ["/services/ai-automation", "/services/ai-solutions"],
+      ["/work/service/consulting", "/work/service/brand-consulting"],
+      ["/work/service/design", "/work/service/branding"],
+      ["/work/service/growth", "/work/service/performance-marketing"],
+      ["/work/service/ai-automation", "/work/service/ai-solutions"],
+    ].map(([source, destination]) => ({
+      source: source!,
+      destination: destination!,
+      statusCode: 301 as const,
+    }));
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

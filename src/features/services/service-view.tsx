@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import type { Form, Service } from "@/content/types";
 
 import { BlockImage } from "@/components/blocks/block-image";
@@ -19,8 +21,9 @@ import { renderHighlights } from "@/lib/text";
 import { isDoc } from "@/lib/relations";
 
 /**
- * Service detail: hero with inline consultation form, checklist, related work,
- * service testimonials, service FAQs, plus any extra CMS blocks.
+ * Service detail: hero with inline consultation form, "What we do" list,
+ * "Who it's for" (D2C / B2B), extra blocks, related work, the service's
+ * testimonial slot and its FAQ (with FAQPage schema).
  */
 export async function ServiceView({ service }: { service: Service }) {
   const form = isDoc(service.form) ? (service.form as Form) : null;
@@ -35,8 +38,8 @@ export async function ServiceView({ service }: { service: Service }) {
     "@type": "Service",
     name: service.title,
     description: service.blurb,
-    provider: { "@type": "Organization", name: "Upsure" },
-    areaServed: "Worldwide",
+    provider: { "@type": "MarketingAgency", name: "Upsure Media" },
+    areaServed: { "@type": "Country", name: "India" },
   };
 
   return (
@@ -81,7 +84,7 @@ export async function ServiceView({ service }: { service: Service }) {
               className="rounded-xl border border-line bg-white p-6 shadow-card md:p-8 lg:sticky lg:top-24"
             >
               <h2 className="text-h3">
-                Request a <span className="highlight">free consultation</span> today
+                Request a <span className="text-teal">free consultation</span> today
               </h2>
               <p className="mt-2 mb-6 text-small text-muted">We reply within one business day.</p>
               <LeadForm form={form} />
@@ -115,7 +118,38 @@ export async function ServiceView({ service }: { service: Service }) {
         </Section>
       )}
 
-      {/* Extra CMS blocks */}
+      {/* Who it's for */}
+      {service.whoFor && (
+        <Section tone="paper">
+          <Container className="flex flex-col gap-10">
+            <SectionHeader eyebrow="Who it's for" heading={`Who ${service.title} is for`} />
+            <ul className="grid gap-5 md:grid-cols-2">
+              {(
+                [
+                  ["D2C brands", service.whoFor.d2c, "/industries/d2c"],
+                  ["B2B companies", service.whoFor.b2b, "/industries/b2b"],
+                ] as const
+              ).map(([label, text, href]) => (
+                <li
+                  key={label}
+                  className="flex flex-col gap-4 rounded-[22px] bg-white p-6 shadow-card md:p-8"
+                >
+                  <h3 className="text-h3">{label}</h3>
+                  <p className="text-lead text-ink-2">{text}</p>
+                  <Link
+                    href={href}
+                    className="mt-auto text-small font-semibold text-teal underline-offset-4 hover:underline"
+                  >
+                    See how we grow {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      )}
+
+      {/* Extra blocks (e.g. definitions, platform lists) */}
       <RenderBlocks blocks={service.body as LayoutBlock[] | null} />
 
       {/* Related work */}
@@ -158,6 +192,20 @@ export async function ServiceView({ service }: { service: Service }) {
       {/* FAQs */}
       {faqs.length > 0 && (
         <Section tone="white">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                mainEntity: faqs.map((f) => ({
+                  "@type": "Question",
+                  name: f.question,
+                  acceptedAnswer: { "@type": "Answer", text: f.answer },
+                })),
+              }),
+            }}
+          />
           <Container className="grid gap-10 lg:grid-cols-[1fr_2fr]">
             <SectionHeader index={3} eyebrow="FAQ" heading="Good questions" />
             <Accordion

@@ -34,10 +34,8 @@ export async function PostView({ post }: { post: Post }) {
     description: post.excerpt,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
-    author: author
-      ? { "@type": "Person", name: author.name }
-      : { "@type": "Organization", name: "Upsure" },
-    publisher: { "@type": "Organization", name: "Upsure" },
+    author: { "@type": "Organization", name: author?.name ?? "Upsure Media" },
+    publisher: { "@type": "Organization", name: "Upsure Media" },
     mainEntityOfPage: `${getSiteUrl()}/blog/${post.slug}`,
     image: isDoc(post.cover) ? post.cover?.url : undefined,
   };
@@ -52,7 +50,7 @@ export async function PostView({ post }: { post: Post }) {
         <Container size="narrow" className="flex flex-col gap-6">
           <Eyebrow>
             <Link href="/blog" className="hover:text-teal">
-              Blog
+              Insights
             </Link>
           </Eyebrow>
           <div className="flex flex-wrap gap-2">
@@ -113,9 +111,9 @@ export async function PostView({ post }: { post: Post }) {
         <Section>
           <Container className="flex flex-col gap-12">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <SectionHeader eyebrow="More from the blog" heading="Keep reading" />
+              <SectionHeader eyebrow="More insights" heading="Keep reading" />
               <Button href="/blog" variant="ghost" withArrow>
-                All articles
+                All insights
               </Button>
             </div>
             <ul className="grid gap-5 md:grid-cols-3">

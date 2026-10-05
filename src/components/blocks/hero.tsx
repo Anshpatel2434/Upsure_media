@@ -68,7 +68,16 @@ function Chip({
   );
 }
 
-async function ContactLine({ tone, className }: { tone: Tone; className?: string }) {
+/** Email, location and social links; `compact` shows the email only (home hero). */
+async function ContactLine({
+  tone,
+  compact = false,
+  className,
+}: {
+  tone: Tone;
+  compact?: boolean;
+  className?: string;
+}) {
   const { settings } = await getGlobals();
   const link = cn("underline-offset-4 hover:underline", tone === "ink" ? "text-ink" : "text-paper");
   return (
@@ -76,11 +85,14 @@ async function ContactLine({ tone, className }: { tone: Tone; className?: string
       <a href={`mailto:${settings.email}`} className={cn(link, "font-bold")}>
         {settings.email}
       </a>
-      {settings.phone && settings.phoneHref && (
-        <a href={`tel:${settings.phoneHref}`} className={link}>
-          {settings.phone}
-        </a>
+      {!compact && (
+        <span className={tone === "ink" ? "text-ink-2" : "text-paper/75"}>{settings.city}</span>
       )}
+      {(compact ? [] : (settings.socials ?? [])).map((s) => (
+        <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer" className={link}>
+          {s.platform}
+        </a>
+      ))}
     </p>
   );
 }
@@ -136,13 +148,13 @@ function HomeHero({ block }: { block: Hero }) {
     >
       <Container>
         <Reveal self={false} style={{ "--rv-step": "250ms" } as CSSProperties}>
-          <h1 className="sr-only">{plainText(block.heading.replace(/\|/g, " "))}</h1>
-
+          {/* The page's H1 is the eyebrow; the big headline below is display type. */}
           {block.eyebrow && (
             <RevealItem index={0} direction="fade">
-              <ArrowPill>{block.eyebrow}</ArrowPill>
+              <ArrowPill as="h1">{block.eyebrow}</ArrowPill>
             </RevealItem>
           )}
+          <p className="sr-only">{plainText(block.heading.replace(/\|/g, " "))}</p>
 
           <div className="mt-2.5 text-[15vw] leading-[1.1] font-semibold tracking-[-0.035em] text-ink md:text-[10.4vw] 2xl:text-[160px]">
             {/* Line 1 — text, chip to the right, floating pill */}
@@ -231,9 +243,10 @@ function HomeHero({ block }: { block: Hero }) {
                 </span>
               )}
               {block.showContact !== false && (
-                <div className="hidden lg:block">
+                <div className="hidden xl:block">
                   <ContactLine
                     tone="ink"
+                    compact
                     className="absolute right-0 bottom-0 justify-end font-normal tracking-normal"
                   />
                 </div>
