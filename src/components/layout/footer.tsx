@@ -52,30 +52,30 @@ export async function Footer() {
           </div>
         </div>
 
-        {/* Newsletter */}
-        <div className="mx-auto mt-12 flex max-w-3xl flex-col gap-4 rounded-[22px] bg-paper/5 p-5 md:mt-20 md:flex-row md:items-center md:gap-8 md:p-8">
-          <div className="flex flex-col gap-1.5 md:w-1/2">
-            <h3 className="text-lg font-semibold">
+        {/* Newsletter: a full-width row on the same edges as the link columns */}
+        <div className="mt-14 grid gap-5 border-y border-paper/15 py-8 md:mt-20 md:grid-cols-[minmax(0,1fr)_minmax(0,480px)] md:items-center md:gap-12 md:py-10">
+          <div className="flex flex-col gap-2">
+            <h3 className="text-[22px] leading-tight font-semibold tracking-[-0.01em] md:text-[26px]">
               {footer.newsletter?.heading ?? "Subscribe to The Upshot"}
             </h3>
             {footer.newsletter?.text && (
-              <p className="text-sm leading-[1.55] text-paper/70">{footer.newsletter.text}</p>
+              <p className="max-w-md text-[15px] leading-[1.55] text-paper/70 md:text-base">
+                {footer.newsletter.text}
+              </p>
             )}
           </div>
-          <div className="md:w-1/2">
-            <NewsletterForm
-              placeholder={footer.newsletter?.placeholder ?? undefined}
-              buttonLabel={footer.newsletter?.buttonLabel ?? undefined}
-              source="footer"
-              tone="paper"
-            />
-          </div>
+          <NewsletterForm
+            placeholder={footer.newsletter?.placeholder ?? undefined}
+            buttonLabel={footer.newsletter?.buttonLabel ?? undefined}
+            source="footer"
+            tone="paper"
+          />
         </div>
 
         {/* Link columns */}
         <nav
           aria-label="Footer"
-          className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 md:mt-24 md:grid-cols-3 lg:grid-cols-[2fr_repeat(4,1fr)]"
+          className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 md:mt-16 md:grid-cols-3 lg:grid-cols-[2fr_repeat(4,1fr)]"
         >
           {columns.map((col) => (
             <div
