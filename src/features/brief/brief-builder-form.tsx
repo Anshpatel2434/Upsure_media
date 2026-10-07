@@ -8,11 +8,14 @@ import type { Form } from "@/content/types";
 import { Button } from "@/components/ui/button";
 import { InputField, SelectField } from "@/components/ui/field";
 import { CheckIcon } from "@/components/ui/icons";
+import { Turnstile } from "@/components/ui/turnstile";
 import { submitForm, type FormState } from "@/features/forms/action";
+import { withBrowserDelivery } from "@/features/forms/deliver";
 import { cn } from "@/lib/cn";
 
 type Need = { label: string; slug: string; tags: string[] };
 
+const submitFormWithDelivery = withBrowserDelivery(submitForm);
 const initial: FormState = { status: "idle" };
 const STEPS = ["What you need", "Budget & timing", "Your details"] as const;
 
@@ -26,7 +29,7 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
   const [selected, setSelected] = useState<string[]>([]);
   const [custom, setCustom] = useState(() => params.get("need") ?? "");
   const [business, setBusiness] = useState("");
-  const [state, action, pending] = useActionState(submitForm, initial);
+  const [state, action, pending] = useActionState(submitFormWithDelivery, initial);
 
   const field = (name: string) => form.fields?.find((f) => "name" in f && f.name === name);
   const options = (name: string) => {
@@ -51,7 +54,7 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
 
   return (
     <form action={action} className="flex flex-col gap-8" noValidate>
-      <input type="hidden" name="__form" value={form.id} />
+      <input type="hidden" name="__form" value={form.key} />
       <input type="hidden" name="needs" value={needsValue} />
       <input
         type="text"
@@ -180,6 +183,8 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
           type="url"
           placeholder="https://"
         />
+        {/* Mounted on the last step only, so the widget renders while visible. */}
+        {step === 2 && <Turnstile resetKey={state} className="sm:col-span-2" />}
       </fieldset>
 
       <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">

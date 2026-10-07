@@ -3,10 +3,13 @@
 import { useActionState } from "react";
 
 import { ArrowRightIcon } from "@/components/ui/icons";
+import { Turnstile } from "@/components/ui/turnstile";
+import { withBrowserDelivery } from "@/features/forms/deliver";
 import { cn } from "@/lib/cn";
 
 import { subscribe, type NewsletterState } from "@/features/newsletter/action";
 
+const subscribeWithDelivery = withBrowserDelivery(subscribe);
 const initial: NewsletterState = { status: "idle" };
 
 /**
@@ -26,7 +29,7 @@ export function NewsletterForm({
   tone?: "ink" | "paper";
   className?: string;
 }) {
-  const [state, action, pending] = useActionState(subscribe, initial);
+  const [state, action, pending] = useActionState(subscribeWithDelivery, initial);
   const paper = tone === "paper";
 
   if (state.status === "success") {
@@ -86,6 +89,7 @@ export function NewsletterForm({
           />
         </button>
       </div>
+      <Turnstile theme={paper ? "dark" : "light"} appearance="interaction-only" resetKey={state} />
       {state.status === "error" && (
         <p role="alert" className="pl-5 text-small text-coral">
           {state.message}

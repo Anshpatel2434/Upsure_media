@@ -1,78 +1,82 @@
 {
   "allen": {
-    "width": 149,
-    "height": 80
+    "width": 606,
+    "height": 160
   },
   "axis-max-life": {
-    "width": 343,
-    "height": 80
+    "width": 589,
+    "height": 160
   },
   "bni": {
-    "width": 87,
-    "height": 80
+    "width": 305,
+    "height": 160
   },
   "cashify": {
-    "width": 170,
-    "height": 80
+    "width": 624,
+    "height": 160
   },
   "decathlon": {
-    "width": 226,
-    "height": 80
+    "width": 900,
+    "height": 136
   },
   "gheeyonnaise": {
-    "width": 345,
-    "height": 80
+    "width": 337,
+    "height": 160
   },
   "hyundai": {
-    "width": 188,
-    "height": 80
+    "width": 900,
+    "height": 116
   },
   "jio-bp": {
-    "width": 174,
-    "height": 80
+    "width": 120,
+    "height": 71
+  },
+  "khetibank": {
+    "width": 128,
+    "height": 160
   },
   "lenskart": {
-    "width": 202,
-    "height": 80
+    "width": 385,
+    "height": 160
   },
   "pw-vidyapeeth": {
-    "width": 374,
-    "height": 80
+    "width": 159,
+    "height": 160
   },
   "r-b": {
-    "width": 137,
-    "height": 80
+    "width": 392,
+    "height": 160
   },
   "realme": {
-    "width": 174,
-    "height": 80
+    "width": 708,
+    "height": 160
   },
   "reliance-fashion": {
-    "width": 375,
-    "height": 80
+    "width": 520,
+    "height": 68
   },
   "samsung": {
-    "width": 177,
-    "height": 80
+    "width": 900,
+    "height": 138
   },
   "titan": {
-    "width": 149,
-    "height": 80
+    "width": 161,
+    "height": 160
   },
   "unicorn": {
-    "width": 188,
-    "height": 80
+    "width": 162,
+    "height": 160
   },
   "vivo": {
-    "width": 116,
-    "height": 80
+    "width": 584,
+    "height": 160
   },
   "waaree": {
-    "width": 147,
-    "height": 80
+    "width": 202,
+    "height": 57
   },
   "wrogn": {
-    "width": 129,
-    "height": 80
+    "width": 209,
+    "height": 160
   }
 }
