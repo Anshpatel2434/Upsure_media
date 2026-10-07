@@ -15,12 +15,24 @@ import { formatDate } from "@/lib/text";
 
 /**
  * Latest articles as a compact slider of photo tiles (the same tile as the
- * work section): dot + title and a "View all articles" link on one line, then
+ * work section): dot + title and a "View all insights" link on one line, then
  * roughly two tiles in view with the next one peeking in.
  */
 export async function BlogCarouselBlock({ block }: BlockProps<"blogCarousel">) {
   const category = isDoc(block.category) ? (block.category as Category).slug : undefined;
-  const { docs: posts } = await getPosts({ limit: block.limit ?? 4, category });
+  const limit = block.limit ?? 4;
+  // `distinctTopics`: newest post from each topic, so the block shows range.
+  const { docs: recent } = await getPosts({ limit: block.distinctTopics ? 100 : limit, category });
+  const posts = block.distinctTopics
+    ? recent
+        .filter(
+          (p, i, all) =>
+            all.findIndex(
+              (q) => isDoc(q.category) && isDoc(p.category) && q.category.id === p.category.id,
+            ) === i,
+        )
+        .slice(0, limit)
+    : recent;
   if (!posts.length) return null;
   const tone = block.tone ?? "teal-ink";
   const dark = tone === "teal-ink" || tone === "teal";
@@ -29,25 +41,32 @@ export async function BlogCarouselBlock({ block }: BlockProps<"blogCarousel">) {
     <Section tone={tone} className="overflow-hidden">
       <Container>
         <Reveal self={false} className="flex flex-col gap-8 md:gap-10">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <RevealItem index={0} className="flex items-center gap-4 md:gap-5">
-              <Dot tone={dark ? "sun" : "teal"} />
-              <h2 className="text-[24px] leading-[1.25] font-semibold tracking-[-0.01em] md:text-[30px] xl:text-[33px]">
-                {renderEmphasis(block.heading ?? "What's happening?", {
-                  variant: "color",
-                  tone: dark ? "sun" : "teal",
-                })}
-              </h2>
-            </RevealItem>
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="flex flex-col gap-3">
+              <RevealItem index={0} className="flex items-center gap-4 md:gap-5">
+                <Dot tone={dark ? "sun" : "teal"} />
+                <h2 className="text-[24px] leading-[1.25] font-semibold tracking-[-0.01em] md:text-[30px] xl:text-[33px]">
+                  {renderEmphasis(block.heading ?? "Insights", {
+                    variant: "color",
+                    tone: dark ? "sun" : "teal",
+                  })}
+                </h2>
+              </RevealItem>
+              {block.intro && (
+                <RevealItem index={1}>
+                  <p className={dark ? "text-paper/75" : "text-ink-2"}>{block.intro}</p>
+                </RevealItem>
+              )}
+            </div>
             <RevealItem index={1}>
               <TextLink href="/blog" tone={dark ? "accent" : "teal"}>
-                View all articles
+                View all insights
               </TextLink>
             </RevealItem>
           </div>
           <RevealItem index={2} direction="fade">
             <Carousel
-              label="Latest articles"
+              label="Latest insights"
               tone={dark ? "paper" : "ink"}
               slideClassName="w-[85%] md:w-[46%] xl:w-[44%]"
             >

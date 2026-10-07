@@ -6,7 +6,7 @@ import { useActionState, useState } from "react";
 import type { Form } from "@/content/types";
 
 import { Button } from "@/components/ui/button";
-import { InputField, SelectField, TextareaField } from "@/components/ui/field";
+import { InputField, SelectField } from "@/components/ui/field";
 import { CheckIcon } from "@/components/ui/icons";
 import { Turnstile } from "@/components/ui/turnstile";
 import { submitForm, type FormState } from "@/features/forms/action";
@@ -28,6 +28,7 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
   const [step, setStep] = useState(0);
   const [selected, setSelected] = useState<string[]>([]);
   const [custom, setCustom] = useState(() => params.get("need") ?? "");
+  const [business, setBusiness] = useState("");
   const [state, action, pending] = useActionState(submitFormWithDelivery, initial);
 
   const field = (name: string) => form.fields?.find((f) => "name" in f && f.name === name);
@@ -38,7 +39,7 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
       : [];
   };
   const needsValue = [...selected, custom.trim()].filter(Boolean).join("; ");
-  const canContinue = step === 0 ? needsValue.length > 0 : true;
+  const canContinue = step === 0 ? needsValue.length > 0 && business !== "" : true;
 
   if (state.status === "success") {
     return (
@@ -81,7 +82,7 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
 
       {/* Step 1 */}
       <fieldset className={cn("flex flex-col gap-5", step !== 0 && "hidden")}>
-        <legend className="text-h3">What do you need help with?</legend>
+        <legend className="text-h3">What do you need?</legend>
         <p className="text-ink-2">Pick as many as apply.</p>
         <ul className="grid gap-3 sm:grid-cols-2">
           {needs.map((n) => {
@@ -111,13 +112,24 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
                   </span>
                   <span className="flex flex-col gap-1">
                     <span className="font-medium">{n.label}</span>
-                    <span className="text-small text-muted">{n.tags.join(" · ")}</span>
+                    {n.tags.length > 0 && (
+                      <span className="text-small text-muted">{n.tags.join(" · ")}</span>
+                    )}
                   </span>
                 </button>
               </li>
             );
           })}
         </ul>
+        <SelectField
+          label="Your business"
+          name="business"
+          required
+          value={business}
+          onChange={(e) => setBusiness(e.target.value)}
+          options={[{ value: "", label: "Select…" }, ...options("business")]}
+          error={state.errors?.business}
+        />
         <InputField
           label="Anything else? (optional)"
           name="needs_custom"
@@ -129,16 +141,16 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
 
       {/* Step 2 */}
       <fieldset className={cn("grid gap-5 sm:grid-cols-2", step !== 1 && "hidden")}>
-        <legend className="mb-4 text-h3 sm:col-span-2">Roughly when, and how much?</legend>
+        <legend className="mb-4 text-h3 sm:col-span-2">Budget and timing</legend>
         <SelectField
-          label="Budget"
+          label="Budget per month"
           name="budget"
           required
           options={[{ value: "", label: "Select…" }, ...options("budget")]}
           error={state.errors?.budget}
         />
         <SelectField
-          label="Timeline"
+          label="When"
           name="timeline"
           required
           options={[{ value: "", label: "Select…" }, ...options("timeline")]}
@@ -157,24 +169,19 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
           error={state.errors?.name}
         />
         <InputField
-          label="Email"
+          label="Work email"
           name="email"
           type="email"
           required
           autoComplete="email"
           error={state.errors?.email}
         />
+        <InputField label="Company" name="company" autoComplete="organization" />
         <InputField
-          label="Company / brand"
-          name="company"
-          autoComplete="organization"
-          className="sm:col-span-2"
-        />
-        <TextareaField
-          label="Anything else we should know?"
-          name="message"
-          className="sm:col-span-2"
-          rows={4}
+          label="Website or Instagram link"
+          name="website_url"
+          type="url"
+          placeholder="https://"
         />
         {/* Mounted on the last step only, so the widget renders while visible. */}
         {step === 2 && <Turnstile resetKey={state} className="sm:col-span-2" />}

@@ -46,13 +46,20 @@ export async function getService(slug: string) {
 }
 
 export async function getCaseStudies(
-  opts: { limit?: number; ids?: Ref<CaseStudy>[] | null; service?: number; exclude?: number } = {},
+  opts: {
+    limit?: number;
+    ids?: Ref<CaseStudy>[] | null;
+    service?: number;
+    segment?: "D2C" | "B2B";
+    exclude?: number;
+  } = {},
 ) {
   let list = [...store.caseStudies].sort(newestFirst);
   list = pick(store.caseStudies, opts.ids, list);
   if (opts.service) {
     list = list.filter((c) => c.services.some((s) => idOf(s) === opts.service));
   }
+  if (opts.segment) list = list.filter((c) => c.segment === opts.segment);
   if (opts.exclude) list = list.filter((c) => c.id !== opts.exclude);
   return opts.limit && opts.limit > 0 ? list.slice(0, opts.limit) : list;
 }
@@ -128,6 +135,8 @@ export async function getAllRoutes() {
     ...store.services.map((s) => ({ path: `/services/${s.slug}`, updatedAt: stamp })),
     ...store.caseStudies.map((c) => ({ path: `/work/${c.slug}`, updatedAt: stamp })),
     ...store.services.map((s) => ({ path: `/work/service/${s.slug}`, updatedAt: stamp })),
+    { path: "/work/industry/d2c", updatedAt: stamp },
+    { path: "/work/industry/b2b", updatedAt: stamp },
     ...store.posts.map((p) => ({ path: `/blog/${p.slug}`, updatedAt: p.publishedAt ?? stamp })),
     ...store.categories.map((c) => ({ path: `/blog/category/${c.slug}`, updatedAt: stamp })),
   ];

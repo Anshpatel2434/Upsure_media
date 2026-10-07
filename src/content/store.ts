@@ -86,7 +86,11 @@ const clients: Client[] = data.clients.map((name, i) => {
 const categories: Category[] = data.categories.map((c) => ({ id: nextId(), ...c }));
 const categoryBySlug = Object.fromEntries(categories.map((c) => [c.slug, c]));
 
-const author: Author = { id: nextId(), name: "Team Upsure", role: "Strategy, creative & growth" };
+const author: Author = {
+  id: nextId(),
+  name: "Upsure Media",
+  role: "Brand and growth agency, Ahmedabad",
+};
 
 const team: TeamMember[] = data.team.map(({ key: _key, photo, ...rest }) => ({
   id: nextId(),

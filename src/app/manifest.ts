@@ -3,9 +3,9 @@ import type { MetadataRoute } from "next";
 /** Web app manifest: name, colours and icons for "Add to home screen". */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Upsure – Creative & growth agency",
-    short_name: "Upsure",
-    description: "We design brands people love.",
+    name: "Upsure Media – Brand & growth agency",
+    short_name: "Upsure Media",
+    description: "We grow brands people love.",
     start_url: "/",
     display: "browser",
     background_color: "#faf8f3",

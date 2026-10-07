@@ -1,4 +1,5 @@
 import { store } from "@/content/store";
+import { SITE_NAME } from "@/lib/site";
 import { stripHighlights } from "@/lib/text";
 
 /**
@@ -14,7 +15,7 @@ export type ShareCard = {
   client?: { logo: string; colour: string };
 };
 
-/** Brand colours for case-study panels; matches the covers in images/site/work-*. */
+/** Brand colours for the case-study share-card panel behind the client logo. */
 const CLIENT_COLOURS: Record<string, string> = {
   lenskart: "#0B1F4B",
   hyundai: "#002C5F",
@@ -54,9 +55,9 @@ export function shareCard(path: string): ShareCard | null {
 
   if (!head) {
     return {
-      eyebrow: "Creative & growth agency · Ahmedabad",
-      title: "We design brands people [[love.]]",
-      subtitle: "Strategy, craft, and AI-driven growth for ambitious brands.",
+      eyebrow: "D2C & B2B brand and growth agency · Ahmedabad",
+      title: "We grow brands people [[love.]]",
+      subtitle: "Full-service brand and growth agency for D2C and B2B brands.",
     };
   }
   if (head === "services" && second) {
@@ -80,7 +81,9 @@ export function shareCard(path: string): ShareCard | null {
     return { eyebrow: category ? `Blog · ${category}` : "Blog", title: clip(p.title, 90) };
   }
 
-  const page = store.pages.find((p) => p.slug === head);
+  // Page slugs can span segments, e.g. "industries/d2c".
+  const slug = path.replace(/^\/+|\/+$/g, "");
+  const page = store.pages.find((p) => p.slug === slug);
   if (!page) return null;
   const hero = page.layout?.find((b) => b.blockType === "hero");
   const heading = hero && "heading" in hero ? hero.heading.replace(/\|/g, " ") : page.title;
@@ -93,5 +96,5 @@ export function shareCard(path: string): ShareCard | null {
 
 /** Plain-text title for `og:image:alt`. */
 export function shareCardAlt(card: ShareCard): string {
-  return `${stripHighlights(card.title)} – Upsure`;
+  return `${stripHighlights(card.title)} | ${SITE_NAME}`;
 }

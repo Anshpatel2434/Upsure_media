@@ -38,7 +38,7 @@ export function ComparisonBlock({ block, index }: BlockProps<"comparison">) {
                     scope="col"
                     className={cn("py-4 pr-4 text-h3", dark ? "text-sun" : "text-teal")}
                   >
-                    {block.usLabel ?? "Upsure"}
+                    {block.usLabel ?? "Upsure Media"}
                   </th>
                   <th
                     scope="col"

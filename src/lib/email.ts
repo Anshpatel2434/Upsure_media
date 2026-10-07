@@ -48,7 +48,7 @@ async function sendEmail({
 }): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
   const to = process.env.EMAIL_TO || CONTACT_EMAIL;
-  const from = process.env.EMAIL_FROM ?? "Upsure website <onboarding@resend.dev>";
+  const from = process.env.EMAIL_FROM ?? "Upsure Media website <onboarding@resend.dev>";
 
   if (!key) {
     // In production a missing transport would silently drop leads, so fail

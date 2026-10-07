@@ -13,7 +13,7 @@ type MetaInput = {
   type?: "website" | "article";
   publishedTime?: string | null;
   noIndex?: boolean;
-  /** Use the title as-is instead of the "%s – Upsure" template (home page). */
+  /** Use the title as-is instead of the "%s | Upsure Media" template. */
   absolute?: boolean;
 };
 
@@ -27,9 +27,12 @@ export function buildMetadata(
   defaults?: { description?: string | null },
 ): Metadata {
   const title = stripHighlights(meta.title) || SITE_NAME;
-  const shareTitle = meta.absolute ? title : `${title} – ${SITE_NAME}`;
   const description = meta.description ?? defaults?.description ?? undefined;
   const url = `${getSiteUrl()}${meta.path === "/" ? "" : meta.path}`;
+
+  // Titles written in full (they already name the brand) skip the template.
+  const absolute = meta.absolute || title.includes(SITE_NAME);
+  const shareTitle = absolute ? title : `${title} | ${SITE_NAME}`;
 
   const cardPath = meta.cardPath ?? meta.path;
   const card = shareCard(cardPath) ?? shareCard("/");
@@ -42,7 +45,7 @@ export function buildMetadata(
   };
 
   return {
-    title: meta.absolute ? { absolute: title } : title,
+    title: absolute ? { absolute: title } : title,
     description,
     alternates: { canonical: url },
     robots: meta.noIndex ? { index: false, follow: false } : undefined,

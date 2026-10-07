@@ -20,15 +20,15 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Upsure – Creative & growth agency in Ahmedabad",
-    template: "%s – Upsure",
+    default: "Upsure Media – D2C & B2B Brand and Growth Agency in Ahmedabad, India",
+    template: "%s | Upsure Media",
   },
   description:
-    "We design brands people love. Upsure is a creative agency rooted in strategy, craft, and AI-driven growth.",
+    "Full-service agency for D2C and B2B brands: branding, social, influencer, performance, e-commerce, quick commerce, PR, SEO/AEO/GEO and AI.",
   // Fallback link preview for routes without their own (search, 404). Content
   // pages override this with their own card in lib/seo.ts.
   openGraph: {
-    siteName: "Upsure",
+    siteName: "Upsure Media",
     locale: "en_IN",
     images: [{ url: "/og/index.png", width: 1200, height: 630, type: "image/png" }],
   },

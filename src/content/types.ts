@@ -165,6 +165,8 @@ export interface Page {
         tone?: ("paper" | "paper-2" | "white" | "teal-ink" | "teal") | null;
         id?: string | null;
         blockName?: string | null;
+        /** Show the services under their group labels. */
+        grouped?: boolean | null;
         blockType: "serviceGrid";
       }
     | {
@@ -212,6 +214,8 @@ export interface Page {
         tone?: ("paper" | "paper-2" | "white" | "teal-ink" | "teal") | null;
         id?: string | null;
         blockName?: string | null;
+        /** `grid` shows every slot with a filter by service. */
+        layout?: ("carousel" | "grid") | null;
         blockType: "testimonialCarousel";
       }
     | {
@@ -228,6 +232,10 @@ export interface Page {
                * Where this need leads. Also pre-fills the brief builder.
                */
               service?: (number | null) | Service;
+              /**
+               * Optional group label, e.g. "D2C brands".
+               */
+              group?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -354,6 +362,9 @@ export interface Page {
         tone?: ("paper" | "paper-2" | "white" | "teal-ink" | "teal") | null;
         id?: string | null;
         blockName?: string | null;
+        intro?: string | null;
+        /** One post per topic, newest first (homepage). */
+        distinctTopics?: boolean | null;
         blockType: "blogCarousel";
       }
     | {
@@ -833,6 +844,8 @@ export interface Service {
             tone?: ("paper" | "paper-2" | "white" | "teal-ink" | "teal") | null;
             id?: string | null;
             blockName?: string | null;
+            /** `grid` shows every slot with a filter by service. */
+            layout?: ("carousel" | "grid") | null;
             blockType: "testimonialCarousel";
           }
         | {
@@ -917,7 +930,15 @@ export interface Service {
    */
   placeholder?: boolean | null;
   order?: number | null;
-  icon?: ("brand" | "design" | "growth" | "social" | "ai" | "consulting") | null;
+  icon?: string | null;
+  /**
+   * Menu group: "Build the brand", "Grow demand" or "Sell and scale".
+   */
+  group?: string | null;
+  /**
+   * "Who it's for": one short paragraph each for D2C and B2B.
+   */
+  whoFor?: { d2c: string; b2b: string } | null;
   updatedAt?: string;
   createdAt?: string;
   _status?: ("draft" | "published") | null;
@@ -1031,6 +1052,11 @@ export interface Testimonial {
   id: number;
   quote: string;
   name: string;
+  /**
+   * A service outcome shown in a testimonial slot until a real client quote is
+   * collected: rendered without quotation marks or a person's name.
+   */
+  outcome?: boolean | null;
   role?: string | null;
   company?: string | null;
   avatar?: (number | null) | Media;
@@ -1084,6 +1110,14 @@ export interface CaseStudy {
   title: string;
   client: string;
   industry?: string | null;
+  /**
+   * Business model of the client, used by the D2C / B2B work filter.
+   */
+  segment?: ("D2C" | "B2B") | null;
+  /**
+   * Engagement length, e.g. "12 weeks".
+   */
+  duration?: string | null;
   services: (number | Service)[];
   /**
    * Card blurb, 1–2 sentences.
@@ -1276,6 +1310,8 @@ export interface CaseStudy {
             tone?: ("paper" | "paper-2" | "white" | "teal-ink" | "teal") | null;
             id?: string | null;
             blockName?: string | null;
+            /** `grid` shows every slot with a filter by service. */
+            layout?: ("carousel" | "grid") | null;
             blockType: "testimonialCarousel";
           }
         | {
@@ -1563,6 +1599,10 @@ export interface Header {
               label: string;
               href: string;
               description?: string | null;
+              /**
+               * Optional group label inside the dropdown, e.g. "Build the brand".
+               */
+              group?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -1632,6 +1672,10 @@ export interface CtaBand {
   emoji?: string | null;
   heading: string;
   subheading?: string | null;
+  /**
+   * Small line beside the button, e.g. reply time and email.
+   */
+  note?: string | null;
   link: {
     label: string;
     /**

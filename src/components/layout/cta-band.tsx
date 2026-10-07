@@ -40,9 +40,23 @@ export async function CtaBand() {
             <Button href={ctaBand.link.href} tone="paper" size="lg" withArrow>
               {ctaBand.link.label}
             </Button>
-            <span className="text-white/75">
-              Free 30-minute discovery call · reply within one business day
-            </span>
+            {ctaBand.note && (
+              <span className="text-white/75">
+                {ctaBand.note.split(/(\S+@\S+\.\w+)/).map((part, i) =>
+                  part.includes("@") ? (
+                    <a
+                      key={i}
+                      href={`mailto:${part}`}
+                      className="font-semibold text-white underline-offset-4 hover:underline"
+                    >
+                      {part}
+                    </a>
+                  ) : (
+                    part
+                  ),
+                )}
+              </span>
+            )}
           </RevealItem>
         </Reveal>
       </Container>

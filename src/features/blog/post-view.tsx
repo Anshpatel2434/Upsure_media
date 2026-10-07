@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CATEGORY_SERVICES } from "@/content/data";
 import type { Category, Post } from "@/content/types";
 
 import { BlockImage } from "@/components/blocks/block-image";
@@ -12,8 +13,9 @@ import { Heading } from "@/components/ui/heading";
 import { Prose } from "@/components/ui/prose";
 import { Section } from "@/components/ui/section";
 import { Tag } from "@/components/ui/tag";
+import { TextLink } from "@/components/ui/text-link";
 import { NewsletterForm } from "@/features/newsletter/newsletter-form";
-import { getPosts } from "@/lib/queries";
+import { getPosts, getServices } from "@/lib/queries";
 import { getSiteUrl } from "@/lib/site";
 import { formatDate, readingTime } from "@/lib/text";
 import { isDoc } from "@/lib/relations";
@@ -25,6 +27,8 @@ export async function PostView({ post }: { post: Post }) {
   const related = explicitRelated.length
     ? explicitRelated
     : (await getPosts({ limit: 3, category: category?.slug, exclude: post.id })).docs;
+  const relatedSlugs = (category && CATEGORY_SERVICES[category.slug]) || [];
+  const relatedServices = (await getServices()).filter((s) => relatedSlugs.includes(s.slug));
   const bodyText = post.content.replace(/[#>*\-]/g, " ");
 
   const jsonLd = {
@@ -34,10 +38,8 @@ export async function PostView({ post }: { post: Post }) {
     description: post.excerpt,
     datePublished: post.publishedAt,
     dateModified: post.updatedAt,
-    author: author
-      ? { "@type": "Person", name: author.name }
-      : { "@type": "Organization", name: "Upsure" },
-    publisher: { "@type": "Organization", name: "Upsure" },
+    author: { "@type": "Organization", name: author?.name ?? "Upsure Media" },
+    publisher: { "@type": "Organization", name: "Upsure Media" },
     mainEntityOfPage: `${getSiteUrl()}/blog/${post.slug}`,
     image: isDoc(post.cover) ? post.cover?.url : undefined,
   };
@@ -52,7 +54,7 @@ export async function PostView({ post }: { post: Post }) {
         <Container size="narrow" className="flex flex-col gap-6">
           <Eyebrow>
             <Link href="/blog" className="hover:text-teal">
-              Blog
+              Insights
             </Link>
           </Eyebrow>
           <div className="flex flex-wrap gap-2">
@@ -97,13 +99,33 @@ export async function PostView({ post }: { post: Post }) {
         </Container>
       </Section>
 
+      {relatedServices.length > 0 && (
+        <Section tone="paper" padding="tight">
+          <Container className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <h2 className="text-h3 font-semibold">Related services</h2>
+            <ul className="flex flex-wrap gap-x-8 gap-y-3">
+              {relatedServices.map((r) => (
+                <li key={r.id}>
+                  <TextLink href={`/services/${r.slug}`} tone="teal" arrowWidth={34}>
+                    {r.title}
+                  </TextLink>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      )}
+
       <Section tone="teal-ink" padding="tight">
         <Container className="grid gap-8 lg:grid-cols-2 lg:items-end">
           <div className="flex flex-col gap-3">
             <Eyebrow tone="paper">The Upshot</Eyebrow>
             <Heading as="h2" size="h2">
-              Sharp takes on brand, content, and growth — sent monthly.
+              Subscribe to The Upshot
             </Heading>
+            <p className="text-paper/75">
+              One email a month on D2C growth, quick commerce, AI search and brand building.
+            </p>
           </div>
           <NewsletterForm source={`blog/${post.slug}`} tone="paper" />
         </Container>
@@ -113,9 +135,9 @@ export async function PostView({ post }: { post: Post }) {
         <Section>
           <Container className="flex flex-col gap-12">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <SectionHeader eyebrow="More from the blog" heading="Keep reading" />
+              <SectionHeader eyebrow="More insights" heading="Keep reading" />
               <Button href="/blog" variant="ghost" withArrow>
-                All articles
+                All insights
               </Button>
             </div>
             <ul className="grid gap-5 md:grid-cols-3">

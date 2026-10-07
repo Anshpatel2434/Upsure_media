@@ -12,10 +12,11 @@ export async function Header() {
           label: c.label,
           href: c.href,
           description: c.description,
+          group: c.group,
         })),
       }))}
       cta={{
-        label: header.cta?.label ?? "Start a project",
+        label: header.cta?.label ?? "Book a free strategy call",
         href: header.cta?.href ?? "/start-a-project",
       }}
       secondary={(header.secondary ?? []).map((l) => ({
@@ -23,7 +24,7 @@ export async function Header() {
         href: l.href,
         newTab: l.newTab,
       }))}
-      contact={{ email: settings.email, phone: settings.phone, phoneHref: settings.phoneHref }}
+      contact={{ email: settings.email, location: settings.city }}
     />
   );
 }

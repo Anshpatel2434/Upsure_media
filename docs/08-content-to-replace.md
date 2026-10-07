@@ -1,33 +1,22 @@
-# Content to replace before launch
+# Content to confirm or replace
 
-Everything below is demo or unconfirmed content. All of it lives in
-`src/content/data.ts` (images in `public/images/`). **Do not launch while items
-in the first table remain**: they attribute invented results or quotes to real
-companies and people.
+All content lives in `src/content/data.ts`; images are generated studio artwork
+(`scripts/art`, files in `public/images/demo/`) and client logos in
+`public/images/clients/`.
 
-## Must replace or remove before launch
+## Needs Upsure Media's confirmation
 
-| What | Where in `data.ts` | Why it matters |
-|------|--------------------|----------------|
-| Case-study scope copy for Lenskart, Hyundai, Samsung, Decathlon | `caseStudies` | Written from each client's services and industry, with no figures or quotes. Upsure must confirm the scope for each brand, and can add real results (`stats`), a client quote (`testimonial`) and project images. |
-| Testimonials from "Neha Kapoor", "Arjun Desai", "Sana Merchant" | `testimonials` (keys `t2`–`t4`) | Invented quotes with names. Only Akash's quote is real. |
-| Team roles and bios (Vrinda, Aarav, Kabir, Riddhi) and their photos | `team`, `media.person-*` | Names are real (from the live site); roles, the shared bio and the photos are demo. |
-
-## Fill in when available
-
-| What | Where | Current state |
-|------|-------|---------------|
-| Phone number | `siteSettings.phone` + `phoneHref` | Empty, hidden site-wide until set. |
-| Street address | `siteSettings.addressLine1` / `addressLine2` | Empty, hidden until set. |
-| Founding year sticker | About hero `stickers` | Removed; comment shows where to add it. |
+| What | Where in `data.ts` | Current state |
+|------|--------------------|---------------|
+| Case-study scope for Lenskart, Hyundai, Samsung, Decathlon | `caseStudies` | Summaries, segment, duration and services come from the copy update; intro, sections and timeline describe the kind of work, with **no figures or quotes**. Upsure should confirm the scope and can add real results (`stats`), a client quote (`testimonial`) and project images. |
+| Team roles (Vrinda, Aarav, Kabir, Riddhi) | `team` | First names from the live site, roles from the About brief; portraits are artwork. |
+| LinkedIn URL | `LINKEDIN_URL` | Empty, so the LinkedIn link is hidden until set. |
+| Founding year | `siteSettings.badges` | Not shown; add `{ text: "Est. <year>" }` once confirmed. |
 | Registration numbers | `siteSettings.registrationNumbers` | Empty. |
-| Contact email | `CONTACT_EMAIL` at the top of `data.ts` | `upsureai@gmail.com` (real, from the live site). Change once a domain inbox exists. Also set `EMAIL_TO` / `EMAIL_FROM` in the environment. |
-| Remaining demo photography | `public/images/demo/*.webp` | Team portraits (`person-*`), the consulting card and the social share image. Case-study covers are the clients' logos on their brand colour. Everything else now uses the live site's photos (`public/images/site/`). |
-| Per-service page sections and extra FAQs | `services`, `faqs` | Card and accordion copy is real; the rest is placeholder. |
 
 ## Already real
 
-Hero and section copy, services list, the headline stats (100+ brands, 250+
-projects, 98% retention), client names and logos, Akash's testimonial, the
-five blog posts (imported from the live Sanity dataset) and most photography
-come from the live site (see `01-current-site-content-inventory.md`).
+Copy (Upsure Media copy update), services, industries, the headline stats
+(100+ brands, 250+ projects, 98% retention), client names and logos, the five
+blog posts imported from the previous site's Sanity dataset, and the two new
+Insights posts. Testimonials are per-service outcome lines, not named quotes.
