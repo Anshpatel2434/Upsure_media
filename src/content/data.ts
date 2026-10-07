@@ -10,7 +10,7 @@
 import type { Form, Media, Service } from "./types";
 
 /** Public contact address, used in copy, mailto links and as the default form inbox. */
-export const CONTACT_EMAIL = "collab@upsuremedia.com";
+export const CONTACT_EMAIL = "upsureai@gmail.com";
 
 /** Resolved documents handed to `pages()` so layouts can embed them. */
 export type Ctx = {
@@ -798,7 +798,7 @@ export const faqs = [
     key: "get-started",
     question: "How do we get started?",
     answer:
-      "Book a free 30-minute strategy call, or email collab@upsuremedia.com. We reply within one business day.",
+      "Book a free 30-minute strategy call, or email upsureai@gmail.com. We reply within one business day.",
     scope: ["home", "services", "contact"],
     order: 8,
   },
@@ -839,35 +839,22 @@ export const faqs = [
 ];
 
 /* ----------------------------------------------------------------------------
-   Testimonial slots (section 3.5). Until real client quotes are collected,
-   each service slot shows its outcome with no name attached. Replace an entry
-   with { quote, name, role, company, service } once a client signs off.
+   Testimonials. None are shown until real, client-approved quotes exist; every
+   testimonial block and the work-section quote slider hide while this is empty.
+   Add entries as { key, quote, name, role, company, service, featured, order }.
    ---------------------------------------------------------------------------- */
-export const testimonials = [
-  ["brand-consulting", "One growth plan, with clear targets, that the whole team works from."],
-  ["branding", "A brand that stands out on a shelf, a marketplace grid and a 3-second scroll."],
-  ["personal-branding", "Leaders who are known, followed and invited in their industry."],
-  ["pr", "Coverage in the publications your customers and investors read."],
-  ["social-media", "Content people watch and share, and enquiries that follow."],
-  ["influencer-marketing", "Creators chosen for audience fit and tracked to sales."],
-  ["performance-marketing", "Ad spend tied to ROAS, CAC and qualified leads."],
-  [
-    "ecommerce-quick-commerce",
-    "Listings that convert on Amazon, Flipkart, Blinkit, Zepto and Instamart.",
-  ],
-  ["seo-aeo-geo", "A brand that shows up on Google and inside AI answers."],
-  ["ai-solutions", "Hours of manual work handed back to your team every week."],
-].map(([service, quote], i) => ({
-  key: `outcome-${service}`,
-  quote: quote!,
-  name: services.find((s) => s.slug === service)!.title,
-  role: "",
-  company: "",
-  outcome: true,
-  featured: true,
-  order: i + 1,
-  service: service!,
-}));
+export const testimonials: {
+  key: string;
+  quote: string;
+  name: string;
+  role?: string;
+  company?: string;
+  avatar?: string;
+  service?: string;
+  outcome?: boolean;
+  featured?: boolean;
+  order?: number;
+}[] = [];
 
 /* ----------------------------------------------------------------------------
    Team (first names from the live site; roles per the About page brief)
@@ -1512,7 +1499,7 @@ export const forms = {
 };
 
 /* ----------------------------------------------------------------------------
-   Globals. Sitewide rules: brand "Upsure Media", email collab@upsuremedia.com,
+   Globals. Sitewide rules: brand "Upsure Media", email upsureai@gmail.com,
    location "Ahmedabad, Gujarat, India" only (no street address, phone or
    hours), Instagram and LinkedIn only, no founder names.
    ---------------------------------------------------------------------------- */
@@ -1528,7 +1515,7 @@ export const INSTAGRAM_URL = "https://www.instagram.com/upsure_media/";
 export const siteSettings = {
   name: "Upsure Media",
   tagline: "We grow brands people love",
-  email: "collab@upsuremedia.com",
+  email: "upsureai@gmail.com",
   city: "Ahmedabad, Gujarat, India",
   socials: [
     { platform: "Instagram", url: INSTAGRAM_URL },
@@ -1596,7 +1583,6 @@ export const footer = {
         { label: "About", href: "/about" },
         { label: "Work", href: "/work" },
         { label: "Culture", href: "/culture" },
-        { label: "Testimonials", href: "/testimonials" },
         { label: "Insights", href: "/blog" },
         { label: "Contact", href: "/contact" },
       ],
@@ -1630,7 +1616,7 @@ export const ctaBand = {
   emoji: "👋",
   heading: "Ready to grow your brand?",
   subheading: "Book a free 30-minute strategy call.",
-  note: "We reply within one business day. Or write to collab@upsuremedia.com",
+  note: "We reply within one business day. Or write to upsureai@gmail.com",
   link: { label: "Book a free strategy call", href: "/start-a-project", newTab: false },
 };
 
@@ -2025,7 +2011,7 @@ export const pages = (ctx: Ctx) => [
       {
         blockType: "cta",
         heading: "Get a free D2C growth audit",
-        text: "We reply within one business day. Or write to collab@upsuremedia.com",
+        text: "We reply within one business day. Or write to upsureai@gmail.com",
         link: { label: "Get a free D2C growth audit", href: "/start-a-project", newTab: false },
         tone: "teal",
       },
@@ -2152,7 +2138,7 @@ export const pages = (ctx: Ctx) => [
       {
         blockType: "cta",
         heading: "Book a free B2B growth call",
-        text: "We reply within one business day. Or write to collab@upsuremedia.com",
+        text: "We reply within one business day. Or write to upsureai@gmail.com",
         link: { label: "Book a free B2B growth call", href: "/start-a-project", newTab: false },
         tone: "teal",
       },
@@ -2291,11 +2277,6 @@ export const pages = (ctx: Ctx) => [
             link: { label: "Our culture", href: "/culture", newTab: false },
           },
           {
-            heading: "Testimonials",
-            body: "What D2C and B2B clients say about working with Upsure Media.",
-            link: { label: "Read testimonials", href: "/testimonials", newTab: false },
-          },
-          {
             heading: "Work",
             body: "D2C and B2B case studies across brand, social, performance and AI.",
             link: { label: "View our work", href: "/work", newTab: false },
@@ -2373,7 +2354,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always curious to meet sharp strategists, designers, and growth marketers. Even when nothing's posted, introduce yourself by email.",
             link: {
               label: "Introduce yourself",
-              href: "mailto:collab@upsuremedia.com?subject=Joining%20Upsure%20Media",
+              href: "mailto:upsureai@gmail.com?subject=Joining%20Upsure%20Media",
               newTab: false,
             },
           },
@@ -2382,52 +2363,12 @@ export const pages = (ctx: Ctx) => [
             body: "We're always expanding our network of collaborators for projects that need more than one team. If you share our values and way of working, we'd love to hear from you.",
             link: {
               label: "Become a collaborator",
-              href: "mailto:collab@upsuremedia.com?subject=Collaboration",
+              href: "mailto:upsureai@gmail.com?subject=Collaboration",
               newTab: false,
             },
           },
         ],
         tone: "paper-2",
-      },
-    ],
-  },
-  {
-    slug: "testimonials",
-    title: "Testimonials",
-    meta: {
-      title: "Client Testimonials | Upsure Media",
-      description:
-        "What D2C and B2B clients say about working with Upsure Media on branding, marketing and AI.",
-    },
-    layout: [
-      {
-        blockType: "hero",
-        variant: "editorial",
-        eyebrow: "Testimonials",
-        heading: "What our [[clients]] say",
-        lead: "Founders and marketing heads from D2C and B2B brands on working with Upsure Media.",
-        stickers: [
-          { text: "98% stay", tone: "teal" },
-          { text: "Senior team", tone: "sun" },
-        ],
-        showContact: true,
-      },
-      {
-        blockType: "testimonialCarousel",
-        eyebrow: "By service",
-        heading: "What each service delivers",
-        layout: "grid",
-        tone: "paper",
-      },
-      {
-        blockType: "stats",
-        eyebrow: "Trusted by",
-        items: [
-          { value: 100, suffix: "+", label: "brands served" },
-          { value: 250, suffix: "+", label: "Projects delivered" },
-          { value: 98, suffix: "%", label: "Client retention" },
-        ],
-        tone: "white",
       },
     ],
   },
@@ -2456,7 +2397,7 @@ export const pages = (ctx: Ctx) => [
     meta: {
       title: "Contact Upsure Media | Marketing Agency in Ahmedabad",
       description:
-        "Talk to Upsure Media about branding, marketing, quick commerce or AI. Email collab@upsuremedia.com. Reply within one business day.",
+        "Talk to Upsure Media about branding, marketing, quick commerce or AI. Email upsureai@gmail.com. Reply within one business day.",
     },
     layout: [
       {
@@ -2473,7 +2414,7 @@ export const pages = (ctx: Ctx) => [
         eyebrow: "Say hello",
         heading: "Tell us about your brand",
         intro:
-          "Fill in the form and we'll get back to you within one business day. Prefer email? Write to collab@upsuremedia.com.",
+          "Fill in the form and we'll get back to you within one business day. Prefer email? Write to upsureai@gmail.com.",
         form: ctx.forms.contact,
         layout: "split",
         tone: "paper",
@@ -2515,7 +2456,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always curious to meet sharp strategists, designers, and growth marketers. Even when nothing's posted, introduce yourself by email.",
             link: {
               label: "Introduce yourself",
-              href: "mailto:collab@upsuremedia.com?subject=Joining%20Upsure%20Media",
+              href: "mailto:upsureai@gmail.com?subject=Joining%20Upsure%20Media",
               newTab: false,
             },
           },
@@ -2524,7 +2465,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always expanding our network of collaborators for projects that need more than one team. If you share our values and way of working, we'd love to hear from you.",
             link: {
               label: "Become a collaborator",
-              href: "mailto:collab@upsuremedia.com?subject=Collaboration",
+              href: "mailto:upsureai@gmail.com?subject=Collaboration",
               newTab: false,
             },
           },
@@ -2596,7 +2537,7 @@ To the fullest extent permitted by law, Upsure Media is not liable for any indir
 
 ## 7. Contact
 
-Questions about these terms? Email us at collab@upsuremedia.com and we'll get back to you within one business day.
+Questions about these terms? Email us at upsureai@gmail.com and we'll get back to you within one business day.
 `.trim(),
         tone: "paper",
       },
@@ -2647,7 +2588,7 @@ You can request access to, correction of, or deletion of the personal informatio
 
 ## 7. Contact
 
-For any privacy question or request, email collab@upsuremedia.com. We reply within one business day.
+For any privacy question or request, email upsureai@gmail.com. We reply within one business day.
 `.trim(),
         tone: "paper",
       },

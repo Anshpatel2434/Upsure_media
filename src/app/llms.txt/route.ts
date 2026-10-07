@@ -17,7 +17,7 @@ export function GET() {
     "",
     "- Location: Ahmedabad, Gujarat, India",
     "- Clients: 100+ brands, from D2C startups to companies such as Lenskart, Hyundai, Samsung and Decathlon",
-    "- Contact: collab@upsuremedia.com",
+    "- Contact: upsureai@gmail.com",
     "",
     "## Services",
     "",
