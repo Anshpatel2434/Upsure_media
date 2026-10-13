@@ -82,7 +82,15 @@ async function ContactLine({
   const { settings } = await getGlobals();
   const link = cn("underline-offset-4 hover:underline", tone === "ink" ? "text-ink" : "text-paper");
   return (
-    <p className={cn("flex flex-wrap gap-x-2.5 gap-y-1 text-sm", className)}>
+    // Compact (home hero): same size as the "Explore services" text link it
+    // shares a row with, so the two sit on one baseline.
+    <p
+      className={cn(
+        "flex flex-wrap gap-x-2.5 gap-y-1",
+        compact ? "text-[17px] leading-normal" : "text-sm",
+        className,
+      )}
+    >
       <a href={`mailto:${settings.email}`} className={cn(link, "font-bold")}>
         {settings.email}
       </a>
