@@ -244,19 +244,11 @@ function HomeHero({ block }: { block: Hero }) {
                       )}
                     </span>
                   )}
-                  <span className="flex flex-col items-start gap-y-5">
-                    <Ctas
-                      block={block}
-                      tone="ink"
-                      className="md:flex-col md:items-start md:gap-y-5"
-                    />
-                    {/* Email under the links, on the same left edge (xl and up). */}
-                    {block.showContact !== false && (
-                      <span className="hidden xl:block">
-                        <ContactLine tone="ink" compact className="font-normal tracking-normal" />
-                      </span>
-                    )}
-                  </span>
+                  <Ctas
+                    block={block}
+                    tone="ink"
+                    className="md:flex-col md:items-start md:gap-y-5"
+                  />
                 </span>
               </span>
               {s2 && (
@@ -265,6 +257,15 @@ function HomeHero({ block }: { block: Hero }) {
                     {s2.text}
                   </Bubble>
                 </span>
+              )}
+              {block.showContact !== false && (
+                <div className="hidden xl:block">
+                  <ContactLine
+                    tone="ink"
+                    compact
+                    className="absolute right-0 bottom-0 justify-end font-normal tracking-normal"
+                  />
+                </div>
               )}
             </RevealItem>
           </div>
