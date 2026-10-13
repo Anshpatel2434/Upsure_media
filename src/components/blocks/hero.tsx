@@ -113,11 +113,28 @@ async function ContactLine({
   );
 }
 
-function Ctas({ block, tone, className }: { block: Hero; tone: Tone; className?: string }) {
+/** `stacked` puts the links under the button, indented to the button's label. */
+function Ctas({
+  block,
+  tone,
+  stacked = false,
+  className,
+}: {
+  block: Hero;
+  tone: Tone;
+  stacked?: boolean;
+  className?: string;
+}) {
   if (!block.ctas?.length) return null;
   const [primary, ...rest] = block.ctas;
   return (
-    <div className={cn("flex flex-wrap items-center gap-x-8 gap-y-4", className)}>
+    <div
+      className={cn(
+        "flex flex-wrap items-center gap-x-8 gap-y-4",
+        stacked && "md:flex-col md:items-start md:gap-y-5",
+        className,
+      )}
+    >
       {primary && (
         <Button
           href={primary.href}
@@ -130,7 +147,12 @@ function Ctas({ block, tone, className }: { block: Hero; tone: Tone; className?:
         </Button>
       )}
       {rest.map((c) => (
-        <TextLink key={c.id ?? c.href} href={c.href} tone={tone === "ink" ? "ink" : "accent"}>
+        <TextLink
+          key={c.id ?? c.href}
+          href={c.href}
+          tone={tone === "ink" ? "ink" : "accent"}
+          className={stacked ? "md:ml-7" : undefined}
+        >
           {c.label}
         </TextLink>
       ))}
@@ -244,11 +266,7 @@ function HomeHero({ block }: { block: Hero }) {
                       )}
                     </span>
                   )}
-                  <Ctas
-                    block={block}
-                    tone="ink"
-                    className="md:flex-col md:items-start md:gap-y-5"
-                  />
+                  <Ctas block={block} tone="ink" stacked />
                 </span>
               </span>
               {s2 && (
