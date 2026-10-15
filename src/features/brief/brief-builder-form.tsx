@@ -45,9 +45,7 @@ export function BriefBuilderForm({ form, needs }: { form: Form; needs: Need[] })
     return (
       <div role="status" className="rounded-xl border border-teal bg-teal-soft p-8">
         <p className="text-h3">{state.message}</p>
-        <p className="mt-2 text-ink-2">
-          We&rsquo;ve received your brief. Check your inbox for a note from us.
-        </p>
+        <p className="mt-2 text-ink-2">We&rsquo;ll reply to the email address you gave us.</p>
       </div>
     );
   }

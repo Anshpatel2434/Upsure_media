@@ -20,7 +20,7 @@ async function sendViaWeb3Forms({ subject, fields, replyTo }: Notification): Pro
       body: JSON.stringify({
         access_key: accessKey,
         subject,
-        from_name: "Upsure website",
+        from_name: "Upsure Media website",
         ...(replyTo ? { replyto: replyTo } : {}),
         ...Object.fromEntries(fields),
       }),

@@ -11,7 +11,7 @@ pre-rendered at build time from static content; there is no database and no admi
 | Framework | Next.js 16 · React 19 · TypeScript (strict)              |
 | Styling   | Tailwind CSS v4 with CSS-variable design tokens          |
 | Content   | Typed TypeScript data in `src/content` · images in `public/images` |
-| Forms     | Server actions → email via Resend (console log in dev) · Turnstile |
+| Forms     | Server actions → email via Web3Forms (console log in dev) · Turnstile |
 | Tooling   | ESLint · Prettier · Husky · lint-staged · commitlint     |
 
 Planning documents live in [`docs/`](docs/): content inventory, reference analysis, the phased project plan and ADRs.
@@ -42,9 +42,10 @@ Save and the dev server updates instantly; `npm run build` bakes everything into
 
 Contact, consultation, call-back, "Start a project" and newsletter forms post to server
 actions in `src/features`, which validate and spam-check each submission. Delivery is by
-Web3Forms (`NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`, posted from the browser because its free
-plan requires that) or Resend (`RESEND_API_KEY`, from the server). Without either, dev
-prints submissions to the server console. Nothing is stored.
+Web3Forms (`NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`), posted from the browser because its free
+plan requires that; emails go to the address the key was created for. Without the key, dev
+prints submissions to the server console and production shows an "email us instead" error.
+Nothing is stored.
 
 Every form is protected by a honeypot, a per-IP rate limit and, when both Turnstile keys are
 set, Cloudflare Turnstile. Set `TRUSTED_IP_HEADER` to your host's real-IP header, and
