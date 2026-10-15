@@ -79,7 +79,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
 
   return (
     <>
-      <header className="sticky top-0 z-40 px-[15px] pt-[15px] md:px-[25px] md:pt-[25px] lg:static lg:p-0">
+      <header className="sticky top-0 z-40 px-[15px] pt-[10px] md:px-[25px] md:pt-[15px] lg:static lg:p-0">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
@@ -87,7 +87,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
           Skip to content
         </a>
         {/* Below lg: a floating frosted bar. From lg: just the logo, in the page flow. */}
-        <div className="mx-auto flex max-w-(--container-site) items-center justify-between gap-4 rounded-[28px] bg-[rgb(233_233_233/0.6)] p-[5px] pl-5 backdrop-blur-[8px] lg:h-[126px] lg:items-end lg:rounded-none lg:bg-transparent lg:p-0 lg:px-gutter lg:backdrop-blur-none">
+        <div className="mx-auto flex max-w-(--container-site) items-center justify-between gap-4 rounded-[28px] bg-[rgb(233_233_233/0.6)] p-[5px] pl-5 backdrop-blur-[8px] lg:h-[96px] lg:items-end lg:rounded-none lg:bg-transparent lg:p-0 lg:px-gutter lg:backdrop-blur-none">
           <Link
             href="/"
             className="rounded-sm lg:flex lg:h-[76px] lg:items-center"
@@ -121,7 +121,7 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
         equally; hovering an item with children grows the pill downwards and
         reveals its sub-links in a row.
       */}
-      <div className="pointer-events-none fixed inset-x-0 top-[50px] z-50 hidden lg:block">
+      <div className="pointer-events-none fixed inset-x-0 top-[20px] z-50 hidden lg:block">
         <div className="mx-auto flex max-w-(--container-site) justify-end px-gutter">
           <nav
             ref={navRef}

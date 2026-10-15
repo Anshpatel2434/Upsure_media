@@ -1,6 +1,8 @@
 # Upsure Media — new website: project plan
 
-Status: **Phases 1–10 built and verified locally (2026-09-29). Remaining: 11 admin polish, 12 perf/a11y hardening (baseline in `perf/`), 13 launch.**
+Status: **Phases 1–10 built and verified locally (2026-09-29). Remaining: 12 perf/a11y hardening (baseline in `perf/`), 13 launch.**
+
+> **2026-10-01 — Payload CMS removed.** The site now serves static content from `src/content/data.ts`; there is no database, admin panel or seed script, and the repo uses npm. See [ADR 0002](adr/0002-static-content-no-cms.md). The CMS, admin and pnpm details below are kept as history; §2 and §3 reflect the current stack. Outstanding placeholder content: [`08-content-to-replace.md`](08-content-to-replace.md).
 Companion docs: `01-current-site-content-inventory.md` (all current copy), `02-marino-reference-analysis.md` (reference structure + gap list).
 
 ---
@@ -11,51 +13,48 @@ Rebuild upsuremedia.com as a professional, maintainable Next.js codebase that:
 
 1. Keeps every piece of current Upsure content (inventoried in doc 01).
 2. Adopts the information architecture and section patterns of marino.co.uk (doc 02) — work/case studies, per-service pages, testimonials, culture, proof bands, FAQ, mega-menu, lead forms everywhere — with **placeholder copy, images and video** wherever Upsure has no real content yet.
-3. Ships an **admin panel** where a non-developer edits any text, image, list or page block and sees the public site update immediately.
+3. ~~Ships an admin panel~~ — dropped (ADR 0002). Content is edited in `src/content/data.ts` and the site is rebuilt.
 4. Loads fast and scrolls smoothly on **low-end phones and slow networks** (Core Web Vitals green on Slow 4G + 4× CPU throttle).
 
-## 2. Recommended stack (decisions to confirm — see §9)
+## 2. Stack (current — see ADR 0002)
 
 | Layer | Choice | Why |
 |---|---|---|
 | Framework | **Next.js 16.x** (App Router, `src/`, TypeScript strict, Turbopack) | Current stable; server components cut client JS; `'use cache'`/ISR for instant, cached pages |
 | Styling | **Tailwind CSS v4** + CSS variables design tokens | Tiny CSS output, no runtime; tokens make theming/admin colour changes cheap |
-| CMS / admin | **Payload CMS 3** mounted at `/admin` inside the same Next.js app | Free, MIT, no per-seat/API quotas; block-based page builder; Live Preview; drafts + versions; `afterChange` hooks → on-demand revalidation = "real-time" public updates. Alternative: **Sanity** (hosted, free tier, best editor UX, less to own) |
-| Database | **Postgres** — local via Docker Compose in dev; Neon (free) or any Postgres in production | Payload's Postgres adapter |
-| Media | Local disk in dev; **S3-compatible adapter** (R2 or similar) switched on by env vars for production. Payload generates responsive sizes + blur placeholder on upload | Portable, free |
-| Forms | Payload **Form Builder plugin** (submissions stored in admin) + **Resend** email notification; honeypot + Cloudflare Turnstile (free, lighter than reCAPTCHA) | Replaces Web3Forms; leads visible in admin |
+| Content | **Typed TypeScript** in `src/content/data.ts`, resolved by `src/content/store.ts`; every page pre-rendered at build time | No database or admin to host and secure; content changes are a commit + rebuild |
+| Media | Static files in `public/images` + `media-manifest.json` (size, blur placeholder); served through `next/image` | Portable, free |
+| Forms | Server actions → **Resend** email (console in dev), nothing stored; honeypot + per-IP rate limit (optional Upstash Redis) + Cloudflare Turnstile on every form | Replaces Web3Forms |
 | Animation | CSS transitions/scroll-driven animations first; **Motion** (`LazyMotion` + `m`, ~5 kB) only where needed; **no Lenis/GSAP** | Keeps main thread free on low-end devices |
 | Fonts | `next/font` self-hosted, 1 variable family, latin subset, `display: swap` | Zero layout shift, no third-party requests |
 | Hosting | **Deferred** — local only for now; app kept portable (no host-specific APIs) | Client decision |
 | Analytics | **None for now**; single `analyticsId` setting reserved | Client decision |
-| Package manager | **pnpm** (via Corepack; Node 24 is installed locally) | Faster, standard for Next.js projects |
+| Package manager | **npm** (`package-lock.json`) | Matches CI (`npm ci`) |
 | Quality tooling | ESLint flat config + Prettier, Husky + lint-staged, commitlint (Conventional Commits), EditorConfig, `.nvmrc`, GitHub Actions CI (lint, typecheck, build, Lighthouse CI), Dependabot | "Professional repo" baseline |
 
 ## 3. Repository layout
 
 ```
 upsure-media/
-├─ .github/workflows/ci.yml          lint · typecheck · build · lighthouse
+├─ .github/workflows/ci.yml          lint · format · typecheck · build
 ├─ .husky/                           pre-commit (lint-staged) · commit-msg (commitlint)
-├─ docs/                             these planning docs + ADRs + admin user guide
-├─ public/                           favicons, og default, placeholder media
-├─ scripts/seed.ts                   seeds all current content + placeholders into the CMS
+├─ docs/                             planning docs, ADRs, perf baselines, content checklist
+├─ public/images/                    demo photography (demo/) and client logos (logos/)
 ├─ src/
 │  ├─ app/
-│  │  ├─ (frontend)/                 public site: layout.tsx, page.tsx, services/, work/, about/, culture/, testimonials/, blog/, contact/, terms/, privacy/
-│  │  ├─ (payload)/admin/            Payload admin UI + API routes (generated)
-│  │  ├─ api/revalidate/route.ts     on-demand revalidation endpoint (called by CMS hooks)
-│  │  ├─ sitemap.ts · robots.ts · not-found.tsx
+│  │  ├─ (frontend)/(site)/          [[...segments]] catch-all (every content route) · search/ · dev/ui (dev only)
+│  │  ├─ sitemap.ts · robots.ts
 │  ├─ components/
-│  │  ├─ ui/                         Button, Pill, Badge, Container, Section, Heading, Input, Textarea, Accordion, Marquee, Carousel, Card, RichText
-│  │  ├─ layout/                     Header, MegaMenu, MobileDrawer, Footer, CtaBand, CookieConsent (if needed)
-│  │  └─ blocks/                     one component per CMS block: Hero, Stats, LogoTicker, TextReveal, ServiceGrid, WorkGrid, TestimonialCarousel, FaqAccordion, NeedPicker, Capabilities, ApproachSteps, TeamGrid, BlogCarousel, LeadForm, MediaBlock, RichTextBlock…
-│  ├─ features/                      contact-form/, newsletter/, blog/, work/ (queries, actions, schemas)
-│  ├─ lib/                           payload client, seo helpers, utils, constants
-│  ├─ payload/                       payload.config.ts, collections/, globals/, blocks/, access/, hooks/
-│  └─ styles/                        globals.css (tokens, base), animations.css
-├─ .editorconfig · .nvmrc · .env.example · eslint.config.mjs · prettier.config.mjs · commitlint.config.mjs · lighthouserc.json
-├─ next.config.ts · tsconfig.json · tailwind config (v4 = CSS-first) · package.json
+│  │  ├─ ui/                         primitives: Button, Heading, Field, Accordion, Marquee, Carousel, Turnstile…
+│  │  ├─ layout/                     Header, HeaderNav, Footer, CtaBand, Logo
+│  │  ├─ cards/                      PostCard, ServiceCard, WorkTile…
+│  │  └─ blocks/                     one component per page block + RenderBlocks
+│  ├─ content/                       data.ts (all copy) · store.ts (resolves relations) · types.ts · manifests
+│  ├─ features/                      site/resolve.tsx (URL → view), blog/, work/, services/, brief/, forms/, newsletter/, search/
+│  ├─ lib/                           queries over the store, seo, email (Resend), spam (rate limit + Turnstile), text helpers
+│  └─ styles/                        globals.css (tokens, base)
+├─ .editorconfig · .nvmrc · .env.example · eslint.config.mjs · .prettierrc · commitlint.config.mjs · lighthouserc.json
+├─ next.config.ts · tsconfig.json · package.json · package-lock.json
 └─ README.md · CONTRIBUTING.md · LICENSE
 ```
 
@@ -76,9 +75,8 @@ Conventions: kebab-case files, PascalCase components, `@/` alias, no barrel file
 | `/blog`, `/blog/[slug]`, `/blog/category/[slug]` | Blog | Posts, Categories, Authors |
 | `/contact` | Contact | Page "contact" + Forms |
 | `/terms`, `/privacy` | Legal | Pages (rich text) |
-| `/admin` | Admin panel | Payload |
 
-## 5. Content model (admin panel)
+## 5. Content model (historical — Payload; now mirrored as plain data in `src/content/data.ts`)
 
 **Collections**
 - `pages` — title, slug, SEO, `layout` (block array), draft/publish, versions, live preview
@@ -101,7 +99,7 @@ Conventions: kebab-case files, PascalCase components, `@/` alias, no barrel file
 
 "Real-time" behaviour: every collection/global has `afterChange`/`afterDelete` hooks → `revalidateTag`/`revalidatePath`; admin has Live Preview iframe (desktop/tablet/mobile) so editors see changes before publishing.
 
-## 6. Placeholder content to create (marked `[PLACEHOLDER]` in the CMS so it's easy to find)
+## 6. Placeholder content to create (now tracked in [`08-content-to-replace.md`](08-content-to-replace.md))
 
 - 6 case studies (cover, 3 stats, 2 sections, quote, video poster) — e.g. Samsung, Hyundai, Lenskart, Decathlon, Vivo, Titan (names from the logo wall; copy is clearly marked placeholder)
 - 5 service pages: sub-service pills, 6-item checklists, benefits copy, 3 FAQs each
@@ -146,7 +144,7 @@ Each phase ends with a checklist that must pass before the next starts. "Verify"
 - [x] Husky + lint-staged + commitlint; `.editorconfig`; `.nvmrc`; `packageManager` + `engines`
 - [x] GitHub Actions CI: install → lint → `tsc --noEmit` → build; Dependabot config
 - [x] README (setup, scripts, env, deploy), CONTRIBUTING (branching, commits, PR checklist), LICENSE
-- Verify: `pnpm lint && pnpm typecheck && pnpm build` pass locally and in CI on a PR; a bad commit message is rejected; a formatting error is auto-fixed on commit.
+- Verify: `npm run lint && npm run typecheck && npm run build` pass locally and in CI on a PR; a bad commit message is rejected; a formatting error is auto-fixed on commit.
 
 ### Phase 2 — Design system ✅ (done 2026-09-29)
 - [x] Tokens in `globals.css`: colours (light grey bg, ink, mint, lilac, teal, dark band), spacing, radii (pill 999px, card 24px), type scale (fluid `clamp()` H1–H6), shadows
@@ -156,7 +154,7 @@ Each phase ends with a checklist that must pass before the next starts. "Verify"
 - [x] `/dev/ui` (dev-only) page showcasing every primitive
 - Verify: primitives render on the showcase page at 360px, 768px, 1280px; keyboard works on accordion/carousel; axe reports 0 violations; zero client JS shipped for Marquee/Accordion.
 
-### Phase 3 — CMS & data layer (Payload) ✅ (verified locally 2026-09-29)
+### Phase 3 — CMS & data layer (Payload) ✅ (verified locally 2026-09-29) — **retired 2026-10-01, ADR 0002**
 - [x] Install Payload 3 into the app; Postgres adapter (Neon); S3 adapter (R2); Lexical rich text
 - [x] Collections, globals and blocks from §5 with field validation and required alt text
 - [x] Access control: `admin` vs `editor`; public read for published only
@@ -209,7 +207,7 @@ Each phase ends with a checklist that must pass before the next starts. "Verify"
 - [x] Email templates (Resend) + admin inbox
 - Verify: submit valid/invalid/spam cases; each creates/blocks a record correctly; form works with JS disabled (progressive enhancement); Turnstile fails closed; screen reader announces errors.
 
-### Phase 11 — Admin panel polish
+### Phase 11 — Admin panel polish — **dropped (no admin panel, ADR 0002)**
 - [x] Custom dashboard (quick links: edit Home, new post, new case study, submissions)
 - [x] Field descriptions/help text for every field; `[PLACEHOLDER]` items flagged with a filter
 - [~] Redirects collection (plugin installed; wired via Next redirects on next build — not yet), SEO preview fields ✅, focal point ✅ wired into `proxy.ts`; SEO preview fields; image focal-point picker
@@ -223,7 +221,7 @@ Each phase ends with a checklist that must pass before the next starts. "Verify"
 - [x] Manual test on a real low-end Android (or Chrome DevTools Slow 4G + 6× CPU): no jank while scrolling, no layout shift, menu opens < 100 ms
 - [ ] axe-core run on every route; keyboard-only walkthrough; colour contrast fixes
 - [x] Security headers (CSP pending) (CSP, HSTS, frame-ancestors), rate limits, dependency audit
-- Verify: CI Lighthouse assertions green on all routes; bundle report committed to `docs/perf/`; axe 0 serious/critical; `pnpm audit` clean.
+- Verify: CI Lighthouse assertions green on all routes; bundle report committed to `docs/perf/`; axe 0 serious/critical; `npm audit` clean.
 
 ### Phase 13 — Launch & handover
 - [ ] Production env (hosting from §9), Neon prod branch, R2 prod bucket, Resend domain verification

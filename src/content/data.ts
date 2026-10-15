@@ -9,6 +9,9 @@
 
 import type { Form, Media, Service } from "./types";
 
+/** Public contact address, used in copy, mailto links and as the default form inbox. */
+export const CONTACT_EMAIL = "upsureai@gmail.com";
+
 /** Resolved documents handed to `pages()` so layouts can embed them. */
 export type Ctx = {
   media: Record<string, Media>;
@@ -17,7 +20,8 @@ export type Ctx = {
 };
 
 /* ----------------------------------------------------------------------------
-   Images: key → alt text. Files live in public/images/demo/<key>.webp
+   Images: key → alt text. Generated studio artwork (scripts/art) in
+   public/images/demo/<key>-<hash>.webp; see media-manifest.json
    ---------------------------------------------------------------------------- */
 export const media: Record<string, string> = {
   "hero-1": "Phone filming a product reel in front of a ring light",
@@ -42,12 +46,11 @@ export const media: Record<string, string> = {
   "work-4": "Running shoe, football and a sports store listing on a phone",
   before: "Website before the redesign: a cluttered grey layout on a desktop monitor",
   after: "Website after the redesign: a clear headline and products on a desktop monitor",
+  "post-qc": "Quick commerce delivery bag, D2C products and a 10-minute delivery app",
+  "post-geo": "Phone with an AI answer recommending a brand, with its sources",
   "post-1": "Laptop with an AI assistant drafting a growth plan",
   "post-6": "Strategy board and a notebook sketch of why, how and what before design",
   "post-7": "Content calendar on the wall with a camera and a phone reel",
-  "post-8": "Compass on a map, for choosing a marketing direction",
-  "post-qc": "Quick commerce delivery bag, D2C products and a 10-minute delivery app",
-  "post-geo": "Phone with an AI answer recommending a brand, with its sources",
   "services-hero":
     "Studio desk with packaging, swatches, a dashboard, a reel and a microphone: Upsure Media's services",
   "approach-illo": "Discovery board on customers, competitors and channels with a magnifying glass",
@@ -71,7 +74,7 @@ export const media: Record<string, string> = {
 };
 
 /* ----------------------------------------------------------------------------
-   Clients (real names from the live logo wall; logos are placeholder wordmarks)
+   Clients (real names and logos from the live logo wall)
    ---------------------------------------------------------------------------- */
 export const clients = [
   "Allen",
@@ -82,6 +85,7 @@ export const clients = [
   "Gheeyonnaise",
   "Hyundai",
   "Jio BP",
+  "Khetibank",
   "Lenskart",
   "PW Vidyapeeth",
   "R & B",
@@ -794,7 +798,7 @@ export const faqs = [
     key: "get-started",
     question: "How do we get started?",
     answer:
-      "Book a free 30-minute strategy call, or email collab@upsuremedia.com. We reply within one business day.",
+      "Book a free 30-minute strategy call, or email upsureai@gmail.com. We reply within one business day.",
     scope: ["home", "services", "contact"],
     order: 8,
   },
@@ -835,35 +839,22 @@ export const faqs = [
 ];
 
 /* ----------------------------------------------------------------------------
-   Testimonial slots (section 3.5). Until real client quotes are collected,
-   each service slot shows its outcome with no name attached. Replace an entry
-   with { quote, name, role, company, service } once a client signs off.
+   Testimonials. None are shown until real, client-approved quotes exist; every
+   testimonial block and the work-section quote slider hide while this is empty.
+   Add entries as { key, quote, name, role, company, service, featured, order }.
    ---------------------------------------------------------------------------- */
-export const testimonials = [
-  ["brand-consulting", "One growth plan, with clear targets, that the whole team works from."],
-  ["branding", "A brand that stands out on a shelf, a marketplace grid and a 3-second scroll."],
-  ["personal-branding", "Leaders who are known, followed and invited in their industry."],
-  ["pr", "Coverage in the publications your customers and investors read."],
-  ["social-media", "Content people watch and share, and enquiries that follow."],
-  ["influencer-marketing", "Creators chosen for audience fit and tracked to sales."],
-  ["performance-marketing", "Ad spend tied to ROAS, CAC and qualified leads."],
-  [
-    "ecommerce-quick-commerce",
-    "Listings that convert on Amazon, Flipkart, Blinkit, Zepto and Instamart.",
-  ],
-  ["seo-aeo-geo", "A brand that shows up on Google and inside AI answers."],
-  ["ai-solutions", "Hours of manual work handed back to your team every week."],
-].map(([service, quote], i) => ({
-  key: `outcome-${service}`,
-  quote: quote!,
-  name: services.find((s) => s.slug === service)!.title,
-  role: "",
-  company: "",
-  outcome: true,
-  featured: true,
-  order: i + 1,
-  service: service!,
-}));
+export const testimonials: {
+  key: string;
+  quote: string;
+  name: string;
+  role?: string;
+  company?: string;
+  avatar?: string;
+  service?: string;
+  outcome?: boolean;
+  featured?: boolean;
+  order?: number;
+}[] = [];
 
 /* ----------------------------------------------------------------------------
    Team (first names from the live site; roles per the About page brief)
@@ -887,9 +878,6 @@ export const categories = [
   { slug: "ai", title: "AI" },
   { slug: "brand", title: "Brand" },
   { slug: "agency", title: "Agency" },
-  { slug: "content", title: "Content" },
-  { slug: "strategy", title: "Strategy" },
-  { slug: "growth", title: "Growth" },
 ];
 
 /** Services linked from Insights posts, by topic (2–3 internal links per page). */
@@ -1023,109 +1011,189 @@ The "set it and forget it" AI blog machine produces exactly what you'd expect: c
 
 No model chooses your positioning. No model tells you which audience to walk away from, or gives you the nerve to look different from your category when every best practice says blend in. The decisions that make or break growth are exactly as human as they were five years ago — there are just fewer excuses now for spending your human hours on anything else.
 
-AI didn't change what good marketing is. It changed how much of your week you get to spend doing it.
+> AI didn't change what good marketing is. It changed how much of your week you get to spend doing it.
 
 If your growth engine still runs entirely on manual effort — or you've bolted on AI tools nobody actually uses — we build these systems end to end: strategy, creative, performance, and the intelligent plumbing underneath. Let's talk.
 `.trim(),
   },
   {
-    slug: "why-brand-strategy-comes-before-design",
-    title: "Why brand strategy must come before design",
+    slug: "custom-ai-workflows-busywork-audit",
+    title: "The busywork audit: how custom AI workflows give teams their week back",
+    category: "ai",
+    tags: ["AI", "Automation", "Workflows", "Operations"],
+    publishedAt: "2026-05-27",
+    cover: "svc-ai",
+    excerpt:
+      "Every business runs on invisible, repetitive screen-work nobody signed up for. We find it, automate it, and hand the hours back. Here's our playbook — including where automation is a terrible idea.",
+    content: `
+Here's an exercise we run with every client, and you can do it right now: list the tasks your team does every single week that (a) happen on a screen, (b) follow roughly the same steps each time, and (c) nobody would miss doing.
+
+Copying leads from forms into the CRM. Assembling the Monday report from four dashboards. Renaming and filing creative assets. Summarising call notes. Chasing invoice approvals. Reformatting the same content for five platforms. Sound familiar? That list is your busywork inventory — and it's almost always bigger and more expensive than anyone expects.
+
+## Busywork is a tax on your best people
+
+The cruel joke of busywork is that it usually lands on your most capable people, because they're the ones trusted to get it right. Your senior marketer builds the weekly report. Your best ops person reconciles the spreadsheets. Hours of judgment-capable brainpower spent on tasks that require none.
+
+When we audit a team's week, we routinely find 8–15 hours per person of automatable work. Across a ten-person team, that's more than a full-time employee's worth of hours — currently being spent on copy-paste.
+
+## What a custom workflow actually looks like
+
+Forget the sci-fi version. A custom AI workflow is usually a chain of small, boring, reliable steps: watch for a trigger (new form entry, new file, incoming email), read and understand the content, transform it (summarise, extract, categorise, draft), then push the result where it belongs (CRM, Slack, spreadsheet, inbox) — with a human checkpoint wherever judgment matters.
+
+Some real examples from our projects: a lead-routing flow that reads enquiries, scores intent, drafts a personalised reply, and files everything in the CRM before the founder has finished breakfast. A reporting pipeline that pulls from ad platforms and analytics, writes the narrative summary, and posts it to Slack every Monday at 9. A content engine that turns one long-form piece into platform-native drafts for five channels, each awaiting a human yes.
+
+## The part nobody tells you: where automation is a bad idea
+
+We turn down automation requests regularly, and it's worth explaining why. Don't automate a process that's still changing weekly — you'll automate the wrong thing, twice. Don't automate judgment calls with real consequences (pricing exceptions, sensitive customer replies) beyond a draft-for-review. And don't automate a broken process; automation makes processes faster, including bad ones. Fix first, then automate.
+
+## How we run it
+
+Every engagement starts with the audit: we map the week, find the busywork, and rank it by hours saved versus build effort. Then we ship the top of the list in small pieces — a working automation every week or two, not a six-month platform project. Your team learns to trust each piece before the next one arrives, and by the end they're spotting automation candidates themselves. That's the real win: not the workflows we build, but the team that starts thinking in workflows.
+
+> The goal isn't replacing people. It's returning their hours to work that actually needs a human — the thinking, the taste, the relationships.
+
+Want to know what your busywork inventory looks like? Send us a message — the audit conversation is free, and it's usually eye-opening.
+`.trim(),
+  },
+  {
+    slug: "customers-want-answers-not-chatbots",
+    title: "Your customers don't want a chatbot. They want answers.",
+    category: "ai",
+    tags: ["AI", "Chatbots", "Customer Experience"],
+    publishedAt: "2026-04-22",
+    cover: "faq-chat",
+    excerpt:
+      "Everyone's had a rage-inducing chatbot experience. It doesn't have to be that way. How we design AI assistants that resolve queries, sound like your brand, and know when to hand over to a human.",
+    content: `
+You know the feeling. You have one simple question. The little chat bubble pops up, chirpy and useless: "Hi! I'm Sparky! 😊 How can I help?" Twelve messages later, Sparky has linked you to three irrelevant FAQ pages, asked you to rephrase twice, and you're now typing AGENT AGENT AGENT like you're casting a spell.
+
+That experience is so common that "chatbot" has become a dirty word. Which is a shame — because the technology has quietly gotten very, very good. The bad experiences aren't a technology problem anymore. They're a design problem.
+
+## What changed
+
+Old chatbots were decision trees wearing a trench coat: rigid scripts that shattered the moment you phrased something unexpectedly. Modern AI assistants actually read — your help docs, your policies, your product catalogue, your tone of voice — and generate answers grounded in that knowledge. Ask in Hindi, in slang, or in a rambling three-part question; a well-built assistant handles it.
+
+## How we build them differently
+
+### 1. Grounded in your actual knowledge
+
+We connect the assistant to your real sources — help centre, policy docs, order systems, product data — so it answers from facts, not vibes. When it doesn't know, it says so and routes to a human. An assistant that admits uncertainty builds more trust than one that confidently makes things up.
+
+### 2. Written in your brand voice
+
+This is the step everyone skips, and it's our favourite one. Your assistant is often the highest-volume conversation your brand has — thousands of exchanges a month. We treat it like a brand touchpoint: tone, vocabulary, personality, even how it apologises. A D2C snack brand and an insurance company should not sound like the same robot.
+
+### 3. Designed to hand over, not hold hostage
+
+The goal is resolution, not containment. We design clear escalation paths — to WhatsApp, email, or a live agent — with full conversation context passed along so customers never repeat themselves. The metric we optimise is "did the customer get what they needed?", not "did we avoid a support ticket?"
+
+### 4. Measured like a growth channel
+
+Resolution rate, deflection quality, CSAT, conversion assists — we instrument all of it. One client discovered their assistant was quietly answering pre-purchase sizing questions at 2am and nudging conversions up. That insight reshaped their whole product page.
+
+## Beyond support: where assistants earn their keep
+
+Support is the obvious use case, but it's rarely the most valuable one. Lead qualification that asks smart questions before your sales team wakes up. Internal assistants that answer "where's the latest brand deck?" so your ops team stops playing librarian. Onboarding guides that walk new customers through setup step by step. Anywhere a knowledgeable human answers repetitive questions, an assistant can take the first shift.
+
+> The best chatbot compliment isn't "wow, great AI." It's the customer not noticing anything except how fast they got their answer.
+
+If your current chat widget is generating more rage than resolutions — or you don't have one and keep answering the same twenty questions by email — that's exactly the kind of project we love. Get in touch and we'll show you what a good one feels like.
+`.trim(),
+  },
+  {
+    slug: "we-design-brands-people-love",
+    title: '"We design brands people love" — here\'s what that actually means',
     category: "brand",
-    tags: ["Brand", "Strategy", "Insights"],
-    publishedAt: "2026-01-20",
+    tags: ["Brand", "Philosophy", "Agency"],
+    publishedAt: "2026-03-18",
     cover: "post-6",
     excerpt:
-      "A beautiful identity built on a fuzzy strategy is an expensive way to stay confused. Why we always answer the hard questions before we open the design tools.",
+      "Love is a strong word for a company. We use it anyway — because 'brands people tolerate' doesn't compound. A look at the philosophy behind everything we ship.",
     content: `
-Every few months a founder asks for "just a logo". We understand the instinct — a logo is tangible, quick, and feels like progress. But a logo is the answer to a question, and if the question has not been asked, the answer is decoration.
+It's the first thing you see on our website: we design brands people love. It sounds like a tagline — and it is — but it's also a filter we run every single deliverable through. Here's what it means in practice.
 
-## Strategy is a set of decisions
+## Tolerated brands leak. Loved brands compound.
 
-Who is this for, and who is it not for? What do we stand for that a competitor would not say? What should someone feel in the first three seconds, and what should they believe after three months? These are business decisions, and they are the brief for every visual choice that follows.
+Think about the brands you personally love. You forgive their mistakes. You tell friends about them unprompted. You don't comparison-shop every purchase. That behaviour — trust, advocacy, retention — is worth more than any single campaign, because it compounds quietly in the background while your competitors pay full price for every customer, every time.
 
-## Design without strategy is expensive to fix
+A tolerated brand has to win every transaction on price or convenience. A loved brand starts every transaction two steps ahead. That gap is the entire economic argument for investing in brand.
 
-You can tell when strategy was skipped: the identity looks like the category, the messaging changes with every campaign, and the team argues about taste because there is no shared intent to argue from. Fixing it means starting again — this time with the questions.
+## Love is earned in the details
 
-## Strategy without design is invisible
+Nobody falls in love with a logo. They fall in love with the hundred small moments around it: the confirmation email that made them smile, the packaging that felt considered, the support reply that solved the problem in one message, the Instagram post that felt like it was written by a person and not a committee.
 
-The reverse is also true. A sharp positioning document that never becomes a system people can use is a deck that gathers dust. Strategy has to be made visible, and that is where design earns its keep.
+That's why we don't stop at identity systems. We follow the brand into the touchpoints — content, campaigns, product moments, even the chatbot (yes, a chatbot can be on-brand; most are just built by people who never read the brand guidelines).
 
-## The order we work in
+## People first — on both sides of the work
 
-Four to six weeks of strategy: audit, interviews, positioning, narrative, architecture. Then identity, with the strategy in the room for every review. It is slower for the first month and faster for every year after.
+Since 2019 we've built the studio around one belief: great work comes from people who feel empowered, not managed. An honest, inclusive culture where designers challenge strategists and everyone challenges the brief. It's more fun like that — and the fun shows up in the work.
+
+The same principle points outward. We put your customers first in every decision, because they're the ones who decide whether your brand gets loved or tolerated. Not us, not you, not an awards jury.
+
+## Craft plus systems — the unglamorous secret
+
+Here's the part agencies don't usually say out loud: love at scale requires systems. Consistency is what turns a good impression into a trusted relationship, and consistency doesn't come from inspiration — it comes from templates, guidelines, automation, and increasingly from AI that keeps quality high when humans are busy.
+
+We pair an eye for craft with intelligent systems on purpose. The craft creates the moments people love; the systems make sure those moments happen every time, on every channel, at any volume.
+
+> Beauty gets attention. Consistency earns trust. You need both, and they're built with completely different tools.
+
+That's the philosophy. If it sounds like how you want your brand built, we should talk.
 `.trim(),
   },
   {
-    slug: "content-engines-that-compound",
-    title: "Content engines that actually compound over time",
-    category: "content",
-    tags: ["Content", "SEO", "Insights"],
-    publishedAt: "2025-12-10",
+    slug: "inside-upsure-what-we-actually-do",
+    title: "Inside Upsure: what we actually do all day",
+    category: "agency",
+    tags: ["Agency", "Services", "Strategy"],
+    publishedAt: "2026-02-12",
     cover: "post-7",
     excerpt:
-      "Most content programmes are treadmills: publish, spike, forget. Here is how we build engines where every piece makes the next one more valuable.",
+      "Strategy decks that gather dust. Rebrands that change nothing. We built Upsure to be the opposite of that. Here's an honest tour of what we do — and what we refuse to do.",
     content: `
-A treadmill content programme looks busy and goes nowhere. Each post gets a small spike, then disappears. The team is exhausted and the graph is flat. An engine is different: pieces link, rank, get reused, and keep bringing people in long after they were published.
+Ask ten agencies what they do and you'll get ten versions of the same sentence: "we build brands that connect." Cool. Connect to what? For how much? And who's actually doing the work — the senior person from the pitch, or three interns and a shared Notion doc?
 
-## Build around questions people keep asking
+We started Upsure because we were tired of that sentence. So here's the honest version of what we do all day, written the way we'd explain it to a friend over chai.
 
-We start with the questions customers ask in sales calls, support tickets and search. Those questions do not expire, and content that answers them properly keeps working for years.
+## Brand strategy: deciding what you are before deciding what you look like
 
-## Design pieces to be reused
+Most branding problems are actually deciding problems. The founder thinks the product is for everyone (it isn't). The team describes the company six different ways (pick one). The website says "innovative solutions" (it means nothing).
 
-One deep guide becomes a newsletter, a short video, five social posts and a sales enablement one-pager. Reuse is not laziness; it is the mechanism by which one week of work compounds into a quarter of distribution.
+Our strategy work is about making those decisions on purpose: who you're for, what you stand against, why anyone should care, and how you say it in a sentence a customer would actually repeat. Audits, positioning, messaging, naming — all of it exists to answer one question: what makes you the obvious choice?
 
-## Connect everything
+## Creative & identity: the part people see
 
-Internal links, topic clusters, consistent naming. Search engines and readers both reward structure. A new post that plugs into an existing cluster ranks faster than a brilliant orphan.
+Once the thinking is sharp, we make it visible. Identity systems, campaign concepts, content series, social — designed to be beautiful, yes, but more importantly designed to ship. A gorgeous brand book that your team can't apply in Canva on a Tuesday afternoon is a very expensive PDF.
 
-## Measure the curve, not the spike
+Everything we build comes with the systems to use it: templates, guidelines, and design ops that keep quality high when we're not in the room.
 
-Launch-day traffic is vanity. The number that matters is how much a piece is still delivering three, six and twelve months later — and whether the total keeps rising as the library grows.
+## Growth marketing: the compounding machine
 
-Content engines are slower to start and impossible to stop. That is the trade we recommend making.
-`.trim(),
-  },
-  {
-    slug: "hidden-cost-of-bad-positioning",
-    title: "The hidden cost of bad positioning",
-    category: "strategy",
-    tags: ["Strategy", "Positioning", "Insights"],
-    publishedAt: "2025-11-05",
-    cover: "post-8",
-    excerpt:
-      "Weak positioning does not show up as a line item. It shows up everywhere else — in ad costs, sales cycles, churn and hiring. How to spot it and what it is costing you.",
-    content: `
-Bad positioning never appears on the P&L. There is no line called "nobody understands what we do". Instead the cost is spread across every other number until it looks like the normal cost of doing business.
+Brand gets people to trust you. Growth gets them to find you. We run the whole engine — performance media, SEO and content, CRO and landing pages, lifecycle and retention — as one connected system, not four disconnected line items with four different reports.
 
-## It shows up in acquisition
+The goal is compounding: every month's work should make next month's work more effective. If your acquisition costs are flat while your volume grows, the machine is working.
 
-When the promise is fuzzy, ads have to work harder. Click-through rates fall, cost per lead rises, and the team compensates with more budget and louder creative. Sharper positioning is the cheapest performance lever most companies never pull.
+## Applied AI: the newest tool in the box (and the most misunderstood)
 
-## It shows up in the sales cycle
+Here's where we're different from most agencies our size: we build with AI, not just about it. Custom chatbots that actually resolve customer queries instead of frustrating them. Workflow automations that take a 6-hour reporting task down to 6 minutes. Content pipelines where AI drafts and humans direct. Audits that show your team exactly where intelligent systems will pay off first — and where they're a waste of money.
 
-Prospects who cannot place you in a category take longer to decide and compare you to the wrong alternatives. Every extra call is positioning work being done manually, one deal at a time.
+And no, this isn't just for marketing. We've automated operations handoffs, internal knowledge bases, lead qualification, and customer support flows. If your team does it repeatedly on a screen, there's a good chance we can make it faster.
 
-## It shows up in churn
+## What we refuse to do
 
-Customers who bought for the wrong reasons leave. If the promise attracted the wrong people, retention will not fix it. Positioning is a filter as much as a magnet.
+No junior relay races — the people in the pitch are the people doing the work. No bloated retainers — we scope tightly and you always know what you're paying for. No 3-month discovery phases — momentum is a feature. And no hype — if AI (or anything else) won't move your numbers, we'll be the first to tell you.
 
-## It shows up in hiring
+> Our only metric of success is the asymmetric growth of our partners. 98% of our clients stay past their first engagement — that number is the whole pitch.
 
-Candidates join a story. When the story is vague, the best people choose a clearer one somewhere else.
-
-## Spotting it
-
-Ask five people in the company what you do and for whom. If you get five answers, you have found the cost. Fixing it is a few weeks of hard decisions — considerably cheaper than another year of paying for it everywhere else.
+Curious what this looks like for your brand? Tell us where you're stuck — the contact form takes two minutes, and we reply within a business day.
 `.trim(),
   },
 ];
 
 /* ----------------------------------------------------------------------------
-   Case studies (client names from the logo wall; descriptions and tags per
-   section 3.4 of the copy update)
+   Case studies (client names from the logo wall; summaries, segment and services per
+   section 3.4 of the copy update; per-client copy written without invented figures or
+   quotes, to be confirmed by Upsure Media)
    ---------------------------------------------------------------------------- */
 export const caseStudies = [
   {
@@ -1139,10 +1207,32 @@ export const caseStudies = [
       "One brand voice from paid ads to the store window, for India's best-known eyewear brand.",
     cover: "work-1",
     featured: true,
-    stats: [
-      ["3.2×", "Return on ad spend"],
-      ["48%", "Lower cost per order"],
-      ["1.9M", "Campaign reach"],
+    intro:
+      "Lenskart sells eyewear online and in stores across India, so the brand has to work as hard in a paid ad as it does on a shop window. Our work as Upsure Media, the brand and growth agency in Ahmedabad, spanned branding, design and performance marketing.",
+    objective:
+      "Keep the brand [[instantly recognisable]] at every touchpoint, while the performance work [[keeps pace with a fast-moving retailer]].",
+    sections: [
+      {
+        eyebrow: "Brand",
+        heading: "One voice, online and in store",
+        body: "We started from how people actually shop for glasses: browsing frames online, trying them on in store, coming back for lenses. Messaging was organised around those moments, so every channel knew its job.",
+      },
+      {
+        eyebrow: "Design",
+        heading: "A system built to ship",
+        body: "Ads, social and in-store graphics share one set of design rules, so new collections and offers can go live quickly without drifting off-brand.",
+      },
+      {
+        eyebrow: "Performance",
+        heading: "Creative and media in the same room",
+        body: "Paid creative is planned alongside the media plan, not after it. New angles are tested in small batches, and what works feeds straight into the next round of design.",
+      },
+    ],
+    timeline: [
+      { when: "Discover", what: "Audit of brand, channels and creative" },
+      { when: "Define", what: "Messaging framework and design rules" },
+      { when: "Build", what: "Templates and campaign creative" },
+      { when: "Grow", what: "Ongoing testing and iteration" },
     ],
   },
   {
@@ -1155,10 +1245,32 @@ export const caseStudies = [
     summary: "Launch-ready social content for an automotive brand where every launch is an event.",
     cover: "work-2",
     featured: true,
-    stats: [
-      ["120%", "Engagement uplift"],
-      ["38k", "New followers in 90 days"],
-      ["6", "Launch films produced"],
+    intro:
+      "Buying a car is a considered decision, and much of that consideration now happens on a phone. Our work with Hyundai, from our studio in Ahmedabad, focused on social media content and the brand design system behind it.",
+    objective:
+      "Make every model launch feel like [[an event worth following]], and keep the feed [[useful between launches]], not just loud during them.",
+    sections: [
+      {
+        eyebrow: "Social",
+        heading: "Planned around the launch calendar",
+        body: "Content is planned in phases around each model launch — build-up, launch day and follow-through — so every launch tells a story rather than living in a single post.",
+      },
+      {
+        eyebrow: "Brand",
+        heading: "A kit that respects the brand",
+        body: "A social design kit keeps typography, colour and photography consistent across every format, from stories to carousels, so the team can move fast without guesswork.",
+      },
+      {
+        eyebrow: "Community",
+        heading: "Reasons to stay between launches",
+        body: "Feature explainers, ownership tips and community moments keep the audience engaged in the quieter months, and give people a reason to come back.",
+      },
+    ],
+    timeline: [
+      { when: "Discover", what: "Channel and content audit" },
+      { when: "Define", what: "Content pillars and launch playbook" },
+      { when: "Build", what: "Social design kit and templates" },
+      { when: "Grow", what: "Always-on content and launch campaigns" },
     ],
   },
   {
@@ -1172,10 +1284,32 @@ export const caseStudies = [
       "Social, design and AI-assisted production for a consumer-tech brand that never stops launching.",
     cover: "work-3",
     featured: true,
-    stats: [
-      ["10×", "Creative variants per week"],
-      ["-60%", "Time to publish"],
-      ["4.7", "Avg. content rating"],
+    intro:
+      "In consumer electronics the product cycle sets the pace, and content has to keep up across every format and platform. Our work with Samsung, run from Ahmedabad, combined social media with AI-assisted content production.",
+    objective:
+      "Produce [[more creative, faster]], without letting quality or consistency slip — with [[AI where it helps and people where it matters]].",
+    sections: [
+      {
+        eyebrow: "Social",
+        heading: "Built for each platform",
+        body: "Rather than resizing one asset everywhere, content is shaped for how each platform is used: quick hooks for short video, detail for carousels, clarity for search.",
+      },
+      {
+        eyebrow: "Design",
+        heading: "One look across every format",
+        body: "Clear rules for layout, type and product imagery keep every asset recognisably on-brand, whether it is a launch banner or a fifteen-second story.",
+      },
+      {
+        eyebrow: "AI",
+        heading: "AI-assisted, human-approved",
+        body: "AI tools take on the repetitive parts of production, such as versioning, resizing and first drafts. Designers and writers make the decisions and sign off every piece.",
+      },
+    ],
+    timeline: [
+      { when: "Discover", what: "Production and workflow audit" },
+      { when: "Define", what: "Design rules and platform playbooks" },
+      { when: "Build", what: "AI-assisted production workflow" },
+      { when: "Grow", what: "Ongoing content across platforms" },
     ],
   },
   {
@@ -1188,10 +1322,32 @@ export const caseStudies = [
     summary: "Performance marketing and creative for a sports retailer with thousands of products.",
     cover: "work-4",
     featured: true,
-    stats: [
-      ["210%", "Organic traffic growth"],
-      ["2.4×", "Landing-page conversion"],
-      ["#1", "For 14 category keywords"],
+    intro:
+      "Decathlon sells gear for dozens of sports, so the challenge is matching the right product to the right person at the right moment. Our work as Upsure Media, from Ahmedabad, covered performance marketing and e-commerce.",
+    objective:
+      "Help people [[find the right gear faster]], and turn more of that interest into [[orders and store visits]].",
+    sections: [
+      {
+        eyebrow: "Performance",
+        heading: "Campaigns organised by sport and season",
+        body: "Campaigns follow how people actually shop for sport: by activity and by season. Budgets move towards whichever sports and categories are in demand, instead of being split evenly.",
+      },
+      {
+        eyebrow: "E-commerce",
+        heading: "Pages and listings built to convert",
+        body: "Product pages, landing pages and marketplace listings follow one clear structure, so a new sport, season or offer can go live quickly with one obvious next step.",
+      },
+      {
+        eyebrow: "Testing",
+        heading: "Small tests, steady learning",
+        body: "Creative, headlines and offers are tested continuously, and the winners become the new defaults across campaigns and pages.",
+      },
+    ],
+    timeline: [
+      { when: "Discover", what: "Account, catalogue and conversion audit" },
+      { when: "Define", what: "Sport and season campaign plan" },
+      { when: "Build", what: "Campaign creative and page templates" },
+      { when: "Grow", what: "Continuous testing and iteration" },
     ],
   },
 ].map((c, i) => ({
@@ -1199,31 +1355,6 @@ export const caseStudies = [
   segment: c.segment as "D2C" | "B2B",
   title: c.client,
   publishedAt: new Date(2026, 6 - i, 10).toISOString(),
-  intro: `${c.client} came to Upsure Media, the brand and growth agency in Ahmedabad, at an inflection point: a strong product, an audience that had outgrown the brand, and growth targets the existing marketing engine could not reach. We were asked to rethink how the brand showed up everywhere, and to build the machine underneath it.`,
-  objective: `The brief was clear: [[modernise the brand]], make every channel pull in the same direction, and build a [[growth system that compounds]] rather than a series of one-off campaigns.`,
-  sections: [
-    {
-      eyebrow: "Strategy",
-      heading: "Starting with the hard questions",
-      body: "We began with stakeholder interviews, a brand audit and audience research across the category, then sharpened positioning and messaging so every later decision had a reference point. Two audiences were dropped on purpose; the remaining one got everything.",
-    },
-    {
-      eyebrow: "Craft",
-      heading: "A system built to ship",
-      body: "Identity, content templates and landing pages were designed as one system, so the in-house team could produce at pace without drifting off-brand. Every asset had a rule and every rule had an example.",
-    },
-    {
-      eyebrow: "Growth",
-      heading: "Measured every week, improved every month",
-      body: "Paid, organic and lifecycle ran from one dashboard with shared targets. Winners were scaled, losers were cut within the week, and the learning compounded into the next quarter's plan.",
-    },
-  ],
-  timeline: [
-    { when: "Week 0", what: "Kick-off, audit and research" },
-    { when: "Week 6", what: "Positioning and identity signed off" },
-    { when: "Week 12", what: "Site and campaigns live" },
-    { when: "+90 days", what: "Headline results above" },
-  ],
 }));
 
 /* ----------------------------------------------------------------------------
@@ -1368,7 +1499,7 @@ export const forms = {
 };
 
 /* ----------------------------------------------------------------------------
-   Globals. Sitewide rules: brand "Upsure Media", email collab@upsuremedia.com,
+   Globals. Sitewide rules: brand "Upsure Media", email upsureai@gmail.com,
    location "Ahmedabad, Gujarat, India" only (no street address, phone or
    hours), Instagram and LinkedIn only, no founder names.
    ---------------------------------------------------------------------------- */
@@ -1384,7 +1515,7 @@ export const INSTAGRAM_URL = "https://www.instagram.com/upsure_media/";
 export const siteSettings = {
   name: "Upsure Media",
   tagline: "We grow brands people love",
-  email: "collab@upsuremedia.com",
+  email: "upsureai@gmail.com",
   city: "Ahmedabad, Gujarat, India",
   socials: [
     { platform: "Instagram", url: INSTAGRAM_URL },
@@ -1395,7 +1526,7 @@ export const siteSettings = {
     { value: 250, suffix: "+", label: "Projects delivered across brand & growth" },
     { value: 98, suffix: "%", label: "Client retention, year over year" },
   ],
-  badges: [{ text: "Est. 2019" }, { text: "Based in Ahmedabad" }],
+  badges: [{ text: "Based in Ahmedabad" }],
   defaultTitle: "Upsure Media – D2C & B2B Brand and Growth Agency in Ahmedabad, India",
   defaultDescription:
     "Full-service agency for D2C and B2B brands: branding, social, influencer, performance, e-commerce, quick commerce, PR, SEO/AEO/GEO and AI.",
@@ -1452,7 +1583,6 @@ export const footer = {
         { label: "About", href: "/about" },
         { label: "Work", href: "/work" },
         { label: "Culture", href: "/culture" },
-        { label: "Testimonials", href: "/testimonials" },
         { label: "Insights", href: "/blog" },
         { label: "Contact", href: "/contact" },
       ],
@@ -1486,7 +1616,7 @@ export const ctaBand = {
   emoji: "👋",
   heading: "Ready to grow your brand?",
   subheading: "Book a free 30-minute strategy call.",
-  note: "We reply within one business day. Or write to collab@upsuremedia.com",
+  note: "We reply within one business day. Or write to upsureai@gmail.com",
   link: { label: "Book a free strategy call", href: "/start-a-project", newTab: false },
 };
 
@@ -1881,7 +2011,7 @@ export const pages = (ctx: Ctx) => [
       {
         blockType: "cta",
         heading: "Get a free D2C growth audit",
-        text: "We reply within one business day. Or write to collab@upsuremedia.com",
+        text: "We reply within one business day. Or write to upsureai@gmail.com",
         link: { label: "Get a free D2C growth audit", href: "/start-a-project", newTab: false },
         tone: "teal",
       },
@@ -2008,7 +2138,7 @@ export const pages = (ctx: Ctx) => [
       {
         blockType: "cta",
         heading: "Book a free B2B growth call",
-        text: "We reply within one business day. Or write to collab@upsuremedia.com",
+        text: "We reply within one business day. Or write to upsureai@gmail.com",
         link: { label: "Book a free B2B growth call", href: "/start-a-project", newTab: false },
         tone: "teal",
       },
@@ -2057,7 +2187,7 @@ export const pages = (ctx: Ctx) => [
         ).replace("e-commerce and quick commerce growth", "e-commerce, quick commerce"),
         stickers: [
           { text: "Proudly from Ahmedabad", tone: "sun" },
-          { text: "Est. 2019", tone: "teal" },
+          // Add { text: "Est. <year>", tone: "teal" } once the founding year is confirmed.
         ],
         images: [{ image: ctx.media["about-1"] }],
         showContact: true,
@@ -2130,8 +2260,8 @@ export const pages = (ctx: Ctx) => [
       { blockType: "logoTicker", heading: "Trusted by India's leading brands", tone: "paper" },
       {
         blockType: "workGrid",
-        eyebrow: "Results",
-        heading: "We let our results do the talking",
+        eyebrow: "Our work",
+        heading: "Some of the brands we work with",
         limit: 4,
         layout: "grid",
         cta: { label: "View all work", href: "/work", newTab: false },
@@ -2147,11 +2277,6 @@ export const pages = (ctx: Ctx) => [
             link: { label: "Our culture", href: "/culture", newTab: false },
           },
           {
-            heading: "Testimonials",
-            body: "What D2C and B2B clients say about working with Upsure Media.",
-            link: { label: "Read testimonials", href: "/testimonials", newTab: false },
-          },
-          {
             heading: "Work",
             body: "D2C and B2B case studies across brand, social, performance and AI.",
             link: { label: "View our work", href: "/work", newTab: false },
@@ -2164,6 +2289,10 @@ export const pages = (ctx: Ctx) => [
   },
   {
     slug: "culture",
+    meta: {
+      description:
+        "How we work at Upsure Media: a tight-knit team of strategists, designers and growth experts, obsessed with doing excellent work.",
+    },
     title: "Culture",
     layout: [
       {
@@ -2225,7 +2354,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always curious to meet sharp strategists, designers, and growth marketers. Even when nothing's posted, introduce yourself by email.",
             link: {
               label: "Introduce yourself",
-              href: "mailto:collab@upsuremedia.com?subject=Joining%20Upsure%20Media",
+              href: "mailto:upsureai@gmail.com?subject=Joining%20Upsure%20Media",
               newTab: false,
             },
           },
@@ -2234,52 +2363,12 @@ export const pages = (ctx: Ctx) => [
             body: "We're always expanding our network of collaborators for projects that need more than one team. If you share our values and way of working, we'd love to hear from you.",
             link: {
               label: "Become a collaborator",
-              href: "mailto:collab@upsuremedia.com?subject=Collaboration",
+              href: "mailto:upsureai@gmail.com?subject=Collaboration",
               newTab: false,
             },
           },
         ],
         tone: "paper-2",
-      },
-    ],
-  },
-  {
-    slug: "testimonials",
-    title: "Testimonials",
-    meta: {
-      title: "Client Testimonials | Upsure Media",
-      description:
-        "What D2C and B2B clients say about working with Upsure Media on branding, marketing and AI.",
-    },
-    layout: [
-      {
-        blockType: "hero",
-        variant: "editorial",
-        eyebrow: "Testimonials",
-        heading: "What our [[clients]] say",
-        lead: "Founders and marketing heads from D2C and B2B brands on working with Upsure Media.",
-        stickers: [
-          { text: "98% stay", tone: "teal" },
-          { text: "Senior team", tone: "sun" },
-        ],
-        showContact: true,
-      },
-      {
-        blockType: "testimonialCarousel",
-        eyebrow: "By service",
-        heading: "What each service delivers",
-        layout: "grid",
-        tone: "paper",
-      },
-      {
-        blockType: "stats",
-        eyebrow: "Trusted by",
-        items: [
-          { value: 100, suffix: "+", label: "brands served" },
-          { value: 250, suffix: "+", label: "Projects delivered" },
-          { value: 98, suffix: "%", label: "Client retention" },
-        ],
-        tone: "white",
       },
     ],
   },
@@ -2308,7 +2397,7 @@ export const pages = (ctx: Ctx) => [
     meta: {
       title: "Contact Upsure Media | Marketing Agency in Ahmedabad",
       description:
-        "Talk to Upsure Media about branding, marketing, quick commerce or AI. Email collab@upsuremedia.com. Reply within one business day.",
+        "Talk to Upsure Media about branding, marketing, quick commerce or AI. Email upsureai@gmail.com. Reply within one business day.",
     },
     layout: [
       {
@@ -2325,7 +2414,7 @@ export const pages = (ctx: Ctx) => [
         eyebrow: "Say hello",
         heading: "Tell us about your brand",
         intro:
-          "Fill in the form and we'll get back to you within one business day. Prefer email? Write to collab@upsuremedia.com.",
+          "Fill in the form and we'll get back to you within one business day. Prefer email? Write to upsureai@gmail.com.",
         form: ctx.forms.contact,
         layout: "split",
         tone: "paper",
@@ -2367,7 +2456,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always curious to meet sharp strategists, designers, and growth marketers. Even when nothing's posted, introduce yourself by email.",
             link: {
               label: "Introduce yourself",
-              href: "mailto:collab@upsuremedia.com?subject=Joining%20Upsure%20Media",
+              href: "mailto:upsureai@gmail.com?subject=Joining%20Upsure%20Media",
               newTab: false,
             },
           },
@@ -2376,7 +2465,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always expanding our network of collaborators for projects that need more than one team. If you share our values and way of working, we'd love to hear from you.",
             link: {
               label: "Become a collaborator",
-              href: "mailto:collab@upsuremedia.com?subject=Collaboration",
+              href: "mailto:upsureai@gmail.com?subject=Collaboration",
               newTab: false,
             },
           },
@@ -2407,6 +2496,7 @@ export const pages = (ctx: Ctx) => [
 
   {
     slug: "terms",
+    meta: { description: "The terms that apply when you use the Upsure Media website." },
     title: "Terms & Conditions",
     showCtaBand: false,
     layout: [
@@ -2447,7 +2537,7 @@ To the fullest extent permitted by law, Upsure Media is not liable for any indir
 
 ## 7. Contact
 
-Questions about these terms? Email us at collab@upsuremedia.com and we'll get back to you within one business day.
+Questions about these terms? Email us at upsureai@gmail.com and we'll get back to you within one business day.
 `.trim(),
         tone: "paper",
       },
@@ -2455,6 +2545,7 @@ Questions about these terms? Email us at collab@upsuremedia.com and we'll get ba
   },
   {
     slug: "privacy",
+    meta: { description: "How Upsure Media handles the details you share through this website." },
     title: "Privacy Policy",
     showCtaBand: false,
     layout: [
@@ -2481,7 +2572,7 @@ We use your contact details solely to respond to your enquiry and, where a conve
 
 ## 3. Form processing
 
-Contact form submissions are stored securely in our website's content system and emailed to our inbox. Your submission is used only for delivery of your message to us.
+Form submissions are checked for spam on our server, then emailed to our inbox through Web3Forms, a form-delivery service. They are not stored on this website, and are used only to deliver your message to us.
 
 ## 4. Analytics and cookies
 
@@ -2497,7 +2588,7 @@ You can request access to, correction of, or deletion of the personal informatio
 
 ## 7. Contact
 
-For any privacy question or request, email collab@upsuremedia.com. We reply within one business day.
+For any privacy question or request, email upsureai@gmail.com. We reply within one business day.
 `.trim(),
         tone: "paper",
       },

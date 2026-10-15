@@ -25,6 +25,13 @@ export const metadata: Metadata = {
   },
   description:
     "Full-service agency for D2C and B2B brands: branding, social, influencer, performance, e-commerce, quick commerce, PR, SEO/AEO/GEO and AI.",
+  // Fallback link preview for routes without their own (search, 404). Content
+  // pages override this with their own card in lib/seo.ts.
+  openGraph: {
+    siteName: "Upsure Media",
+    locale: "en_IN",
+    images: [{ url: "/og/index.png", width: 1200, height: 630, type: "image/png" }],
+  },
 };
 
 export const viewport: Viewport = {

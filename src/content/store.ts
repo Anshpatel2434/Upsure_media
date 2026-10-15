@@ -54,8 +54,14 @@ const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-
 
 /* Forms ---------------------------------------------------------------------- */
 const forms = Object.fromEntries(
-  Object.entries(data.forms).map(([key, form]) => [key, { id: nextId(), ...form } as Form]),
+  Object.entries(data.forms).map(([key, form]) => [key, { id: nextId(), key, ...form } as Form]),
 ) as Record<keyof typeof data.forms, Form>;
+
+const logoSize = (slug: string) =>
+  (logoManifest as Record<string, { width: number; height: number }>)[slug] ?? {
+    width: 320,
+    height: 160,
+  };
 
 /* Clients, categories, author, team --------------------------------------------- */
 const clients: Client[] = data.clients.map((name, i) => {
@@ -68,11 +74,11 @@ const clients: Client[] = data.clients.map((name, i) => {
     logo: {
       id: nextId(),
       alt: `${name} logo`,
-      url: `/images/logos/${slug}.svg`,
-      filename: `${slug}.svg`,
-      mimeType: "image/svg+xml",
-      width: (logoManifest as Record<string, { width: number }>)[slug]?.width ?? 240,
-      height: 80,
+      url: `/images/clients/${slug}.webp`,
+      filename: `${slug}.webp`,
+      mimeType: "image/webp",
+      width: logoSize(slug).width,
+      height: logoSize(slug).height,
     },
   };
 });
@@ -130,18 +136,14 @@ const testimonials: Testimonial[] = data.testimonials.map(({ key: _key, ...rest 
 
 /* Case studies --------------------------------------------------------------------- */
 const caseStudies: CaseStudy[] = data.caseStudies.map(
-  ({ services: slugs, cover, stats, ...rest }) =>
+  // No stats, before/after or testimonial until Upsure supplies real ones for
+  // each client; the case-study page hides those sections when they are empty.
+  ({ services: slugs, cover, ...rest }) =>
     ({
       id: nextId(),
       ...rest,
       services: slugs.map((slug) => serviceBySlug[slug]).filter(Boolean),
       cover: media[cover],
-      stats: stats.map(([value, label]) => ({ value, label })),
-      beforeAfter: {
-        before: media.before,
-        after: media.after,
-        caption: "Homepage, before and after the relaunch",
-      },
     }) as CaseStudy,
 );
 

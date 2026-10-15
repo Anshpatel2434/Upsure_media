@@ -41,9 +41,18 @@ Save and the dev server updates instantly; `npm run build` bakes everything into
 ## Forms
 
 Contact, consultation, call-back, "Start a project" and newsletter forms post to server
-actions in `src/features`. Submissions are validated and emailed to `EMAIL_TO` through
-Resend when `RESEND_API_KEY` is set; without it they are printed to the server console.
-Nothing is stored.
+actions in `src/features`, which validate and spam-check each submission. Delivery is by
+Web3Forms (`NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY`, posted from the browser because its free
+plan requires that) or Resend (`RESEND_API_KEY`, from the server). Without either, dev
+prints submissions to the server console. Nothing is stored.
+
+Every form is protected by a honeypot, a per-IP rate limit and, when both Turnstile keys are
+set, Cloudflare Turnstile. Set `TRUSTED_IP_HEADER` to your host's real-IP header, and
+`UPSTASH_REDIS_REST_URL` / `_TOKEN` to share the rate limit across server instances (see
+`.env.example`).
+
+Demo and unconfirmed content still to replace before launch is listed in
+[`docs/08-content-to-replace.md`](docs/08-content-to-replace.md).
 
 ## Scripts
 

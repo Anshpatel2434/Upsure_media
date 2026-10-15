@@ -1,6 +1,6 @@
 # ADR 0001 — Stack and scope decisions
 
-Date: 2026-09-29 · Status: Accepted (from client answers to plan §9)
+Date: 2026-09-29 · Status: Accepted (from client answers to plan §9) · **Partly superseded by [ADR 0002](0002-static-content-no-cms.md)** (rows 1, 5, 6, 8, 10: no CMS, static content, emailed forms, npm)
 
 | # | Question | Decision |
 |---|----------|----------|
