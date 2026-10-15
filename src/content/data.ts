@@ -10,7 +10,7 @@
 import type { Form, Media, Service } from "./types";
 
 /** Public contact address, used in copy, mailto links and as the default form inbox. */
-export const CONTACT_EMAIL = "upsureai@gmail.com";
+export const CONTACT_EMAIL = "collab@upsuremedia.com";
 
 /** Resolved documents handed to `pages()` so layouts can embed them. */
 export type Ctx = {
@@ -85,7 +85,6 @@ export const clients = [
   "Gheeyonnaise",
   "Hyundai",
   "Jio BP",
-  "Khetibank",
   "Lenskart",
   "PW Vidyapeeth",
   "R & B",
@@ -798,7 +797,7 @@ export const faqs = [
     key: "get-started",
     question: "How do we get started?",
     answer:
-      "Book a free 30-minute strategy call, or email upsureai@gmail.com. We reply within one business day.",
+      "Book a free 30-minute strategy call, or email collab@upsuremedia.com. We reply within one business day.",
     scope: ["home", "services", "contact"],
     order: 8,
   },
@@ -1499,7 +1498,7 @@ export const forms = {
 };
 
 /* ----------------------------------------------------------------------------
-   Globals. Sitewide rules: brand "Upsure Media", email upsureai@gmail.com,
+   Globals. Sitewide rules: brand "Upsure Media", email collab@upsuremedia.com,
    location "Ahmedabad, Gujarat, India" only (no street address, phone or
    hours), Instagram and LinkedIn only, no founder names.
    ---------------------------------------------------------------------------- */
@@ -1515,7 +1514,7 @@ export const INSTAGRAM_URL = "https://www.instagram.com/upsure_media/";
 export const siteSettings = {
   name: "Upsure Media",
   tagline: "We grow brands people love",
-  email: "upsureai@gmail.com",
+  email: CONTACT_EMAIL,
   city: "Ahmedabad, Gujarat, India",
   socials: [
     { platform: "Instagram", url: INSTAGRAM_URL },
@@ -1616,7 +1615,7 @@ export const ctaBand = {
   emoji: "👋",
   heading: "Ready to grow your brand?",
   subheading: "Book a free 30-minute strategy call.",
-  note: "We reply within one business day. Or write to upsureai@gmail.com",
+  note: "We reply within one business day. Or write to collab@upsuremedia.com",
   link: { label: "Book a free strategy call", href: "/start-a-project", newTab: false },
 };
 
@@ -2011,7 +2010,7 @@ export const pages = (ctx: Ctx) => [
       {
         blockType: "cta",
         heading: "Get a free D2C growth audit",
-        text: "We reply within one business day. Or write to upsureai@gmail.com",
+        text: "We reply within one business day. Or write to collab@upsuremedia.com",
         link: { label: "Get a free D2C growth audit", href: "/start-a-project", newTab: false },
         tone: "teal",
       },
@@ -2138,7 +2137,7 @@ export const pages = (ctx: Ctx) => [
       {
         blockType: "cta",
         heading: "Book a free B2B growth call",
-        text: "We reply within one business day. Or write to upsureai@gmail.com",
+        text: "We reply within one business day. Or write to collab@upsuremedia.com",
         link: { label: "Book a free B2B growth call", href: "/start-a-project", newTab: false },
         tone: "teal",
       },
@@ -2354,7 +2353,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always curious to meet sharp strategists, designers, and growth marketers. Even when nothing's posted, introduce yourself by email.",
             link: {
               label: "Introduce yourself",
-              href: "mailto:upsureai@gmail.com?subject=Joining%20Upsure%20Media",
+              href: "mailto:collab@upsuremedia.com?subject=Joining%20Upsure%20Media",
               newTab: false,
             },
           },
@@ -2363,7 +2362,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always expanding our network of collaborators for projects that need more than one team. If you share our values and way of working, we'd love to hear from you.",
             link: {
               label: "Become a collaborator",
-              href: "mailto:upsureai@gmail.com?subject=Collaboration",
+              href: "mailto:collab@upsuremedia.com?subject=Collaboration",
               newTab: false,
             },
           },
@@ -2397,7 +2396,7 @@ export const pages = (ctx: Ctx) => [
     meta: {
       title: "Contact Upsure Media | Marketing Agency in Ahmedabad",
       description:
-        "Talk to Upsure Media about branding, marketing, quick commerce or AI. Email upsureai@gmail.com. Reply within one business day.",
+        "Talk to Upsure Media about branding, marketing, quick commerce or AI. Email collab@upsuremedia.com. Reply within one business day.",
     },
     layout: [
       {
@@ -2414,7 +2413,7 @@ export const pages = (ctx: Ctx) => [
         eyebrow: "Say hello",
         heading: "Tell us about your brand",
         intro:
-          "Fill in the form and we'll get back to you within one business day. Prefer email? Write to upsureai@gmail.com.",
+          "Fill in the form and we'll get back to you within one business day. Prefer email? Write to collab@upsuremedia.com.",
         form: ctx.forms.contact,
         layout: "split",
         tone: "paper",
@@ -2456,7 +2455,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always curious to meet sharp strategists, designers, and growth marketers. Even when nothing's posted, introduce yourself by email.",
             link: {
               label: "Introduce yourself",
-              href: "mailto:upsureai@gmail.com?subject=Joining%20Upsure%20Media",
+              href: "mailto:collab@upsuremedia.com?subject=Joining%20Upsure%20Media",
               newTab: false,
             },
           },
@@ -2465,7 +2464,7 @@ export const pages = (ctx: Ctx) => [
             body: "We're always expanding our network of collaborators for projects that need more than one team. If you share our values and way of working, we'd love to hear from you.",
             link: {
               label: "Become a collaborator",
-              href: "mailto:upsureai@gmail.com?subject=Collaboration",
+              href: "mailto:collab@upsuremedia.com?subject=Collaboration",
               newTab: false,
             },
           },
@@ -2537,7 +2536,7 @@ To the fullest extent permitted by law, Upsure Media is not liable for any indir
 
 ## 7. Contact
 
-Questions about these terms? Email us at upsureai@gmail.com and we'll get back to you within one business day.
+Questions about these terms? Email us at collab@upsuremedia.com and we'll get back to you within one business day.
 `.trim(),
         tone: "paper",
       },
@@ -2588,7 +2587,7 @@ You can request access to, correction of, or deletion of the personal informatio
 
 ## 7. Contact
 
-For any privacy question or request, email upsureai@gmail.com. We reply within one business day.
+For any privacy question or request, email collab@upsuremedia.com. We reply within one business day.
 `.trim(),
         tone: "paper",
       },

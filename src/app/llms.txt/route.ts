@@ -1,4 +1,4 @@
-import { ONE_LINER, services } from "@/content/data";
+import { CONTACT_EMAIL, ONE_LINER, services } from "@/content/data";
 import { getSiteUrl } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -17,7 +17,7 @@ export function GET() {
     "",
     "- Location: Ahmedabad, Gujarat, India",
     "- Clients: 100+ brands, from D2C startups to companies such as Lenskart, Hyundai, Samsung and Decathlon",
-    "- Contact: upsureai@gmail.com",
+    `- Contact: ${CONTACT_EMAIL}`,
     "",
     "## Services",
     "",
