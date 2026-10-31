@@ -71,7 +71,10 @@
   --duration-fast: 200ms;
   --duration-base: 350ms;
   --duration-slow: 600ms;
-  --duration-reveal: 1000ms;
+  /* Reveal-on-scroll. Kept short on purpose: anything slower reads as the page
+     still loading, and an element at opacity 0 does not count towards LCP. */
+  --duration-reveal: 450ms;
+  --duration-reveal-clip: 600ms;
 
   /* Shadows — soft elevation instead of hard borders */
   --shadow-card: 0 1px 2px rgb(11 13 16 / 0.03), 0 12px 32px -16px rgb(11 13 16 / 0.16);
@@ -277,7 +280,7 @@
   transition:
     opacity var(--duration-reveal) var(--ease-smooth),
     transform var(--duration-reveal) var(--ease-smooth);
-  transition-delay: calc(var(--i, 0) * var(--rv-step, 90ms) + var(--rv-delay, 0ms));
+  transition-delay: calc(var(--i, 0) * var(--rv-step, 45ms) + var(--rv-delay, 0ms));
   will-change: opacity, transform;
 }
 /* "left" slides in from the left, "right" from the right. */
@@ -297,9 +300,9 @@
   clip-path: inset(0 100% 0 0 round var(--chip-radius, 22px));
   transform: scale(1.04);
   transition:
-    clip-path 1.2s var(--ease-expo),
-    transform 1.2s var(--ease-expo);
-  transition-delay: calc(var(--i, 0) * var(--rv-step, 90ms) + var(--rv-delay, 0ms));
+    clip-path var(--duration-reveal-clip) var(--ease-expo),
+    transform var(--duration-reveal-clip) var(--ease-expo);
+  transition-delay: calc(var(--i, 0) * var(--rv-step, 45ms) + var(--rv-delay, 0ms));
 }
 [data-visible] [data-rv="chip"],
 [data-rv="chip"][data-visible] {
@@ -331,9 +334,9 @@
   clip-path: inset(100% 0 0 0 round var(--radius-lg));
   transform: scale(1.04);
   transition:
-    clip-path 1.2s var(--ease-expo),
-    transform 1.4s var(--ease-expo);
-  transition-delay: calc(var(--i, 0) * 90ms + var(--rv-delay, 0ms));
+    clip-path var(--duration-reveal-clip) var(--ease-expo),
+    transform calc(var(--duration-reveal-clip) + 100ms) var(--ease-expo);
+  transition-delay: calc(var(--i, 0) * 45ms + var(--rv-delay, 0ms));
 }
 [data-visible] [data-rv="image"],
 [data-rv="image"][data-visible] {

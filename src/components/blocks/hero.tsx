@@ -52,7 +52,7 @@ function Chip({
       <span
         data-rv="chip"
         className={cn("relative block overflow-hidden rounded-[inherit] bg-paper-2", aspect)}
-        style={{ "--rv-delay": `${350 + order * 250}ms`, "--i": 0 } as CSSProperties}
+        style={{ "--rv-delay": `${120 + order * 110}ms`, "--i": 0 } as CSSProperties}
       >
         <Image
           src={img.src}
@@ -185,7 +185,7 @@ function HomeHero({ block }: { block: Hero }) {
       className="overflow-hidden pt-6 pb-12 md:pt-8 md:pb-10"
     >
       <Container>
-        <Reveal self={false} style={{ "--rv-step": "250ms" } as CSSProperties}>
+        <Reveal self={false} style={{ "--rv-step": "110ms" } as CSSProperties}>
           {/* The page's H1 is the eyebrow; the big headline below is display type. */}
           {block.eyebrow && (
             <RevealItem index={0} direction="fade">
@@ -200,11 +200,12 @@ function HomeHero({ block }: { block: Hero }) {
               <span aria-hidden className="relative z-10">
                 {renderEmphasis(l1, { variant: "color" })}
               </span>
+              {/* No `priority`: this chip is display:none below md, and an eager
+                  fetch would pull it down on phones where it never shows. */}
               {imgs[0] && (
                 <Chip
                   media={imgs[0]}
                   order={1}
-                  priority
                   className="hidden md:absolute md:bottom-[0.1em] md:left-[104%] md:block"
                 />
               )}
@@ -322,7 +323,7 @@ function DefaultHero({ block, tone }: { block: Hero; tone: "paper" | "teal" | "t
       className="overflow-hidden pt-6 pb-14 md:pt-10 md:pb-16"
     >
       <Container>
-        <Reveal self={false} style={{ "--rv-step": "250ms" } as CSSProperties}>
+        <Reveal self={false} style={{ "--rv-step": "110ms" } as CSSProperties}>
           {block.eyebrow && (
             <RevealItem index={0} direction="fade">
               <ArrowPill tone={onDark ? "dark" : "light"}>{block.eyebrow}</ArrowPill>
