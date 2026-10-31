@@ -48,7 +48,9 @@ export function buildMetadata(
     title: absolute ? { absolute: title } : title,
     description,
     alternates: { canonical: url },
-    robots: meta.noIndex ? { index: false, follow: false } : undefined,
+    // Keep `follow` on: a noindex page here is a thin listing that still links
+    // on to the pages that should rank.
+    robots: meta.noIndex ? { index: false, follow: true } : undefined,
     openGraph: {
       title: shareTitle,
       description,

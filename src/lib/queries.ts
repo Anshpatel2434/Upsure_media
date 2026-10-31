@@ -98,6 +98,10 @@ export async function getCategories() {
   return [...store.categories].sort((a, b) => a.title.localeCompare(b.title));
 }
 
+export async function getCategory(slug: string) {
+  return store.categories.find((c) => c.slug === slug) ?? null;
+}
+
 export async function getTestimonials(
   opts: { ids?: Ref<Testimonial>[] | null; featuredOnly?: boolean; service?: number } = {},
 ) {
@@ -127,19 +131,32 @@ export async function getTeam(refs?: Ref<TeamMember>[] | null) {
   return pick(store.team, refs, sorted);
 }
 
-/** Every public path, for the sitemap and static params. */
+/**
+ * Every public path, for the sitemap and static params.
+ *
+ * `index: false` marks a page that must still build and resolve — the work
+ * filters are linked from the listing and `dynamicParams` is off — but that
+ * has nothing behind it yet, so it stays out of the sitemap rather than being
+ * offered to search engines as a thin duplicate of /work.
+ */
 export async function getAllRoutes() {
   const stamp = new Date().toISOString();
+  const hasWork = (match: (c: (typeof store.caseStudies)[number]) => boolean) =>
+    store.caseStudies.some(match);
   return [
     ...store.pages.map((p) => ({ path: p.slug === "home" ? "/" : `/${p.slug}`, updatedAt: stamp })),
     ...store.services.map((s) => ({ path: `/services/${s.slug}`, updatedAt: stamp })),
     ...store.caseStudies.map((c) => ({ path: `/work/${c.slug}`, updatedAt: stamp })),
-    ...store.services.map((s) => ({ path: `/work/service/${s.slug}`, updatedAt: stamp })),
-    { path: "/work/industry/d2c", updatedAt: stamp },
-    { path: "/work/industry/b2b", updatedAt: stamp },
+    ...store.services.map((s) => ({
+      path: `/work/service/${s.slug}`,
+      updatedAt: stamp,
+      index: hasWork((c) => c.services.some((ref) => idOf(ref) === s.id)),
+    })),
+    { path: "/work/industry/d2c", updatedAt: stamp, index: hasWork((c) => c.segment === "D2C") },
+    { path: "/work/industry/b2b", updatedAt: stamp, index: hasWork((c) => c.segment === "B2B") },
     ...store.posts.map((p) => ({ path: `/blog/${p.slug}`, updatedAt: p.publishedAt ?? stamp })),
     ...store.categories.map((c) => ({ path: `/blog/category/${c.slug}`, updatedAt: stamp })),
-  ];
+  ] satisfies { path: string; updatedAt: string; index?: boolean }[];
 }
 
 /** Form definitions by key (contact, consultation, callback, brief). */

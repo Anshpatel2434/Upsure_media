@@ -9,8 +9,17 @@ import { BriefBuilder } from "@/features/brief/brief-builder";
 import { ServiceView } from "@/features/services/service-view";
 import { CaseStudyView } from "@/features/work/case-study-view";
 import { WorkListing } from "@/features/work/work-listing";
-import { getCaseStudy, getGlobals, getPage, getPost, getService } from "@/lib/queries";
+import {
+  getCaseStudies,
+  getCaseStudy,
+  getCategory,
+  getGlobals,
+  getPage,
+  getPost,
+  getService,
+} from "@/lib/queries";
 import { buildMetadata } from "@/lib/seo";
+import { stripHighlights } from "@/lib/text";
 
 export type RouteResult = { node: ReactNode; metadata: Metadata } | null;
 
@@ -45,20 +54,35 @@ export async function resolveRoute(segments: string[]): Promise<RouteResult> {
 
   // ---- Work --------------------------------------------------------------
   if (head === "work" && second === "industry" && (third === "d2c" || third === "b2b")) {
-    return withPage("work", path, (page) => (
-      <>
-        <RenderBlocks blocks={page.layout} />
-        <WorkListing segment={third === "d2c" ? "D2C" : "B2B"} />
-      </>
-    ));
+    const segment = third === "d2c" ? "D2C" : "B2B";
+    const studies = await getCaseStudies({ segment, limit: 100 });
+    return withPage(
+      "work",
+      path,
+      (page) => (
+        <>
+          <RenderBlocks blocks={page.layout} />
+          <WorkListing segment={segment} />
+        </>
+      ),
+      filterMeta(`${segment} case studies`, studies),
+    );
   }
   if (head === "work" && second === "service" && third) {
-    return withPage("work", path, (page) => (
-      <>
-        <RenderBlocks blocks={page.layout} />
-        <WorkListing serviceSlug={third} />
-      </>
-    ));
+    const service = await getService(third);
+    if (!service) return null;
+    const studies = await getCaseStudies({ service: service.id, limit: 100 });
+    return withPage(
+      "work",
+      path,
+      (page) => (
+        <>
+          <RenderBlocks blocks={page.layout} />
+          <WorkListing serviceSlug={third} />
+        </>
+      ),
+      filterMeta(`${stripHighlights(service.title)} case studies`, studies),
+    );
   }
   if (head === "work" && second && !third) {
     const study = await getCaseStudy(second);
@@ -100,12 +124,23 @@ export async function resolveRoute(segments: string[]): Promise<RouteResult> {
     ));
   }
   if (head === "blog" && second === "category" && third) {
-    return withPage("blog", path, (page) => (
-      <>
-        <RenderBlocks blocks={page.layout} />
-        <BlogListing category={third} />
-      </>
-    ));
+    const category = await getCategory(third);
+    if (!category) return null;
+    const topic = stripHighlights(category.title);
+    return withPage(
+      "blog",
+      path,
+      (page) => (
+        <>
+          <RenderBlocks blocks={page.layout} />
+          <BlogListing category={third} />
+        </>
+      ),
+      {
+        title: `${topic} insights`,
+        description: `${topic} insights from the Upsure Media team, for D2C and B2B brands in India.`,
+      },
+    );
   }
   if (head === "blog" && second && !third) {
     const post = await getPost(second);
@@ -156,10 +191,35 @@ export async function resolveRoute(segments: string[]): Promise<RouteResult> {
 
 type PageDoc = NonNullable<Awaited<ReturnType<typeof getPage>>>;
 
+/** Title/description/robots for a route that reuses another page's layout. */
+type MetaOverride = { title: string; description: string; noIndex?: boolean };
+
+/**
+ * Metadata for a filtered view of the work listing. Each filter gets its own
+ * title and description so the dozen /work/... URLs are not a dozen duplicates
+ * of /work, and a filter with nothing behind it is kept out of the index
+ * instead of being published as a thin page.
+ */
+function filterMeta(label: string, studies: { client?: string | null }[]): MetaOverride {
+  if (!studies.length) {
+    return {
+      title: label,
+      description: `${label} from Upsure Media are on their way. Ask us for examples on a call.`,
+      noIndex: true,
+    };
+  }
+  const clients = studies.map((s) => s.client).filter(Boolean);
+  return {
+    title: label,
+    description: `${label} from Upsure Media, the D2C and B2B brand and growth agency: ${clients.join(", ")}.`,
+  };
+}
+
 async function withPage(
   slug: string,
   path: string,
   render: (page: PageDoc) => ReactNode,
+  override?: MetaOverride,
 ): Promise<RouteResult> {
   const [page, { settings }] = await Promise.all([getPage(slug), getGlobals()]);
   if (!page) return null;
@@ -172,8 +232,12 @@ async function withPage(
     ),
     metadata: buildMetadata(
       {
-        title: page.meta?.title ?? (slug === "home" ? settings.defaultTitle : page.title),
-        description: page.meta?.description,
+        title:
+          override?.title ??
+          page.meta?.title ??
+          (slug === "home" ? settings.defaultTitle : page.title),
+        description: override?.description ?? page.meta?.description,
+        noIndex: override?.noIndex,
         path: slug === "home" ? "/" : path,
         cardPath: slug === "home" ? "/" : `/${slug}`,
         absolute: slug === "home",
