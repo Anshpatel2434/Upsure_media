@@ -56,6 +56,8 @@ export const media: Record<string, string> = {
   "approach-illo": "Discovery board on customers, competitors and channels with a magnifying glass",
   "one-team": "One 90-day plan across brand, content, media, PR and AI, with four team mugs",
   "faq-chat": "Phone with questions and answers about working with Upsure Media",
+  "work-hero":
+    "Studio wall of finished work: a campaign reel, a store page and a results dashboard, above a bench with a case study on a phone",
   "ind-d2c": "D2C product range on display with a shipping box and an online store on a phone",
   "ind-b2b": "Laptop with a B2B company post, a printed brochure and machined gears",
   "about-1": "Workshop board on audience, offer, channels and next steps",
@@ -2162,6 +2164,7 @@ export const pages = (ctx: Ctx) => [
           { text: "Full-service", tone: "sun" },
           { text: "Trusted by India's brands", tone: "teal" },
         ],
+        images: [{ image: ctx.media["work-hero"] }],
         showContact: true,
       },
     ],

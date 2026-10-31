@@ -48,6 +48,7 @@ import {
   shadow,
   shopScreen,
   sparkle,
+  sticky,
   text,
   tripodLegs,
 } from "./studio.mjs";
@@ -1202,5 +1203,45 @@ export function sceneLounge() {
   b += sofa(400, 850, 860, C.coral);
   b += laptop(1000, 680, 200, chartScreen(200, 128));
   b += plant(1440, 860, 0.85, { kind: "fiddle", pot: C.tealInk });
+  return end(b);
+}
+
+/**
+ * Work page hero: a wall of finished pieces above a bench, so the listing
+ * opens on something that reads as a portfolio rather than an empty band.
+ */
+export function workWall() {
+  begin(1600, 900);
+  let b = room("paper", { horizon: 0.66, leafX: 0.18 });
+  b += frame(300, 110, 330, 270, reelScreen(302, 242, { color: C.coral }), {
+    frame: "#2a2e35",
+    border: 14,
+  });
+  b += frame(
+    690,
+    70,
+    290,
+    350,
+    shopScreen(262, 322, { title: "New season", sub: "Shop the drop", bar: C.sun }),
+    {
+      frame: "#f4efe4",
+      border: 14,
+    },
+  );
+  b += frame(1040, 140, 360, 250, chartScreen(332, 222), { frame: "#2a2e35", border: 14 });
+  b += plant(185, 800, 1.05, { kind: "fiddle", pot: C.tealInk });
+  b += box(430, 660, 740, 90, 130, C.wood, "", { topLight: 0.15 });
+  b += notebook(500, 650, 230, 150, lines(16, 20, 160, 4, { gap: 24, h: 8 }));
+  b += pencil(770, 648, 130, -10);
+  b += mug(900, 650, 0.95, C.paper);
+  b += sticky(1010, 580, 76, C.sun, -7);
+  b += sticky(1105, 598, 76, C.mint, 6);
+  b += phone(
+    1400,
+    860,
+    195,
+    400,
+    articleScreen(195, 400, { masthead: "Case study", photo: C.teal2 }),
+  );
   return end(b);
 }

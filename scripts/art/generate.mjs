@@ -59,6 +59,7 @@ export const ART = {
   "faq-chat": P.faqChat,
   "ind-d2c": P.industryD2C,
   "ind-b2b": P.industryB2B,
+  "work-hero": P.workWall,
   "about-1": P.sceneWorkshop,
   "about-2": P.sceneShoot,
   "about-3": P.sceneReview,
