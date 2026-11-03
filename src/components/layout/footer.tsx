@@ -124,8 +124,9 @@ export async function Footer() {
           <Link href="/" aria-label="Upsure Media home" className="w-fit">
             <Logo tone="paper" className="text-[2.25rem] md:text-[2.75rem]" />
           </Link>
+          {/* The city is already in the "Get in touch" block above, so it is
+              not repeated here. */}
           <div className="flex flex-col gap-2 text-small text-paper/60 md:items-end">
-            <p>{settings.city}</p>
             <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
               <li>
                 © {year} {footer.copyright ?? settings.name}
