@@ -28,6 +28,33 @@ export function stripHighlights(source: string | null | undefined): string {
   return (source ?? "").replace(/\[\[([^\]]+)\]\]/g, "$1");
 }
 
+/** URL-safe id for a heading, so long-form pages can be linked and tracked. */
+export function headingId(text: string): string {
+  return stripHighlights(text)
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .slice(0, 60);
+}
+
+/**
+ * The "## " / "### " headings in a light-Markdown document, in order, for
+ * building a table of contents that matches what <Prose> renders.
+ */
+export function proseHeadings(source: string | null | undefined) {
+  if (!source) return [];
+  const out: { id: string; text: string; level: 2 | 3 }[] = [];
+  for (const chunk of source.trim().split(/\n\s*\n/)) {
+    const block = chunk.trim();
+    const level = block.startsWith("### ") ? 3 : block.startsWith("## ") ? 2 : null;
+    if (!level) continue;
+    const text = block.slice(level === 3 ? 4 : 3).trim();
+    out.push({ id: headingId(text), text: stripHighlights(text), level });
+  }
+  return out;
+}
+
 /** Two-digit section index used by numbered eyebrows. */
 export function sectionIndex(n: number): string {
   return String(n).padStart(2, "0");

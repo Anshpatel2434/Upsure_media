@@ -322,7 +322,9 @@ function DefaultHero({ block, tone }: { block: Hero; tone: "paper" | "teal" | "t
       padding="none"
       className="overflow-hidden pt-6 pb-14 md:pt-10 md:pb-16"
     >
-      <Container>
+      {/* `reading` keeps the title on the same measure as the long-form body
+          that follows it, so the two line up (see ui/reading-layout.tsx). */}
+      <Container className={cn(block.width === "reading" && "mx-auto max-w-5xl")}>
         <Reveal self={false} style={{ "--rv-step": "110ms" } as CSSProperties}>
           {block.eyebrow && (
             <RevealItem index={0} direction="fade">

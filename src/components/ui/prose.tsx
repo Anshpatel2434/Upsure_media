@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 
 import { cn } from "@/lib/cn";
+import { headingId } from "@/lib/text";
 
 /**
  * Renders the light Markdown used for long-form content (blog posts, legal
@@ -24,8 +25,10 @@ export function Prose({
       className={cn(
         "max-w-prose text-body",
         tone === "ink" ? "text-ink-2" : "text-paper/85",
-        "[&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:text-h2 [&_h2]:font-semibold",
-        "[&_h3]:mt-10 [&_h3]:mb-3 [&_h3]:text-h3 [&_h3]:font-semibold",
+        // scroll-mt keeps a linked heading clear of the fixed header.
+        "[&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:scroll-mt-28 [&_h2]:text-h2 [&_h2]:font-semibold",
+        "[&_h3]:mt-10 [&_h3]:mb-3 [&_h3]:scroll-mt-28 [&_h3]:text-h3 [&_h3]:font-semibold",
+        "[&_h2+p]:mt-0 [&_h3+p]:mt-0",
         "[&_p]:my-5 [&_p]:leading-relaxed",
         "[&_a]:underline [&_a]:decoration-teal [&_a]:underline-offset-4 hover:[&_a]:text-teal",
         "[&_strong]:font-semibold",
@@ -48,8 +51,24 @@ function parseBlocks(source: string): ReactNode[] {
     .map((chunk, i) => {
       const block = chunk.trim();
       const lines = block.split("\n").map((l) => l.trim());
-      if (block.startsWith("### ")) return <h3 key={i}>{inline(block.slice(4))}</h3>;
-      if (block.startsWith("## ")) return <h2 key={i}>{inline(block.slice(3))}</h2>;
+      // Headings carry ids so they can be deep-linked and tracked by the
+      // table of contents (see lib/text.tsx `proseHeadings`).
+      if (block.startsWith("### ")) {
+        const t = block.slice(4);
+        return (
+          <h3 key={i} id={headingId(t)}>
+            {inline(t)}
+          </h3>
+        );
+      }
+      if (block.startsWith("## ")) {
+        const t = block.slice(3);
+        return (
+          <h2 key={i} id={headingId(t)}>
+            {inline(t)}
+          </h2>
+        );
+      }
       if (block === "---") return <hr key={i} />;
       if (lines.every((l) => l.startsWith("- "))) {
         return (

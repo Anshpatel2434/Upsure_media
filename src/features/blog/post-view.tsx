@@ -11,6 +11,7 @@ import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Heading } from "@/components/ui/heading";
 import { Prose } from "@/components/ui/prose";
+import { ReadingLayout } from "@/components/ui/reading-layout";
 import { Section } from "@/components/ui/section";
 import { Tag } from "@/components/ui/tag";
 import { TextLink } from "@/components/ui/text-link";
@@ -50,8 +51,10 @@ export async function PostView({ post }: { post: Post }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/* The header, cover and body all sit on one max-w-5xl measure, so the
+          page reads as a single document rather than a narrow strip. */}
       <Section grid padding="tight" className="pt-10">
-        <Container size="narrow" className="flex flex-col gap-6">
+        <Container className="mx-auto flex max-w-5xl flex-col gap-6">
           <Eyebrow>
             <Link href="/blog" className="hover:text-teal">
               Insights
@@ -81,11 +84,11 @@ export async function PostView({ post }: { post: Post }) {
             <span>{readingTime(bodyText)}</span>
           </p>
         </Container>
-        <Container className="mt-10">
+        <Container className="mx-auto mt-10 max-w-5xl">
           <BlockImage
             media={post.cover}
             size="hero"
-            sizes="(min-width: 1280px) 1200px, 100vw"
+            sizes="(min-width: 1280px) 1024px, 100vw"
             aspect="aspect-[16/8]"
             priority
             className="rounded-xl"
@@ -94,9 +97,9 @@ export async function PostView({ post }: { post: Post }) {
       </Section>
 
       <Section tone="white" padding="tight">
-        <Container size="narrow">
+        <ReadingLayout source={post.content}>
           <Prose data={post.content} />
-        </Container>
+        </ReadingLayout>
       </Section>
 
       {relatedServices.length > 0 && (

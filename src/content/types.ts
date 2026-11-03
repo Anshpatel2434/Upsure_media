@@ -54,6 +54,11 @@ export interface Page {
          * Show email and phone from Site Settings under the lead text.
          */
         showContact?: boolean | null;
+        /**
+         * “reading” centres the hero on the same measure as a long-form body
+         * below it (Terms, Privacy), so the title lines up with the text.
+         */
+        width?: ("default" | "reading") | null;
         id?: string | null;
         blockName?: string | null;
         blockType: "hero";
