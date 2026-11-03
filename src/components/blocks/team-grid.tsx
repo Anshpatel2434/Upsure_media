@@ -9,7 +9,10 @@ import { Sticker } from "@/components/ui/sticker";
 import { getTeam } from "@/lib/queries";
 import { cn } from "@/lib/cn";
 
-/** Offset masonry: alternating portrait/landscape crops, every second column pushed down. */
+/**
+ * Even grid of portraits. It used to alternate crops and push every second
+ * column down, which read as ragged rather than as a rhythm.
+ */
 export async function TeamGridBlock({ block, index }: BlockProps<"teamGrid">) {
   const members = await getTeam(block.members);
   if (!members.length) return null;
@@ -35,18 +38,14 @@ export async function TeamGridBlock({ block, index }: BlockProps<"teamGrid">) {
                 key={m.id}
                 index={i + 3}
                 direction="image"
-                className={cn(
-                  "flex flex-col gap-4",
-                  i % 3 === 1 && "lg:mt-16",
-                  i % 2 === 1 && "sm:mt-10 lg:mt-0",
-                )}
+                className="flex flex-col gap-4"
               >
                 <div className="group relative overflow-hidden rounded-xl shadow-card">
                   <BlockImage
                     media={m.photo}
                     size="card"
                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    aspect={i % 3 === 1 ? "aspect-[4/3]" : "aspect-[4/5]"}
+                    aspect="aspect-[4/5]"
                     rounded={false}
                     className="transition-transform duration-[5s] ease-[cubic-bezier(.25,.7,.2,1)] group-hover:scale-105"
                   />

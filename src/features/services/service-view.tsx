@@ -90,12 +90,15 @@ export async function ServiceView({ service }: { service: Service }) {
                 <TextLink href={`/work/service/${service.slug}`}>See our work</TextLink>
               )}
             </div>
+            {/* Same slim proportion as every other hero's artwork. At 4/3 this
+                was a 486px-tall illustration sitting under the call to action,
+                which pushed the form and the rest of the page down. */}
             {service.heroImage && (
               <BlockImage
                 media={service.heroImage}
                 size="large"
                 sizes="(min-width: 1024px) 50vw, 100vw"
-                aspect="aspect-[4/3]"
+                aspect="aspect-[9/5]"
                 priority
                 className="rounded-xl"
               />
