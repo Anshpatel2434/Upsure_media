@@ -1,4 +1,3 @@
-import { BlockImage } from "@/components/blocks/block-image";
 import type { BlockProps } from "@/components/blocks/render-blocks";
 import { SectionHeader } from "@/components/blocks/section-header";
 import { Accordion } from "@/components/ui/accordion";
@@ -33,32 +32,17 @@ export async function FaqBlock({ block, index }: BlockProps<"faq">) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Container>
+        {/* Heading left, questions right. The tilted image that used to sit in
+            a third column pushed the two out of line with each other. */}
         <Reveal self={false} className="grid gap-10 lg:grid-cols-12">
-          {block.image && (
-            <RevealItem index={0} direction="image" className="hidden lg:col-span-3 lg:block">
-              <BlockImage
-                media={block.image}
-                size="card"
-                sizes="25vw"
-                aspect="aspect-[4/5]"
-                className="rounded-xl shadow-card lg:sticky lg:top-28 lg:-rotate-2"
-              />
-            </RevealItem>
-          )}
           <SectionHeader
             index={index}
             eyebrow={block.eyebrow}
             heading={block.heading}
             tone={dark ? "paper" : "ink"}
-            className={
-              block.image ? "lg:col-span-9" : "lg:sticky lg:top-28 lg:col-span-4 lg:self-start"
-            }
+            className="lg:sticky lg:top-28 lg:col-span-4 lg:self-start"
           />
-          <RevealItem
-            index={3}
-            direction="fade"
-            className={block.image ? "lg:col-span-9 lg:col-start-4" : "lg:col-span-8"}
-          >
+          <RevealItem index={3} direction="fade" className="lg:col-span-8">
             <Accordion
               name={`faq-${index}`}
               tone={dark ? "paper" : "ink"}

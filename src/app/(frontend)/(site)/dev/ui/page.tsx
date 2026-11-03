@@ -54,7 +54,7 @@ export default function UiKitPage() {
               100+ brands
             </Sticker>
             <Sticker tone="teal" rotate={-2}>
-              98% stay
+              Senior team
             </Sticker>
           </div>
         </Container>

@@ -25,7 +25,6 @@ export function TextColumnsBlock({ block }: BlockProps<"textColumns">) {
   const dark = tone === "teal-ink" || tone === "teal";
   const columns = block.columns ?? [];
   const images = (block.images ?? []).map((i) => i.image).filter((m): m is Media => isDoc(m));
-  const aspects = ["aspect-[4/5]", "aspect-[4/3]", "aspect-square"];
 
   return (
     <Section
@@ -92,14 +91,12 @@ export function TextColumnsBlock({ block }: BlockProps<"textColumns">) {
               images.length > 2 && "md:grid-cols-3",
             )}
           >
+            {/* One shared aspect, no vertical offsets: three different crops
+                stepped down the page read as a mistake rather than a rhythm. */}
             {images.slice(0, 3).map((m, i) => (
               <div
                 key={m.id}
-                className={cn(
-                  "glow rounded-[22px]",
-                  i === 1 && "md:mt-[80px]",
-                  i === 2 && "col-span-2 md:col-span-1 md:mt-[30px]",
-                )}
+                className={cn("glow rounded-[22px]", i === 2 && "col-span-2 md:col-span-1")}
                 style={{ "--glow-delay": `${i + 1}s` } as CSSProperties}
               >
                 <RevealItem
@@ -111,7 +108,7 @@ export function TextColumnsBlock({ block }: BlockProps<"textColumns">) {
                     media={m}
                     size="medium"
                     sizes="(min-width: 768px) 30vw, 50vw"
-                    aspect={aspects[i % aspects.length]}
+                    aspect="aspect-[4/3]"
                     className="rounded-[22px]"
                   />
                 </RevealItem>

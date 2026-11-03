@@ -31,7 +31,10 @@ export function ServiceCard({
       )}
     >
       {img && (
-        <div className="relative aspect-[4/3] overflow-hidden bg-paper-2">
+        // A slim banner, not a picture with a caption: at 4/3 these cards ran
+        // to about 1,100px each, so ten services were a very long scroll for
+        // what is really a list of what we do.
+        <div className="relative aspect-[21/9] overflow-hidden bg-paper-2">
           <Image
             src={img.src}
             alt={img.alt}

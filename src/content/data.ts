@@ -825,7 +825,7 @@ export const faqs = [
     key: "long-term",
     question: "Do you work with clients long-term?",
     answer:
-      "Yes. 98% of our clients stay with us past the first engagement. We stay on to measure, learn and grow the brand and the pipeline month over month.",
+      "Yes. Most of our work is ongoing. We stay on to measure, learn and grow the brand and the pipeline month over month.",
     scope: ["services"],
     order: 11,
   },
@@ -1187,7 +1187,7 @@ And no, this isn't just for marketing. We've automated operations handoffs, inte
 
 No junior relay races — the people in the pitch are the people doing the work. No bloated retainers — we scope tightly and you always know what you're paying for. No 3-month discovery phases — momentum is a feature. And no hype — if AI (or anything else) won't move your numbers, we'll be the first to tell you.
 
-> Our only metric of success is the asymmetric growth of our partners. 98% of our clients stay past their first engagement — that number is the whole pitch.
+> Our only metric of success is the asymmetric growth of our partners. Most of them stay long past the first engagement — that is the whole pitch.
 
 Curious what this looks like for your brand? Tell us where you're stuck — the contact form takes two minutes, and we reply within a business day.
 `.trim(),
@@ -1530,7 +1530,6 @@ export const siteSettings = {
   stats: [
     { value: 100, suffix: "+", label: "brands served" },
     { value: 250, suffix: "+", label: "Projects delivered across brand & growth" },
-    { value: 98, suffix: "%", label: "Client retention, year over year" },
   ],
   badges: [{ text: "Based in Ahmedabad" }],
   defaultTitle: "Upsure Media – D2C & B2B Brand and Growth Agency in Ahmedabad, India",
@@ -1672,7 +1671,7 @@ export const pages = (ctx: Ctx) => [
         lead: "Upsure Media is a full-service brand and growth agency for [[D2C and B2B brands]]. Brand consulting, branding, social media, influencer marketing, performance marketing, e-commerce, quick commerce, PR and AI, run by [[one senior team and measured on sales]].",
         stickers: [
           { text: "100+ brands served", tone: "sun" },
-          { text: "98% client retention", tone: "teal" },
+          { text: "Senior team on every project", tone: "teal" },
         ],
         ctas: [
           { label: "Book a free strategy call", href: "/start-a-project" },
@@ -1714,7 +1713,6 @@ export const pages = (ctx: Ctx) => [
         items: [
           "100+ brands served",
           "250+ projects delivered",
-          "98% client retention",
           "Senior team on every project",
         ].map((text) => ({ text })),
         heading: "Send us a brief and we'll talk",
@@ -1792,7 +1790,6 @@ export const pages = (ctx: Ctx) => [
           {
             title: "Discover",
             body: "We audit your brand, channels, numbers and competitors in the first two weeks.",
-            image: ctx.media["approach-illo"],
           },
           {
             title: "Plan",
@@ -1852,7 +1849,6 @@ export const pages = (ctx: Ctx) => [
         blockType: "featureList",
         eyebrow: "Why Upsure",
         heading: "Why Upsure",
-        image: ctx.media["one-team"],
         items: [
           {
             title: "Senior people on every account",
@@ -1880,7 +1876,6 @@ export const pages = (ctx: Ctx) => [
         eyebrow: "FAQ",
         heading: "Good questions",
         scope: "services",
-        image: ctx.media["faq-chat"],
         tone: "paper",
       },
     ],
@@ -2220,7 +2215,6 @@ export const pages = (ctx: Ctx) => [
         items: [
           { value: 100, suffix: "+", label: "brands served" },
           { value: 250, suffix: "+", label: "projects delivered" },
-          { value: 98, suffix: "%", label: "client retention" },
         ],
         tone: "white",
       },

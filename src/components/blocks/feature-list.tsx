@@ -1,4 +1,3 @@
-import { BlockImage } from "@/components/blocks/block-image";
 import type { BlockProps } from "@/components/blocks/render-blocks";
 import { SectionHeader } from "@/components/blocks/section-header";
 import { Container } from "@/components/ui/container";
@@ -21,25 +20,10 @@ export function FeatureListBlock({ block, index }: BlockProps<"featureList">) {
             heading={block.heading}
             tone={dark ? "paper" : "ink"}
           />
-          <div className={cn("grid gap-12", block.image && "lg:grid-cols-12")}>
-            {block.image && (
-              <RevealItem index={2} direction="image" className="lg:col-span-5">
-                <BlockImage
-                  media={block.image}
-                  size="large"
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  aspect="aspect-[4/5]"
-                  className="rounded-xl shadow-lift lg:sticky lg:top-28"
-                />
-              </RevealItem>
-            )}
-            <ol
-              className={cn(
-                "divide-y",
-                dark ? "divide-paper/15" : "divide-line",
-                block.image && "lg:col-span-7",
-              )}
-            >
+          {/* No artwork beside the list: a tall sticky image next to three
+              short reasons made the section read as clutter. */}
+          <div className="grid gap-12">
+            <ol className={cn("divide-y", dark ? "divide-paper/15" : "divide-line")}>
               {items.map((item, i) => (
                 <RevealItem
                   as="li"

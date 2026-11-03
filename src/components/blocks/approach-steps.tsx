@@ -1,4 +1,3 @@
-import { BlockImage } from "@/components/blocks/block-image";
 import type { BlockProps } from "@/components/blocks/render-blocks";
 import { SectionHeader } from "@/components/blocks/section-header";
 import { Container } from "@/components/ui/container";
@@ -32,9 +31,8 @@ export function ApproachStepsBlock({ block, index }: BlockProps<"approachSteps">
                 key={step.id ?? step.title}
                 index={i + 3}
                 className={cn(
-                  "flex w-[82%] shrink-0 snap-start flex-col gap-5 rounded-xl p-7 md:w-[46%] lg:w-auto",
+                  "flex w-[82%] shrink-0 snap-start flex-col gap-4 rounded-xl p-7 md:w-[46%] lg:w-auto",
                   dark ? "bg-paper/5 ring-1 ring-paper/10" : "bg-paper-2",
-                  i % 2 === 1 && "lg:mt-12",
                 )}
               >
                 <span
@@ -45,15 +43,8 @@ export function ApproachStepsBlock({ block, index }: BlockProps<"approachSteps">
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                {step.image && (
-                  <BlockImage
-                    media={step.image}
-                    size="card"
-                    sizes="25vw"
-                    aspect="aspect-[4/3]"
-                    className="rounded-lg"
-                  />
-                )}
+                {/* Deliberately text only. Art in one step and not the others
+                    pushed that card's text down and left the row ragged. */}
                 <div className="flex flex-col gap-2">
                   <h3 className="text-h3">{step.title}</h3>
                   {step.subtitle && (
