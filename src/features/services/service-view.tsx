@@ -86,7 +86,9 @@ export async function ServiceView({ service }: { service: Service }) {
               >
                 Book a free strategy call
               </Button>
-              <TextLink href={`/work/service/${service.slug}`}>See our work</TextLink>
+              {work.length > 0 && (
+                <TextLink href={`/work/service/${service.slug}`}>See our work</TextLink>
+              )}
             </div>
             {service.heroImage && (
               <BlockImage

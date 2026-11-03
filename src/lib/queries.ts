@@ -143,17 +143,34 @@ export async function getAllRoutes() {
   const stamp = new Date().toISOString();
   const hasWork = (match: (c: (typeof store.caseStudies)[number]) => boolean) =>
     store.caseStudies.some(match);
+  // With no case studies there is nothing for /work to list, so the page and
+  // every filter under it drop out rather than building as empty shells.
+  const work = store.caseStudies.length
+    ? [
+        ...store.caseStudies.map((c) => ({ path: `/work/${c.slug}`, updatedAt: stamp })),
+        ...store.services.map((s) => ({
+          path: `/work/service/${s.slug}`,
+          updatedAt: stamp,
+          index: hasWork((c) => c.services.some((ref) => idOf(ref) === s.id)),
+        })),
+        {
+          path: "/work/industry/d2c",
+          updatedAt: stamp,
+          index: hasWork((c) => c.segment === "D2C"),
+        },
+        {
+          path: "/work/industry/b2b",
+          updatedAt: stamp,
+          index: hasWork((c) => c.segment === "B2B"),
+        },
+      ]
+    : [];
   return [
-    ...store.pages.map((p) => ({ path: p.slug === "home" ? "/" : `/${p.slug}`, updatedAt: stamp })),
+    ...store.pages
+      .filter((p) => p.slug !== "work" || store.caseStudies.length > 0)
+      .map((p) => ({ path: p.slug === "home" ? "/" : `/${p.slug}`, updatedAt: stamp })),
     ...store.services.map((s) => ({ path: `/services/${s.slug}`, updatedAt: stamp })),
-    ...store.caseStudies.map((c) => ({ path: `/work/${c.slug}`, updatedAt: stamp })),
-    ...store.services.map((s) => ({
-      path: `/work/service/${s.slug}`,
-      updatedAt: stamp,
-      index: hasWork((c) => c.services.some((ref) => idOf(ref) === s.id)),
-    })),
-    { path: "/work/industry/d2c", updatedAt: stamp, index: hasWork((c) => c.segment === "D2C") },
-    { path: "/work/industry/b2b", updatedAt: stamp, index: hasWork((c) => c.segment === "B2B") },
+    ...work,
     ...store.posts.map((p) => ({ path: `/blog/${p.slug}`, updatedAt: p.publishedAt ?? stamp })),
     ...store.categories.map((c) => ({ path: `/blog/category/${c.slug}`, updatedAt: stamp })),
   ] satisfies { path: string; updatedAt: string; index?: boolean }[];

@@ -2,6 +2,8 @@ import { fileURLToPath } from "node:url";
 
 import type { NextConfig } from "next";
 
+import { SHOW_CASE_STUDIES } from "./src/content/flags";
+
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
@@ -27,28 +29,45 @@ const nextConfig: NextConfig = {
     imageSizes: [48, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
-  // Old service URLs (copy update, section 1).
+  // Old service URLs (copy update, section 1). With case studies switched off
+  // the /work/… ones point at the matching service page, so an old link lands
+  // on a real page rather than on a redirect to one that is not built.
   async redirects() {
-    return (
-      [
-        ["/services/consulting", "/services/brand-consulting"],
-        ["/services/design", "/services/branding"],
-        ["/services/growth", "/services/performance-marketing"],
-        ["/services/ai-automation", "/services/ai-solutions"],
-        ["/work/service/consulting", "/work/service/brand-consulting"],
-        ["/work/service/design", "/work/service/branding"],
-        ["/work/service/growth", "/work/service/performance-marketing"],
-        ["/work/service/ai-automation", "/work/service/ai-solutions"],
-      ]
-        .map(([source, destination]) => ({
-          source: source!,
-          destination: destination!,
-          permanent: true,
-        }))
-        // Testimonials page is off until real client quotes exist. Temporary, so
-        // browsers do not cache it if the page comes back.
-        .concat({ source: "/testimonials", destination: "/work", permanent: false })
-    );
+    const workOrService = (slug: string) =>
+      SHOW_CASE_STUDIES ? `/work/service/${slug}` : `/services/${slug}`;
+    const permanent = [
+      ["/services/consulting", "/services/brand-consulting"],
+      ["/services/design", "/services/branding"],
+      ["/services/growth", "/services/performance-marketing"],
+      ["/services/ai-automation", "/services/ai-solutions"],
+      ["/work/service/consulting", workOrService("brand-consulting")],
+      ["/work/service/design", workOrService("branding")],
+      ["/work/service/growth", workOrService("performance-marketing")],
+      ["/work/service/ai-automation", workOrService("ai-solutions")],
+    ].map(([source, destination]) => ({
+      source: source!,
+      destination: destination!,
+      permanent: true,
+    }));
+
+    // Testimonials, and the whole work section, are off until real client
+    // quotes and figures exist. Temporary, so browsers do not cache these if
+    // the pages come back.
+    const temporary = (
+      SHOW_CASE_STUDIES
+        ? [["/testimonials", "/work"]]
+        : [
+            ["/testimonials", "/services"],
+            ["/work", "/services"],
+            ["/work/:path*", "/services"],
+          ]
+    ).map(([source, destination]) => ({
+      source: source!,
+      destination: destination!,
+      permanent: false,
+    }));
+
+    return [...permanent, ...temporary];
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

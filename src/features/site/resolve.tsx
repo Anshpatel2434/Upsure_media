@@ -53,6 +53,8 @@ export async function resolveRoute(segments: string[]): Promise<RouteResult> {
   }
 
   // ---- Work --------------------------------------------------------------
+  // Nothing under /work exists until there are case studies to show.
+  if (head === "work" && !(await getCaseStudies({ limit: 1 })).length) return null;
   if (head === "work" && second === "industry" && (third === "d2c" || third === "b2b")) {
     const segment = third === "d2c" ? "D2C" : "B2B";
     const studies = await getCaseStudies({ segment, limit: 100 });

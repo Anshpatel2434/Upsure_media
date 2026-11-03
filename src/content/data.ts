@@ -7,6 +7,7 @@
  * resolved in `store.ts`. Rich text is light Markdown (see types.ts).
  */
 
+import { SHOW_CASE_STUDIES, SHOW_TEAM } from "./flags";
 import type { Form, Media, Service } from "./types";
 
 /** Public contact address, used in copy, mailto links and as the default form inbox. */
@@ -744,7 +745,7 @@ export const faqs = [
     key: "what-we-do",
     question: "What does Upsure Media do?",
     answer:
-      "Upsure Media is a full-service brand and growth agency in Ahmedabad. We help D2C and B2B brands with brand consulting, branding, personal branding, PR, social media, influencer marketing, performance marketing, e-commerce, quick commerce, SEO/AEO/GEO and AI solutions.",
+      "Upsure Media is a full-service brand and growth agency. We help D2C and B2B brands with brand consulting, branding, personal branding, PR, social media, influencer marketing, performance marketing, e-commerce, quick commerce, SEO/AEO/GEO and AI solutions.",
     scope: ["home"],
     order: 1,
   },
@@ -799,7 +800,7 @@ export const faqs = [
     key: "get-started",
     question: "How do we get started?",
     answer:
-      "Book a free 30-minute strategy call, or email collab@upsuremedia.com. We reply within one business day.",
+      "Book a free 30-minute strategy call, or send us a brief. We reply within one business day.",
     scope: ["home", "services", "contact"],
     order: 8,
   },
@@ -860,7 +861,7 @@ export const testimonials: {
 /* ----------------------------------------------------------------------------
    Team (first names from the live site; roles per the About page brief)
    ---------------------------------------------------------------------------- */
-export const team = [
+const allTeam = [
   { key: "vrinda", name: "Vrinda", role: "Strategy", photo: "person-1", order: 1 },
   { key: "aarav", name: "Aarav", role: "Creative", photo: "person-2", order: 2 },
   { key: "kabir", name: "Kabir", role: "Performance", photo: "person-3", order: 3 },
@@ -869,6 +870,8 @@ export const team = [
   ...m,
   bio: `${m.name} leads ${m.role.toLowerCase()} at Upsure Media, working across D2C and B2B brands.`,
 }));
+
+export const team: typeof allTeam = SHOW_TEAM ? allTeam : [];
 
 /* ----------------------------------------------------------------------------
    Insights (the blog)
@@ -1196,7 +1199,7 @@ Curious what this looks like for your brand? Tell us where you're stuck — the 
    section 3.4 of the copy update; per-client copy written without invented figures or
    quotes, to be confirmed by Upsure Media)
    ---------------------------------------------------------------------------- */
-export const caseStudies = [
+const allCaseStudies = [
   {
     slug: "lenskart",
     client: "Lenskart",
@@ -1357,6 +1360,8 @@ export const caseStudies = [
   title: c.client,
   publishedAt: new Date(2026, 6 - i, 10).toISOString(),
 }));
+
+export const caseStudies: typeof allCaseStudies = SHOW_CASE_STUDIES ? allCaseStudies : [];
 
 /* ----------------------------------------------------------------------------
    Forms. Submissions are emailed to the team (see features/forms/action.ts).
@@ -1554,7 +1559,7 @@ export const header = {
         { label: "B2B companies", href: "/industries/b2b" },
       ],
     },
-    { label: "Work", href: "/work", children: [] },
+    ...(SHOW_CASE_STUDIES ? [{ label: "Work", href: "/work", children: [] }] : []),
     { label: "About", href: "/about", children: [] },
     { label: "Insights", href: "/blog", children: [] },
     { label: "Contact", href: "/contact", children: [] },
@@ -1582,7 +1587,7 @@ export const footer = {
       heading: "Company",
       links: [
         { label: "About", href: "/about" },
-        { label: "Work", href: "/work" },
+        ...(SHOW_CASE_STUDIES ? [{ label: "Work", href: "/work" }] : []),
         { label: "Culture", href: "/culture" },
         { label: "Insights", href: "/blog" },
         { label: "Contact", href: "/contact" },
@@ -1617,7 +1622,8 @@ export const ctaBand = {
   emoji: "👋",
   heading: "Ready to grow your brand?",
   subheading: "Book a free 30-minute strategy call.",
-  note: "We reply within one business day. Or write to collab@upsuremedia.com",
+  // The address is already in the footer on every page, so it is not repeated here.
+  note: "We reply within one business day.",
   link: { label: "Book a free strategy call", href: "/start-a-project", newTab: false },
 };
 
@@ -1709,7 +1715,6 @@ export const pages = (ctx: Ctx) => [
           "100+ brands served",
           "250+ projects delivered",
           "98% client retention",
-          "Based in Ahmedabad, working worldwide",
           "Senior team on every project",
         ].map((text) => ({ text })),
         heading: "Send us a brief and we'll talk",
@@ -1755,7 +1760,6 @@ export const pages = (ctx: Ctx) => [
           { text: "Marketing under one roof", tone: "teal" },
         ],
         images: [{ image: ctx.media["services-hero"] }],
-        showContact: true,
       },
       {
         blockType: "statement",
@@ -1903,7 +1907,6 @@ export const pages = (ctx: Ctx) => [
         ],
         ctas: [{ label: "Get a free D2C growth audit", href: "/start-a-project" }],
         images: [{ image: ctx.media["ind-d2c"] }],
-        showContact: true,
       },
       {
         blockType: "textColumns",
@@ -2041,7 +2044,6 @@ export const pages = (ctx: Ctx) => [
         ],
         ctas: [{ label: "Book a free B2B growth call", href: "/start-a-project" }],
         images: [{ image: ctx.media["ind-b2b"] }],
-        showContact: true,
       },
       {
         blockType: "textColumns",
@@ -2183,16 +2185,16 @@ export const pages = (ctx: Ctx) => [
         variant: "editorial",
         eyebrow: "About",
         heading: "About Upsure Media, a brand and growth agency in [[Ahmedabad]]",
+        // The heading above carries the location, so the lead drops it.
         lead: ONE_LINER.replace(
-          "We help D2C and B2B brands grow through",
+          "Upsure Media is a full-service brand and growth agency in Ahmedabad, Gujarat, India. We help D2C and B2B brands grow through",
           "We work with D2C and B2B brands on",
         ).replace("e-commerce and quick commerce growth", "e-commerce, quick commerce"),
-        stickers: [
-          { text: "Proudly from Ahmedabad", tone: "sun" },
-          // Add { text: "Est. <year>", tone: "teal" } once the founding year is confirmed.
-        ],
+        // The heading already says Ahmedabad; a sticker repeating it was the
+        // fourth mention on one screen.
+        // Add { text: "Est. <year>", tone: "teal" } once the founding year is confirmed.
+        stickers: [],
         images: [{ image: ctx.media["about-1"] }],
-        showContact: true,
       },
       {
         blockType: "textColumns",
@@ -2278,11 +2280,17 @@ export const pages = (ctx: Ctx) => [
             body: "How we work, what we value and how we hire.",
             link: { label: "Our culture", href: "/culture", newTab: false },
           },
-          {
-            heading: "Work",
-            body: "D2C and B2B case studies across brand, social, performance and AI.",
-            link: { label: "View our work", href: "/work", newTab: false },
-          },
+          SHOW_CASE_STUDIES
+            ? {
+                heading: "Work",
+                body: "D2C and B2B case studies across brand, social, performance and AI.",
+                link: { label: "View our work", href: "/work", newTab: false },
+              }
+            : {
+                heading: "Services",
+                body: "Ten services across brand, content, media, PR and AI, run by one senior team.",
+                link: { label: "Explore services", href: "/services", newTab: false },
+              },
         ],
         images: ["team-present", "about-2", "about-3"].map((k) => ({ image: ctx.media[k] })),
         tone: "paper",
@@ -2388,7 +2396,7 @@ export const pages = (ctx: Ctx) => [
         variant: "editorial",
         eyebrow: "Insights",
         heading: "Field notes on [[D2C growth]], quick commerce, AI search and brand building",
-        lead: "What we are seeing across D2C and B2B brands, written by the Upsure Media team in Ahmedabad.",
+        lead: "What we are seeing across D2C and B2B brands, written by the Upsure Media team.",
       },
     ],
   },
@@ -2409,7 +2417,7 @@ export const pages = (ctx: Ctx) => [
         heading: "Contact Upsure Media",
         lead: "Tell us about your brand. We reply within one business day.",
         ctas: [{ label: "Send a message", href: "#lead-form" }],
-        showContact: true,
+        // The form below already offers the address, and so does the footer.
       },
       {
         blockType: "leadForm",
@@ -2508,6 +2516,7 @@ export const pages = (ctx: Ctx) => [
         eyebrow: "Legal",
         heading: "Terms & Conditions",
         lead: "Last updated: 5 October 2026",
+        width: "reading",
       },
       {
         blockType: "richText",
@@ -2557,6 +2566,7 @@ Questions about these terms? Email us at collab@upsuremedia.com and we'll get ba
         eyebrow: "Legal",
         heading: "Privacy Policy",
         lead: "Last updated: 5 October 2026",
+        width: "reading",
       },
       {
         blockType: "richText",
