@@ -22,6 +22,16 @@ import { imageProps } from "@/lib/media";
  * `layout: "cards"` shows service cards (artwork, description, bullets);
  * `grouped` puts either layout under the menu group labels.
  */
+/**
+ * Large-screen column count for a group of cards, chosen so the last row is
+ * never part-empty: four cards sit as 2x2 rather than 3 + 1.
+ */
+function columnsFor(count: number): string {
+  if (count % 3 === 0) return "lg:grid-cols-3";
+  if (count % 2 === 0) return "lg:grid-cols-2";
+  return "lg:grid-cols-3";
+}
+
 export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid">) {
   const services = await getServices(block.services);
   if (!services.length) return null;
@@ -63,7 +73,9 @@ export async function ServiceGridBlock({ block, index }: BlockProps<"serviceGrid
                     {set.label}
                   </h3>
                 )}
-                <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {/* Columns follow the group size so no row is left part-empty:
+                    a group of four reads better as 2x2 than as 3 + 1. */}
+                <ul className={cn("grid gap-5 sm:grid-cols-2", columnsFor(set.items.length))}>
                   {set.items.map((s, i) => (
                     <RevealItem as="li" key={s.id} index={i + 2}>
                       <ServiceCard service={s} />

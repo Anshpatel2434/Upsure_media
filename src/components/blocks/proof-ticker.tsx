@@ -64,14 +64,18 @@ export function ProofTickerBlock({ block }: BlockProps<"proofTicker">) {
           </Marquee>
         </div>
       )}
+      {/* Held to a readable width and centred: pinned to the container edges
+          this was a line of text and a button either side of ~900px of nothing. */}
       {(block.heading || block.cta?.href) && (
-        <Container className="mt-12 flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-          {block.heading && <p className="text-h3 font-medium">{block.heading}</p>}
-          {block.cta?.href && block.cta.label && (
-            <Button href={block.cta.href} size="lg" withArrow>
-              {block.cta.label}
-            </Button>
-          )}
+        <Container className="mt-12">
+          <div className="mx-auto flex max-w-3xl flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-center sm:gap-8 sm:text-center">
+            {block.heading && <p className="text-h3 font-medium text-balance">{block.heading}</p>}
+            {block.cta?.href && block.cta.label && (
+              <Button href={block.cta.href} size="lg" withArrow className="shrink-0">
+                {block.cta.label}
+              </Button>
+            )}
+          </div>
         </Container>
       )}
     </Section>

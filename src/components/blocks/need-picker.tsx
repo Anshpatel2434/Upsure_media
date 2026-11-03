@@ -79,7 +79,9 @@ export function NeedPickerBlock({ block }: BlockProps<"needPicker">) {
                     </h3>
                   </RevealItem>
                 )}
-                <ul className="flex flex-wrap gap-2.5 md:gap-3">
+                {/* One pill per row at a shared width: shrink-wrapped pills
+                    gave every card a different right edge. */}
+                <ul className="grid gap-2.5 md:gap-3">
                   {g.items.map((item, i) => {
                     const service = isDoc(item.service) ? (item.service as Service) : null;
                     const href = service
@@ -95,7 +97,7 @@ export function NeedPickerBlock({ block }: BlockProps<"needPicker">) {
                         <Link
                           href={href}
                           className={cn(
-                            "group inline-flex min-h-12 items-center rounded-pill px-5 py-2.5 text-sm font-medium md:min-h-[60px] md:px-7 md:text-base",
+                            "group flex min-h-12 items-center rounded-pill px-5 py-2.5 text-sm font-medium md:min-h-[60px] md:px-7 md:text-base",
                             "transition-[background-color,color,box-shadow] duration-500 ease-(--ease-smooth) hover:bg-(--fill) hover:text-ink",
                             dark
                               ? "bg-paper/10 text-paper"

@@ -36,7 +36,9 @@ export function ServiceCard({
             src={img.src}
             alt={img.alt}
             fill
-            sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw"
+            // Groups lay out as two or three columns; this covers the wider of
+            // the two rather than serving an upscaled image at 2-up.
+            sizes="(min-width: 1024px) 46vw, (min-width: 640px) 50vw, 100vw"
             priority={priority}
             placeholder={img.blurDataURL ? "blur" : "empty"}
             blurDataURL={img.blurDataURL}
