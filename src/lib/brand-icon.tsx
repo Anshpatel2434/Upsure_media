@@ -1,18 +1,20 @@
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
-
 import { ImageResponse } from "next/og";
 
+import { markSvg, svgDataUri } from "@/lib/brand-mark";
+
 /**
- * The site icon: a white "u" with the brand's yellow full stop on near-black,
- * echoing the "upsure." wordmark (and the previous site's white-"u" icon).
- * Shared by app/icon, app/apple-icon and the manifest icons.
+ * The site icon: the supplied "u." mark in white on near-black. Shared by
+ * app/icon, app/apple-icon and the manifest icons, so the tab, the Android
+ * home screen and iOS all show the same artwork as the wordmark in the
+ * header.
+ *
+ * The mark is embedded as an <img> rather than as SVG nodes because satori
+ * rasterises an embedded SVG image far more predictably than raw paths.
  */
 export async function brandIcon(
   size: number,
   { rounded = false, padding = 0 }: { rounded?: boolean; padding?: number } = {},
 ) {
-  const font = await readFile(join(process.cwd(), "src/assets/fonts/instrument-sans-600.woff"));
   const inner = size - padding * 2;
 
   return new ImageResponse(
@@ -27,43 +29,14 @@ export async function brandIcon(
         borderRadius: rounded ? size * 0.22 : 0,
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-end",
-          // Optically centre the "u" + dot pair (the dot adds visual weight right).
-          marginLeft: -inner * 0.04,
-          marginTop: -inner * 0.16,
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "Instrument Sans",
-            fontWeight: 600,
-            fontSize: inner * 0.82,
-            lineHeight: 1,
-            letterSpacing: -inner * 0.02,
-            color: "#ffffff",
-          }}
-        >
-          u
-        </span>
-        <div
-          style={{
-            width: inner * 0.15,
-            height: inner * 0.15,
-            borderRadius: 9999,
-            background: "#ffd166",
-            marginLeft: inner * 0.02,
-            marginBottom: inner * 0.115,
-          }}
-        />
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={svgDataUri(markSvg("#ffffff"))}
+        alt=""
+        width={Math.round(inner * 0.66)}
+        height={Math.round(inner * 0.66)}
+      />
     </div>,
-    {
-      width: size,
-      height: size,
-      fonts: [{ name: "Instrument Sans", data: font, weight: 600, style: "normal" }],
-    },
+    { width: size, height: size },
   );
 }

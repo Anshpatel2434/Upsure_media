@@ -122,7 +122,7 @@ export async function Footer() {
 
         <div className="mt-12 flex flex-col gap-5 border-t border-paper/15 pt-7 md:mt-20 md:flex-row md:items-end md:justify-between md:pt-8">
           <Link href="/" aria-label="Upsure Media home" className="w-fit">
-            <Logo tone="paper" className="text-[2.25rem] md:text-[2.75rem]" />
+            <Logo tone="paper" className="h-9 md:h-11" />
           </Link>
           {/* The city is already in the "Get in touch" block above, so it is
               not repeated here. */}

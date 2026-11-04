@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import sharp from "sharp";
 
+import { svgDataUri, WORDMARK, wordmarkSvg } from "@/lib/brand-mark";
 import { shareCard, shareCardPaths, type ShareCard } from "@/lib/share-card";
 
 /**
@@ -248,29 +249,16 @@ function Card({
   );
 }
 
+/** The supplied wordmark, so share cards carry the same mark as the site. */
 function Wordmark() {
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "flex-end",
-        fontSize: 40,
-        fontWeight: 600,
-        letterSpacing: -1.5,
-      }}
-    >
-      upsure
-      <div
-        style={{
-          width: 11,
-          height: 11,
-          borderRadius: 9999,
-          background: C.teal,
-          marginLeft: 2,
-          marginBottom: 9,
-        }}
-      />
-    </div>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={svgDataUri(wordmarkSvg(C.ink))}
+      alt=""
+      width={Math.round(38 * (WORDMARK.width / WORDMARK.height))}
+      height={38}
+    />
   );
 }
 
