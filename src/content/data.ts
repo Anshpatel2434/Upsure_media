@@ -1506,94 +1506,18 @@ export const forms = {
 };
 
 /* ----------------------------------------------------------------------------
-   Globals. Brand "Upsure Media", email collab@upsuremedia.com.
-
-   The Nov 2026 audit asked for the things the earlier copy rules kept off the
-   site: a phone and WhatsApp number, the full office address, LinkedIn and
-   YouTube, and the founder. Each of those now has a constant below. Anything
-   left empty is hidden everywhere it would appear, so filling one in is the
-   only step needed to turn that feature on — no template changes.
+   Globals. Sitewide rules: brand "Upsure Media", email collab@upsuremedia.com,
+   location "Ahmedabad, Gujarat, India" only (no street address, phone or
+   hours), Instagram and LinkedIn only, no founder names.
    ---------------------------------------------------------------------------- */
 
 /** The one-line description, used word for word (section 1). */
 export const ONE_LINER =
   "Upsure Media is a full-service brand and growth agency in Ahmedabad, Gujarat, India. We help D2C and B2B brands grow through brand consulting, branding, personal branding, PR, social media, influencer marketing, performance marketing, e-commerce and quick commerce growth, SEO/AEO/GEO and AI solutions.";
 
-/* --- Links and contact details. Empty values are hidden sitewide. ----------- */
-
 /** Paste the LinkedIn company page URL here once it exists; empty links are hidden. */
-export const LINKEDIN_URL: string = "";
+export const LINKEDIN_URL = "";
 export const INSTAGRAM_URL = "https://www.instagram.com/upsure_media/";
-/** YouTube channel for The Sagar Kathrotiya Show. */
-export const YOUTUBE_URL: string = "";
-
-/**
- * Office phone, in international format with no spaces, e.g. "+919876543210".
- * Shown in the header, the footer and the contact page, and used for the
- * LocalBusiness schema. Empty hides all of them.
- */
-export const PHONE: string = "";
-/** WhatsApp number, same format. Empty hides the floating chat button. */
-export const WHATSAPP: string = "";
-/** Greeting pre-filled in WhatsApp when someone taps the button. */
-export const WHATSAPP_MESSAGE = "Hi Upsure Media, I'd like to talk about my brand.";
-
-/**
- * Street address. `street` is the only part still missing: fill in the unit
- * and road at Solaris Business Hub and the full address and the map appear on
- * the contact page, with LocalBusiness schema sitewide.
- */
-export const ADDRESS: Record<
-  "building" | "street" | "locality" | "region" | "postalCode" | "country",
-  string
-> = {
-  building: "Solaris Business Hub",
-  street: "",
-  locality: "Ahmedabad",
-  region: "Gujarat",
-  postalCode: "",
-  country: "IN",
-};
-
-/** True once there is enough of an address to publish and map. */
-export const HAS_FULL_ADDRESS = Boolean(ADDRESS.street && ADDRESS.postalCode);
-
-/** One line for the footer and contact page, skipping any part not filled in. */
-export const ADDRESS_LINE = [
-  ADDRESS.building,
-  ADDRESS.street,
-  ADDRESS.locality,
-  ADDRESS.region,
-  ADDRESS.postalCode,
-]
-  .filter(Boolean)
-  .join(", ");
-
-/* --- Founder and the network, per the Nov 2026 audit ----------------------- */
-
-/**
- * The founder. `name` empty hides the founder section and the schema entry.
- * `photo` is a media key; until there is a real photograph the section runs
- * without one rather than using stock art.
- */
-export const FOUNDER: Record<"name" | "role" | "photo" | "linkedin" | "show", string> = {
-  name: "Sagar Kathrotiya",
-  role: "Founder",
-  photo: "",
-  linkedin: "",
-  show: "The Sagar Kathrotiya Show",
-};
-
-/**
- * The thing no other Ahmedabad agency has, and the reason the audit says it
- * belongs on the homepage. Numbers are the client's own, as given in the audit.
- */
-export const NETWORK = {
-  pages: "250+",
-  pagesLabel: "Gujarat district and taluka pages",
-  followers: "30.7M",
-  followersLabel: "combined follower reach",
-};
 
 export const siteSettings = {
   name: "Upsure Media",
@@ -1603,11 +1527,7 @@ export const siteSettings = {
   socials: [
     { platform: "Instagram", url: INSTAGRAM_URL },
     { platform: "LinkedIn", url: LINKEDIN_URL },
-    { platform: "YouTube", url: YOUTUBE_URL },
   ].filter((s) => s.url),
-  phone: PHONE,
-  whatsapp: WHATSAPP,
-  address: ADDRESS_LINE,
   stats: [
     { value: 100, suffix: "+", label: "brands served" },
     { value: 250, suffix: "+", label: "Projects delivered across brand & growth" },
@@ -1758,36 +1678,15 @@ export const pages = (ctx: Ctx) => [
         eyebrow: "D2C & B2B Brand and Growth Agency in Ahmedabad",
         heading: "We grow|brands people|[[love.]]",
         lead: "Upsure Media is a full-service brand and growth agency for [[D2C and B2B brands]]. Brand consulting, branding, social media, influencer marketing, performance marketing, e-commerce, quick commerce, PR and AI, run by [[one senior team and measured on sales]].",
-        stickers: [
-          { text: "100+ brands served", tone: "sun" },
-          { text: "30.7M follower network", tone: "teal" },
-        ],
+        // One sticker only: the second repeated a line from the proof ticker
+        // further down, and the audit asked for a calmer hero.
+        stickers: [{ text: "100+ brands served", tone: "sun" }],
         ctas: [
           { label: "Book a free strategy call", href: "/start-a-project" },
           { label: "Explore services", href: "/services" },
         ],
         images: ["hero-1", "hero-2", "hero-3"].map((k) => ({ image: ctx.media[k] })),
         showContact: true,
-      },
-      {
-        blockType: "featureList",
-        eyebrow: "Why Upsure",
-        heading: "The reach no other agency here can rent",
-        items: [
-          {
-            title: `${NETWORK.pages} ${NETWORK.pagesLabel}`,
-            body: "We own the hyperlocal network, district by district and taluka by taluka. A launch can go live across Gujarat in a day, without paying a middleman for access.",
-          },
-          {
-            title: `${NETWORK.followers} ${NETWORK.followersLabel}`,
-            body: "Distribution we control, not impressions we buy. It is why a regional launch here costs less and lands harder than the same budget spent on ads alone.",
-          },
-          {
-            title: "Our own podcast and content studio",
-            body: `Shoots, reels and long-form video are produced in house, including ${FOUNDER.show}. No hired crews, no waiting on a vendor's calendar.`,
-          },
-        ],
-        tone: "white",
       },
       { blockType: "logoTicker", heading: "Trusted by India's leading brands", tone: "paper" },
       {
@@ -2386,23 +2285,6 @@ export const pages = (ctx: Ctx) => [
         tone: "paper",
       },
       {
-        blockType: "textColumns",
-        eyebrow: "Founder",
-        columns: [
-          {
-            heading: FOUNDER.name,
-            body: `${FOUNDER.role} of Upsure Media. He built the Gujarat page network the agency runs on, and hosts ${FOUNDER.show}, where founders and operators talk about building in this market. The people who pitch the work are the people who do it, and that starts at the top.`,
-            link: { label: "Talk to the team", href: "/contact", newTab: false },
-          },
-          {
-            heading: "Built in Gujarat, for brands that sell here",
-            body: `${NETWORK.pages} district and taluka pages, ${NETWORK.followers} combined reach, and a studio that produces the work in house. That combination is the reason regional launches move faster with us than with an agency buying the same audience from someone else.`,
-            link: { label: "How we grow D2C brands", href: "/industries/d2c", newTab: false },
-          },
-        ],
-        tone: "white",
-      },
-      {
         blockType: "teamGrid",
         eyebrow: "The team",
         heading: "The people behind the work",
@@ -2587,40 +2469,6 @@ export const pages = (ctx: Ctx) => [
         layout: "split",
         tone: "paper",
       },
-      // Appears once ADDRESS has a street and postcode (see the constants at
-      // the top of this file). Until then the contact page does not pretend to
-      // have a walk-in address.
-      ...(HAS_FULL_ADDRESS
-        ? [
-            {
-              blockType: "textColumns" as const,
-              eyebrow: "Visit us",
-              columns: [
-                {
-                  heading: "The studio",
-                  body: ADDRESS_LINE,
-                  link: {
-                    label: "Open in Google Maps",
-                    href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                      `${siteSettings.name}, ${ADDRESS_LINE}`,
-                    )}`,
-                    newTab: true,
-                  },
-                },
-                ...(PHONE
-                  ? [
-                      {
-                        heading: "Call us",
-                        body: `${PHONE}. Monday to Saturday, during business hours.`,
-                        link: { label: `Call ${PHONE}`, href: `tel:${PHONE}`, newTab: false },
-                      },
-                    ]
-                  : []),
-              ],
-              tone: "white" as const,
-            },
-          ]
-        : []),
       {
         blockType: "processSteps",
         eyebrow: "What happens next",
