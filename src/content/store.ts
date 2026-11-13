@@ -86,10 +86,15 @@ const clients: Client[] = data.clients.map((name, i) => {
 const categories: Category[] = data.categories.map((c) => ({ id: nextId(), ...c }));
 const categoryBySlug = Object.fromEntries(categories.map((c) => [c.slug, c]));
 
+// Posts carry a named byline where there is one: a person reads as more
+// trustworthy than a company, and Google's guidance says the same. Reassign
+// per post in data.ts once more of the team writes.
 const author: Author = {
   id: nextId(),
-  name: "Upsure Media",
-  role: "Brand and growth agency, Ahmedabad",
+  name: data.FOUNDER.name || "Upsure Media",
+  role: data.FOUNDER.name
+    ? `${data.FOUNDER.role}, Upsure Media`
+    : "Brand and growth agency, Ahmedabad",
 };
 
 const team: TeamMember[] = data.team.map(({ key: _key, photo, ...rest }) => ({

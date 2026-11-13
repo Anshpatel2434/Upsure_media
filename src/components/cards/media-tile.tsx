@@ -70,7 +70,9 @@ export function MediaTile({
       {img && (
         <Image
           src={img.src}
-          alt=""
+          // The tile's own link carries the title, so a cover that says nothing
+          // beyond it stays decorative; anything else is described.
+          alt={img.alt && img.alt !== title ? img.alt : ""}
           fill
           priority={priority}
           sizes={sizes}

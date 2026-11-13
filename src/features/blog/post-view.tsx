@@ -16,7 +16,7 @@ import { Section } from "@/components/ui/section";
 import { Tag } from "@/components/ui/tag";
 import { TextLink } from "@/components/ui/text-link";
 import { NewsletterForm } from "@/features/newsletter/newsletter-form";
-import { getPosts, getServices } from "@/lib/queries";
+import { getGlobals, getPosts, getServices } from "@/lib/queries";
 import { getSiteUrl } from "@/lib/site";
 import { formatDate, readingTime } from "@/lib/text";
 import { isDoc } from "@/lib/relations";
@@ -30,6 +30,8 @@ export async function PostView({ post }: { post: Post }) {
     : (await getPosts({ limit: 3, category: category?.slug, exclude: post.id })).docs;
   const relatedSlugs = (category && CATEGORY_SERVICES[category.slug]) || [];
   const relatedServices = (await getServices()).filter((s) => relatedSlugs.includes(s.slug));
+  const { footer } = await getGlobals();
+  const newsletter = footer.newsletter;
   const bodyText = post.content.replace(/[#>*\-]/g, " ");
 
   const jsonLd = {
@@ -124,11 +126,11 @@ export async function PostView({ post }: { post: Post }) {
           <div className="flex flex-col gap-3">
             <Eyebrow tone="paper">The Upshot</Eyebrow>
             <Heading as="h2" size="h2">
-              Subscribe to The Upshot
+              {newsletter?.heading ?? "Subscribe to The Upshot"}
             </Heading>
-            <p className="text-paper/75">
-              One email a month on D2C growth, quick commerce, AI search and brand building.
-            </p>
+            {/* Read from globals rather than repeated here, so the footer and
+                this block cannot drift into two different taglines. */}
+            <p className="text-paper/75">{newsletter?.text}</p>
           </div>
           <NewsletterForm source={`blog/${post.slug}`} tone="paper" />
         </Container>

@@ -2587,6 +2587,40 @@ export const pages = (ctx: Ctx) => [
         layout: "split",
         tone: "paper",
       },
+      // Appears once ADDRESS has a street and postcode (see the constants at
+      // the top of this file). Until then the contact page does not pretend to
+      // have a walk-in address.
+      ...(HAS_FULL_ADDRESS
+        ? [
+            {
+              blockType: "textColumns" as const,
+              eyebrow: "Visit us",
+              columns: [
+                {
+                  heading: "The studio",
+                  body: ADDRESS_LINE,
+                  link: {
+                    label: "Open in Google Maps",
+                    href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      `${siteSettings.name}, ${ADDRESS_LINE}`,
+                    )}`,
+                    newTab: true,
+                  },
+                },
+                ...(PHONE
+                  ? [
+                      {
+                        heading: "Call us",
+                        body: `${PHONE}. Monday to Saturday, during business hours.`,
+                        link: { label: `Call ${PHONE}`, href: `tel:${PHONE}`, newTab: false },
+                      },
+                    ]
+                  : []),
+              ],
+              tone: "white" as const,
+            },
+          ]
+        : []),
       {
         blockType: "processSteps",
         eyebrow: "What happens next",
