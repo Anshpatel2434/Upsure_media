@@ -57,7 +57,8 @@ const nextConfig: NextConfig = {
       SHOW_CASE_STUDIES
         ? [["/testimonials", "/work"]]
         : [
-            ["/testimonials", "/services"],
+            // Closest live page for each retired URL.
+            ["/testimonials", "/about"],
             ["/work", "/services"],
             ["/work/:path*", "/services"],
           ]

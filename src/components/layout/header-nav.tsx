@@ -240,11 +240,15 @@ export function HeaderNav({ items, cta, secondary, contact }: Props) {
                       <ChevronRightIcon className="transition-transform group-open:rotate-90" />
                     </summary>
                     <ul className="mb-3 grid gap-1 pl-2">
-                      <li>
-                        <Link href={item.href} className="block py-2 text-lead text-sun">
-                          All {item.label.toLowerCase()}
-                        </Link>
-                      </li>
+                      {/* Skip when the menu already lists the parent page, or
+                          the hub would appear twice. */}
+                      {!item.children.some((c) => c.href === item.href) && (
+                        <li>
+                          <Link href={item.href} className="block py-2 text-lead text-sun">
+                            All {item.label.toLowerCase()}
+                          </Link>
+                        </li>
+                      )}
                       {item.children.map((child, ci) => (
                         <li key={child.href}>
                           {child.group && child.group !== item.children![ci - 1]?.group && (

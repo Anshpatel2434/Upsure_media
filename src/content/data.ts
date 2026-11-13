@@ -102,8 +102,9 @@ export const clients = [
 ];
 
 /* ----------------------------------------------------------------------------
-   Services: the ten services from the copy update (docs, section 1 and 5), in
-   menu order. `group` is the dropdown label; `subServices` are the card
+   Services: the ten services from the copy update (docs, section 1 and 5).
+   `order` is the menu order, and the menus label runs of consecutive services,
+   so every service in a group must sort together or its label repeats. `group` is the dropdown label; `subServices` are the card
    bullets; `checklist` is the "What we do" service list on the service page.
    ---------------------------------------------------------------------------- */
 export const SERVICE_GROUPS = ["Build the brand", "Grow demand", "Sell and scale"] as const;
@@ -414,7 +415,7 @@ export const services = [
     title: "E-commerce & Quick Commerce",
     group: "Sell and scale",
     icon: "commerce",
-    order: 8,
+    order: 9,
     tags: ["Marketplaces", "Quick commerce", "Shopify"],
     blurb: "Grow sales on Amazon, Flipkart, Myntra, Nykaa, Blinkit, Zepto and Swiggy Instamart.",
     subServices: [
@@ -475,7 +476,7 @@ export const services = [
     title: "SEO, AEO & GEO",
     group: "Grow demand",
     icon: "search",
-    order: 9,
+    order: 8,
     tags: ["SEO", "Answer engines", "AI search"],
     blurb: "Get found on Google, in answer boxes and inside ChatGPT, Gemini and Perplexity.",
     subServices: [
@@ -1171,13 +1172,13 @@ Once the thinking is sharp, we make it visible. Identity systems, campaign conce
 
 Everything we build comes with the systems to use it: templates, guidelines, and design ops that keep quality high when we're not in the room.
 
-## Growth marketing: the compounding machine
+## Performance marketing and SEO: the compounding machine
 
 Brand gets people to trust you. Growth gets them to find you. We run the whole engine — performance media, SEO and content, CRO and landing pages, lifecycle and retention — as one connected system, not four disconnected line items with four different reports.
 
 The goal is compounding: every month's work should make next month's work more effective. If your acquisition costs are flat while your volume grows, the machine is working.
 
-## Applied AI: the newest tool in the box (and the most misunderstood)
+## AI solutions: the newest tool in the box (and the most misunderstood)
 
 Here's where we're different from most agencies our size: we build with AI, not just about it. Custom chatbots that actually resolve customer queries instead of frustrating them. Workflow automations that take a 6-hour reporting task down to 6 minutes. Content pipelines where AI drafts and humans direct. Audits that show your team exactly where intelligent systems will pay off first — and where they're a waste of money.
 
@@ -1505,18 +1506,94 @@ export const forms = {
 };
 
 /* ----------------------------------------------------------------------------
-   Globals. Sitewide rules: brand "Upsure Media", email collab@upsuremedia.com,
-   location "Ahmedabad, Gujarat, India" only (no street address, phone or
-   hours), Instagram and LinkedIn only, no founder names.
+   Globals. Brand "Upsure Media", email collab@upsuremedia.com.
+
+   The Nov 2026 audit asked for the things the earlier copy rules kept off the
+   site: a phone and WhatsApp number, the full office address, LinkedIn and
+   YouTube, and the founder. Each of those now has a constant below. Anything
+   left empty is hidden everywhere it would appear, so filling one in is the
+   only step needed to turn that feature on — no template changes.
    ---------------------------------------------------------------------------- */
 
 /** The one-line description, used word for word (section 1). */
 export const ONE_LINER =
   "Upsure Media is a full-service brand and growth agency in Ahmedabad, Gujarat, India. We help D2C and B2B brands grow through brand consulting, branding, personal branding, PR, social media, influencer marketing, performance marketing, e-commerce and quick commerce growth, SEO/AEO/GEO and AI solutions.";
 
+/* --- Links and contact details. Empty values are hidden sitewide. ----------- */
+
 /** Paste the LinkedIn company page URL here once it exists; empty links are hidden. */
-export const LINKEDIN_URL = "";
+export const LINKEDIN_URL: string = "";
 export const INSTAGRAM_URL = "https://www.instagram.com/upsure_media/";
+/** YouTube channel for The Sagar Kathrotiya Show. */
+export const YOUTUBE_URL: string = "";
+
+/**
+ * Office phone, in international format with no spaces, e.g. "+919876543210".
+ * Shown in the header, the footer and the contact page, and used for the
+ * LocalBusiness schema. Empty hides all of them.
+ */
+export const PHONE: string = "";
+/** WhatsApp number, same format. Empty hides the floating chat button. */
+export const WHATSAPP: string = "";
+/** Greeting pre-filled in WhatsApp when someone taps the button. */
+export const WHATSAPP_MESSAGE = "Hi Upsure Media, I'd like to talk about my brand.";
+
+/**
+ * Street address. `street` is the only part still missing: fill in the unit
+ * and road at Solaris Business Hub and the full address and the map appear on
+ * the contact page, with LocalBusiness schema sitewide.
+ */
+export const ADDRESS: Record<
+  "building" | "street" | "locality" | "region" | "postalCode" | "country",
+  string
+> = {
+  building: "Solaris Business Hub",
+  street: "",
+  locality: "Ahmedabad",
+  region: "Gujarat",
+  postalCode: "",
+  country: "IN",
+};
+
+/** True once there is enough of an address to publish and map. */
+export const HAS_FULL_ADDRESS = Boolean(ADDRESS.street && ADDRESS.postalCode);
+
+/** One line for the footer and contact page, skipping any part not filled in. */
+export const ADDRESS_LINE = [
+  ADDRESS.building,
+  ADDRESS.street,
+  ADDRESS.locality,
+  ADDRESS.region,
+  ADDRESS.postalCode,
+]
+  .filter(Boolean)
+  .join(", ");
+
+/* --- Founder and the network, per the Nov 2026 audit ----------------------- */
+
+/**
+ * The founder. `name` empty hides the founder section and the schema entry.
+ * `photo` is a media key; until there is a real photograph the section runs
+ * without one rather than using stock art.
+ */
+export const FOUNDER: Record<"name" | "role" | "photo" | "linkedin" | "show", string> = {
+  name: "Sagar Kathrotiya",
+  role: "Founder",
+  photo: "",
+  linkedin: "",
+  show: "The Sagar Kathrotiya Show",
+};
+
+/**
+ * The thing no other Ahmedabad agency has, and the reason the audit says it
+ * belongs on the homepage. Numbers are the client's own, as given in the audit.
+ */
+export const NETWORK = {
+  pages: "250+",
+  pagesLabel: "Gujarat district and taluka pages",
+  followers: "30.7M",
+  followersLabel: "combined follower reach",
+};
 
 export const siteSettings = {
   name: "Upsure Media",
@@ -1526,7 +1603,11 @@ export const siteSettings = {
   socials: [
     { platform: "Instagram", url: INSTAGRAM_URL },
     { platform: "LinkedIn", url: LINKEDIN_URL },
+    { platform: "YouTube", url: YOUTUBE_URL },
   ].filter((s) => s.url),
+  phone: PHONE,
+  whatsapp: WHATSAPP,
+  address: ADDRESS_LINE,
   stats: [
     { value: 100, suffix: "+", label: "brands served" },
     { value: 250, suffix: "+", label: "Projects delivered across brand & growth" },
@@ -1544,16 +1625,21 @@ export const header = {
     {
       label: "Services",
       href: "/services",
-      children: services.map((s) => ({
-        label: s.title,
-        href: `/services/${s.slug}`,
-        group: s.group,
-      })),
+      // Sorted, because the menu labels runs of consecutive services: an
+      // out-of-order entry makes its group label appear twice.
+      children: [...services]
+        .sort((a, b) => a.order - b.order)
+        .map((s) => ({
+          label: s.title,
+          href: `/services/${s.slug}`,
+          group: s.group,
+        })),
     },
     {
       label: "Industries",
-      href: "/industries/d2c",
+      href: "/industries",
       children: [
+        { label: "All industries", href: "/industries" },
         { label: "D2C brands", href: "/industries/d2c" },
         { label: "B2B companies", href: "/industries/b2b" },
       ],
@@ -1573,11 +1659,14 @@ export const footer = {
   columns: [
     {
       heading: "Services",
-      links: services.map((s) => ({ label: s.title, href: `/services/${s.slug}` })),
+      links: [...services]
+        .sort((a, b) => a.order - b.order)
+        .map((s) => ({ label: s.title, href: `/services/${s.slug}` })),
     },
     {
       heading: "Industries",
       links: [
+        { label: "All industries", href: "/industries" },
         { label: "D2C brands", href: "/industries/d2c" },
         { label: "B2B companies", href: "/industries/b2b" },
       ],
@@ -1671,7 +1760,7 @@ export const pages = (ctx: Ctx) => [
         lead: "Upsure Media is a full-service brand and growth agency for [[D2C and B2B brands]]. Brand consulting, branding, social media, influencer marketing, performance marketing, e-commerce, quick commerce, PR and AI, run by [[one senior team and measured on sales]].",
         stickers: [
           { text: "100+ brands served", tone: "sun" },
-          { text: "Senior team on every project", tone: "teal" },
+          { text: "30.7M follower network", tone: "teal" },
         ],
         ctas: [
           { label: "Book a free strategy call", href: "/start-a-project" },
@@ -1679,6 +1768,26 @@ export const pages = (ctx: Ctx) => [
         ],
         images: ["hero-1", "hero-2", "hero-3"].map((k) => ({ image: ctx.media[k] })),
         showContact: true,
+      },
+      {
+        blockType: "featureList",
+        eyebrow: "Why Upsure",
+        heading: "The reach no other agency here can rent",
+        items: [
+          {
+            title: `${NETWORK.pages} ${NETWORK.pagesLabel}`,
+            body: "We own the hyperlocal network, district by district and taluka by taluka. A launch can go live across Gujarat in a day, without paying a middleman for access.",
+          },
+          {
+            title: `${NETWORK.followers} ${NETWORK.followersLabel}`,
+            body: "Distribution we control, not impressions we buy. It is why a regional launch here costs less and lands harder than the same budget spent on ads alone.",
+          },
+          {
+            title: "Our own podcast and content studio",
+            body: `Shoots, reels and long-form video are produced in house, including ${FOUNDER.show}. No hired crews, no waiting on a vendor's calendar.`,
+          },
+        ],
+        tone: "white",
       },
       { blockType: "logoTicker", heading: "Trusted by India's leading brands", tone: "paper" },
       {
@@ -1878,6 +1987,44 @@ export const pages = (ctx: Ctx) => [
         scope: "services",
         tone: "paper",
       },
+    ],
+  },
+  {
+    slug: "industries",
+    title: "Industries",
+    meta: {
+      title: "Industries We Work In | D2C Brands & B2B Companies | Upsure Media",
+      description:
+        "Upsure Media works with two kinds of client: D2C brands selling to shoppers, and B2B companies selling on trust. See how each one is run.",
+    },
+    layout: [
+      {
+        blockType: "hero",
+        variant: "editorial",
+        eyebrow: "Industries",
+        heading: "Two kinds of client, [[two ways of working]]",
+        lead: "D2C brands win on shelf, on marketplaces and in the feed. B2B companies win on credibility and qualified pipeline. The team is the same; the plan is not.",
+        images: [{ image: ctx.media["ind-d2c"] }],
+      },
+      {
+        blockType: "textColumns",
+        eyebrow: "Pick your side",
+        columns: [
+          {
+            heading: "D2C brands",
+            body: "Launch a brand, grow it on your own site, and win the shelf on Amazon, Flipkart, Blinkit, Zepto and Instamart. Brand, creative, media and listings planned together.",
+            link: { label: "How we grow D2C brands", href: "/industries/d2c", newTab: false },
+          },
+          {
+            heading: "B2B companies",
+            body: "Look as strong as you are. Branding, founder visibility, PR, SEO and performance marketing for companies whose buyers check you out long before they call.",
+            link: { label: "How we grow B2B companies", href: "/industries/b2b", newTab: false },
+          },
+        ],
+        images: ["ind-d2c", "ind-b2b"].map((k) => ({ image: ctx.media[k] })),
+        tone: "paper",
+      },
+      { blockType: "logoTicker", heading: "Trusted by India's leading brands", tone: "white" },
     ],
   },
   {
@@ -2237,6 +2384,23 @@ export const pages = (ctx: Ctx) => [
           },
         ],
         tone: "paper",
+      },
+      {
+        blockType: "textColumns",
+        eyebrow: "Founder",
+        columns: [
+          {
+            heading: FOUNDER.name,
+            body: `${FOUNDER.role} of Upsure Media. He built the Gujarat page network the agency runs on, and hosts ${FOUNDER.show}, where founders and operators talk about building in this market. The people who pitch the work are the people who do it, and that starts at the top.`,
+            link: { label: "Talk to the team", href: "/contact", newTab: false },
+          },
+          {
+            heading: "Built in Gujarat, for brands that sell here",
+            body: `${NETWORK.pages} district and taluka pages, ${NETWORK.followers} combined reach, and a studio that produces the work in house. That combination is the reason regional launches move faster with us than with an agency buying the same audience from someone else.`,
+            link: { label: "How we grow D2C brands", href: "/industries/d2c", newTab: false },
+          },
+        ],
+        tone: "white",
       },
       {
         blockType: "teamGrid",

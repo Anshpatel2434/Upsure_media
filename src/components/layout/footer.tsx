@@ -27,6 +27,9 @@ export async function Footer() {
           <h2 className="text-[40px] leading-none font-semibold tracking-[-0.03em] md:text-[53px] xl:text-[64px]">
             Get in touch
           </h2>
+          {/* Name, address and phone together, so Google can match the site to
+              the Business Profile. Phone and street address appear only once
+              they are filled in (see src/content/data.ts). */}
           <address className="flex flex-col items-center gap-2 text-[17px] not-italic md:flex-row md:flex-wrap md:justify-center md:gap-x-6 md:text-lg">
             <a
               href={`mailto:${settings.email}`}
@@ -34,7 +37,15 @@ export async function Footer() {
             >
               {settings.email}
             </a>
-            <span className="text-paper/75">{settings.city}</span>
+            {settings.phone && (
+              <a
+                href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`}
+                className="font-semibold underline-offset-4 hover:text-sun hover:underline"
+              >
+                {settings.phone}
+              </a>
+            )}
+            <span className="text-paper/75">{settings.address || settings.city}</span>
           </address>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link

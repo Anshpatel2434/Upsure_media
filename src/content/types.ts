@@ -1536,6 +1536,14 @@ export interface SiteSetting {
    * tel: link, digits only e.g. +919876543210
    */
   phoneHref?: string | null;
+  /**
+   * WhatsApp number, digits only e.g. +919876543210. Empty hides the chat button.
+   */
+  whatsapp?: string | null;
+  /**
+   * The office address on one line, assembled from the parts that are filled in.
+   */
+  address?: string | null;
   addressLine1?: string | null;
   addressLine2?: string | null;
   city?: string | null;

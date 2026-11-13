@@ -1,4 +1,4 @@
-import { ONE_LINER } from "@/content/data";
+import { ADDRESS, FOUNDER, HAS_FULL_ADDRESS, ONE_LINER } from "@/content/data";
 import { getGlobals } from "@/lib/queries";
 import { getSiteUrl } from "@/lib/site";
 
@@ -21,27 +21,39 @@ const KNOWS_ABOUT = [
 ];
 
 /**
- * Organisation schema on every page: Upsure Media as a MarketingAgency with a
- * city-level address only (no street, phone or founder, per the copy rules).
+ * Organisation schema on every page. It upgrades itself as the details in
+ * src/content/data.ts are filled in: with a street address and postcode it
+ * also declares LocalBusiness, which is what lets Google tie the site to the
+ * Business Profile; with a phone number it publishes that too; with a founder
+ * name it names the founder.
  */
 export async function SiteSchema() {
   const { settings } = await getGlobals();
   const url = getSiteUrl();
+  const types = ["Organization", "MarketingAgency"];
+  if (HAS_FULL_ADDRESS) types.push("LocalBusiness");
+
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": ["Organization", "MarketingAgency"],
+    "@type": types,
     "@id": `${url}/#organization`,
     name: settings.name,
     url,
     logo: `${url}/logo.svg`,
     description: ONE_LINER,
     email: settings.email,
+    ...(settings.phone ? { telephone: settings.phone } : {}),
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Ahmedabad",
-      addressRegion: "Gujarat",
-      addressCountry: "IN",
+      ...(ADDRESS.street
+        ? { streetAddress: [ADDRESS.building, ADDRESS.street].filter(Boolean).join(", ") }
+        : {}),
+      addressLocality: ADDRESS.locality,
+      addressRegion: ADDRESS.region,
+      ...(ADDRESS.postalCode ? { postalCode: ADDRESS.postalCode } : {}),
+      addressCountry: ADDRESS.country,
     },
+    ...(FOUNDER.name ? { founder: { "@type": "Person", name: FOUNDER.name } } : {}),
     areaServed: { "@type": "Country", name: "India" },
     knowsAbout: KNOWS_ABOUT,
     sameAs: (settings.socials ?? []).map((s) => s.url),

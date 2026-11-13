@@ -60,13 +60,18 @@ export function sectionIndex(n: number): string {
   return String(n).padStart(2, "0");
 }
 
+/**
+ * "8 Nov 2026". en-GB abbreviates September as "Sept" while every other month
+ * gets three letters, so the month is formatted separately in en-US to keep
+ * the list of post dates even.
+ */
 export function formatDate(value: string | null | undefined): string {
   if (!value) return "";
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(value));
+  const date = new Date(value);
+  const day = new Intl.DateTimeFormat("en-GB", { day: "numeric" }).format(date);
+  const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(date);
+  const year = new Intl.DateTimeFormat("en-GB", { year: "numeric" }).format(date);
+  return `${day} ${month} ${year}`;
 }
 
 export function readingTime(text: string): string {
